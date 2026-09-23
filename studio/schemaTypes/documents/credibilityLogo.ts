@@ -1,6 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
-import {ImageIcon} from '@sanity/icons/Image'
+import {ImageIcon} from '@sanity/icons'
 
 export const LOGO_GROUPS = [
   {title: 'Clients & Collaborations', value: 'clients'},
