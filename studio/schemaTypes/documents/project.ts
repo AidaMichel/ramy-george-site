@@ -1,6 +1,6 @@
 import {defineField, defineType} from 'sanity'
-import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
-import {PlayIcon} from '@sanity/icons'
+import {PlayIcon} from '@sanity/icons/Play'
+import {manualOrderRankField, manualOrderRankOrdering} from '../orderRank'
 
 const ASPECTS = ['16:9', '9:16', '1:1', '4:5', '3:4']
 
@@ -9,7 +9,7 @@ export const project = defineType({
   title: 'Project',
   type: 'document',
   icon: PlayIcon,
-  orderings: [orderRankOrdering],
+  orderings: [manualOrderRankOrdering],
   groups: [
     {name: 'quick', title: 'Quick', default: true},
     {name: 'advanced', title: 'Advanced ↓'},
@@ -155,7 +155,7 @@ export const project = defineType({
     defineField({name: 'summary', title: 'Short description (project page)', type: 'text', rows: 3, group: 'advanced'}),
     defineField({name: 'credits', type: 'text', rows: 3, group: 'advanced'}),
     defineField({name: 'seo', type: 'seo', group: 'seo'}),
-    orderRankField({type: 'project', newItemPosition: 'after'}),
+    manualOrderRankField,
   ],
   preview: {
     select: {title: 'title', org: 'organisation.name', kind: 'kind', cat: 'category.title', media: 'poster', visible: 'visible', status: 'status', url: 'watchUrl', ref: 'poster.asset._ref'},
