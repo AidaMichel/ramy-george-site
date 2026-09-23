@@ -25,7 +25,25 @@ jobs:
       SANITY_STUDIO_DATASET: ${{ vars.SANITY_DATASET || 'production' }}
       SANITY_STUDIO_HOST: ${{ vars.SANITY_STUDIO_HOST }}
       SANITY_STUDIO_PREVIEW_URL: ${{ vars.SANITY_STUDIO_PREVIEW_URL }}
+      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}
+      SANITY_WRITE_TOKEN: ${{ secrets.SANITY_WRITE_TOKEN }}
     steps:
+      - name: Normalize pasted settings
+        working-directory: .
+        run: |
+          strip_assignment() {
+            value="$1"
+            case "$value" in
+              *=*) value="${value#*=}" ;;
+            esac
+            printf '%s' "$value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+          }
+          echo "SANITY_STUDIO_PROJECT_ID=$(strip_assignment "$SANITY_STUDIO_PROJECT_ID")" >> "$GITHUB_ENV"
+          echo "SANITY_STUDIO_DATASET=$(strip_assignment "$SANITY_STUDIO_DATASET")" >> "$GITHUB_ENV"
+          echo "SANITY_STUDIO_HOST=$(strip_assignment "$SANITY_STUDIO_HOST")" >> "$GITHUB_ENV"
+          echo "SANITY_STUDIO_PREVIEW_URL=$(strip_assignment "$SANITY_STUDIO_PREVIEW_URL")" >> "$GITHUB_ENV"
+          echo "SANITY_AUTH_TOKEN=$(strip_assignment "$SANITY_AUTH_TOKEN")" >> "$GITHUB_ENV"
+          echo "SANITY_WRITE_TOKEN=$(strip_assignment "$SANITY_WRITE_TOKEN")" >> "$GITHUB_ENV"
       - name: Check the settings are filled in
         id: check
         working-directory: .
@@ -49,11 +67,9 @@ jobs:
         with: {node-version: 22, cache: npm, cache-dependency-path: studio/package-lock.json}
       - run: npm ci
       - name: Put the dashboard online
-        env: {SANITY_AUTH_TOKEN: '${{ secrets.SANITY_DEPLOY_TOKEN }}'}
         run: npx sanity deploy --yes
       - name: Load the starter content
         if: steps.check.outputs.content == 'true'
-        env: {SANITY_WRITE_TOKEN: '${{ secrets.SANITY_WRITE_TOKEN }}'}
         run: node seed/import.mjs
       - name: Publish the website
         if: inputs.publish_website
