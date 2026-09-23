@@ -19,14 +19,19 @@ const has = {
 const shown = site.home.sections.filter((s) => s.visible !== false && has[s.key] !== false)
 let n = 0
 const numbered = shown.map((s) => ({...s, num: ['video', 'motion', 'posts', 'clients', 'about'].includes(s.key) ? String(++n).padStart(2, '0') : ''}))
+const workAnchorAt = numbered.findIndex((s) => s.key !== 'hero')
 ---
 <Base seo={site.home.seo}>
-  {numbered.map((s) =>
-    s.key === 'hero' ? <Hero /> :
-    s.key === 'video' ? <VideoSection num={s.num} /> :
-    s.key === 'motion' ? <MotionSection num={s.num} /> :
-    s.key === 'posts' ? <PostsSection num={s.num} /> :
-    s.key === 'clients' ? <ClientsSection num={s.num} /> :
-    s.key === 'about' ? <AboutSection num={s.num} /> :
-    s.key === 'contact' ? <ContactSection /> : null)}
+  {numbered.map((s, i) => (
+    <>
+      {i === workAnchorAt && <span id="work" aria-hidden="true"></span>}
+      {s.key === 'hero' ? <Hero /> :
+      s.key === 'video' ? <VideoSection num={s.num} /> :
+      s.key === 'motion' ? <MotionSection num={s.num} /> :
+      s.key === 'posts' ? <PostsSection num={s.num} /> :
+      s.key === 'clients' ? <ClientsSection num={s.num} /> :
+      s.key === 'about' ? <AboutSection num={s.num} /> :
+      s.key === 'contact' ? <ContactSection /> : null}
+    </>
+  ))}
 </Base>
