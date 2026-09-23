@@ -1,6 +1,6 @@
 import {defineField, defineType} from 'sanity'
-import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
-import {ImageIcon} from '@sanity/icons'
+import {ImageIcon} from '@sanity/icons/Image'
+import {manualOrderRankField, manualOrderRankOrdering} from '../orderRank'
 
 export const LOGO_GROUPS = [
   {title: 'Clients & Collaborations', value: 'clients'},
@@ -13,7 +13,7 @@ export const credibilityLogo = defineType({
   title: 'Logo',
   type: 'document',
   icon: ImageIcon,
-  orderings: [orderRankOrdering],
+  orderings: [manualOrderRankOrdering],
   fields: [
     defineField({name: 'name', type: 'string', validation: (r) => r.required()}),
     defineField({name: 'organisation', type: 'reference', to: [{type: 'organisation'}]}),
@@ -56,7 +56,7 @@ export const credibilityLogo = defineType({
       validation: (r) => r.uri({scheme: ['https']}),
     }),
     defineField({name: 'visible', type: 'boolean', initialValue: true}),
-    orderRankField({type: 'credibilityLogo'}),
+    manualOrderRankField,
   ],
   preview: {
     select: {title: 'name', group: 'group', media: 'logo', dest: 'destination', visible: 'visible'},
