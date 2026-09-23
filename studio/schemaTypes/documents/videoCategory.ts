@@ -1,6 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
-import {TagIcon} from '@sanity/icons/Tag'
+import {TagIcon} from '@sanity/icons'
 
 export const videoCategory = defineType({
   name: 'videoCategory',
