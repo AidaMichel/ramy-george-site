@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import {CaseIcon} from '@sanity/icons'
+import {CaseIcon} from '@sanity/icons/Case'
 
 export const organisation = defineType({
   name: 'organisation',
