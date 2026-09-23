@@ -1,0 +1,44 @@
+---
+import {getSite} from '../lib/content'
+interface Props { standalone?: boolean; id?: string }
+const site = await getSite()
+const c = site.contact
+const mail = c.email ? `mailto:${c.email}` : ''
+const toWa = c.buttonTarget !== 'email' && !!c.whatsapp
+const primary = toWa ? c.whatsapp : mail
+const links = [
+  mail && {label: 'Email', href: mail, ext: false},
+  c.whatsapp && {label: 'WhatsApp', href: c.whatsapp, ext: true},
+  c.linkedin && {label: 'LinkedIn', href: c.linkedin, ext: true},
+].filter(Boolean) as {label: string; href: string; ext: boolean}[]
+const H = Astro.props.standalone ? 'h1' : 'h2'
+const id = Astro.props.id || 'contact'
+---
+<section id={id} class="wrap contact" aria-labelledby={`${id}-h`}>
+  <div class="txt">
+    <p class="kicker muted">{c.kicker}</p>
+    <H class="big" id={`${id}-h`}>{c.heading}</H>
+  </div>
+  {primary && (
+    <a class="btn" href={primary}
+       {...(toWa ? {target: '_blank', rel: 'noopener noreferrer', 'aria-label': `${c.buttonLabel} on WhatsApp (opens in a new tab)`} : {'aria-label': `${c.buttonLabel} by email`})}>{c.buttonLabel}</a>
+  )}
+  <ul class="links">{links.map((l) => <li><a class="ext" href={l.href} {...(l.ext ? {target: '_blank', rel: 'noopener noreferrer'} : {})}>{l.label}{l.ext ? ' ↗' : ''}</a></li>)}</ul>
+</section>
+<style>
+  .contact { display: grid; grid-template-columns: 1fr auto; grid-template-areas: 'txt btn' 'links btn'; column-gap: 48px; align-items: end;
+    padding-top: clamp(130px, 16vw, 240px); padding-bottom: clamp(96px, 10vw, 150px); }
+  .txt { grid-area: txt; }
+  .links { grid-area: links; list-style: none; margin: 48px 0 0; padding: 0; display: flex; gap: 36px; flex-wrap: wrap; }
+  .links .ext { font-size: 18px; }
+  .kicker { font-size: clamp(18px, 1.8vw, 24px); }
+  .big { margin-top: 14px; font-size: clamp(64px, 9vw, 128px); line-height: .92; font-weight: 600; letter-spacing: -0.045em; }
+  .btn { grid-area: btn; display: flex; align-items: center; justify-content: center; width: 380px; height: 128px; background: var(--acc); color: var(--bg); font-size: 32px; font-weight: 600; letter-spacing: -0.01em; transition: background 150ms; }
+  .btn:hover { background: var(--text); color: var(--bg); }
+  @media (max-width: 899px) {
+    .contact { grid-template-columns: 1fr; grid-template-areas: 'txt' 'btn' 'links'; }
+    .btn { width: min(380px, 100%); height: 96px; font-size: 26px; margin-top: 36px; }
+    .links { margin-top: 28px; gap: 22px; }
+    .links .ext { font-size: 16px; }
+  }
+</style>

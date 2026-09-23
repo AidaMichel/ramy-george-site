@@ -1,0 +1,18 @@
+// Cloudflare Workers — Static Assets only (free plan). No server code runs: every page is pre-built HTML.
+// Static asset requests are free and not counted against the Workers request limit.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ramy-george",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  // Custom domain: uncomment after the domain is on Cloudflare (DNS + HTTPS certificate are automatic).
+  // "routes": [{ "pattern": "ramygeorge.com", "custom_domain": true }, { "pattern": "www.ramygeorge.com", "custom_domain": true }],
+  "env": {
+    // Draft preview site (built with SANITY_PREVIEW=1). Protect it with Cloudflare Access (free for up to 50 users).
+    "preview": { "name": "ramy-george-preview" }
+  }
+}

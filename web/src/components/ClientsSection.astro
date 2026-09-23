@@ -1,0 +1,83 @@
+---
+import {getSite, section} from '../lib/content'
+interface Props { num: string }
+const site = await getSite()
+const sec = section(site, 'clients')!
+const G = ['clients', 'media', 'events'] as const
+// Logos are credibility marks only — never links (approved design). Group order, headings and visibility come from the CMS.
+const groups = G.filter((g) => site.home.logoGroupVisibility?.[g] !== false)
+  .map((g) => ({g, heading: site.home.logoGroupHeadings[g], logos: site.logos.filter((l) => l.group === g)}))
+  .filter((x) => x.logos.length)
+if (!groups.length) return
+const TICK = [22, 30, 16]
+const PAD = [[0, 8], [20, 20], [56, 20]]
+// Yellow "&" in the heading, as approved
+const heading = sec.heading || 'Clients & Coverage'
+const parts = heading.split('&')
+---
+<section class="sec wrap clients" aria-labelledby="clients-h">
+  <div class="sec-head">
+    <div><div class="sec-num">{Astro.props.num}</div><h2 class="h2" id="clients-h">{parts.map((p, i) => <>{i > 0 && <span class="acc">&amp;</span>}{p}</>)}</h2></div>
+    {sec.microcopy && <p class="muted note">{sec.microcopy}</p>}
+  </div>
+  <div class="field">
+    {groups.map(({g, heading, logos}, gi) => (
+      <div class:list={['group', `g-${g}`]}>
+        <div class="gh">
+          <span class="big num" aria-hidden="true">{String(gi + 1).padStart(2, '0')}</span>
+          <h3><span class="dash" aria-hidden="true"></span>{heading}</h3>
+        </div>
+        <div class="staff-wrap">
+          <span class="staff" aria-hidden="true"></span>
+          <ul class="logos" style={`--pl:${PAD[gi % 3][0]}px;--pr:${PAD[gi % 3][1]}px`}>
+            {logos.map((l, li) => {
+              const up = (li + gi) % 2 === 0
+              const tick = <span class="tick" aria-hidden="true" style={`--th:${TICK[li % 3]}px`}><i></i><b></b></span>
+              const img = <img src={l.logo!.src} width={l.logo!.w} height={l.logo!.h} alt={l.name} loading="lazy" style={`--h:${l.size}px`} />
+              return <li class:list={[up ? 'up' : 'down']}>{up ? <>{img}{tick}</> : <>{tick}{img}</>}</li>
+            })}
+          </ul>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+<style>
+  .note { font-size: 14px; }
+  .field { border-top: 1px solid var(--text); border-bottom: 1px solid var(--rule); margin-top: 24px; }
+  .group { display: flex; gap: var(--gap); align-items: center; padding-block: 28px; }
+  .group + .group { border-top: 1px solid var(--rule); }
+  .gh { width: 318px; flex: none; }
+  .big { display: block; font-size: 88px; line-height: .8; font-weight: 600; letter-spacing: -0.04em; color: transparent; -webkit-text-stroke: 1.5px var(--acc); }
+  h3 { margin-top: 16px; font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+  .dash { width: 18px; height: 2px; background: var(--acc); flex: none; }
+  .staff-wrap { flex: 1; min-width: 0; position: relative; }
+  .staff { position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: linear-gradient(90deg, var(--acc) 0%, rgba(255, 210, 28, .7) 50%, rgba(255, 210, 28, .3) 100%); }
+  .logos { list-style: none; margin: 0; position: relative; display: flex; justify-content: space-between; align-items: stretch; padding: 0 var(--pr) 0 var(--pl); }
+  .logos li { display: flex; flex-direction: column; height: 240px; padding: 0 4px; flex: none; }
+  .logos li.up { justify-content: flex-end; height: 120px; }
+  .logos li.down { justify-content: flex-start; height: 120px; margin-top: 120px; }
+  .logos { --k: 1; }
+  .logos img { height: calc(var(--h) * var(--k)); width: auto; max-width: calc(200px * var(--k)); object-fit: contain; margin: 0 auto; }
+  .tick { display: flex; flex-direction: column; align-items: center; }
+  .up .tick { flex-direction: column; }
+  .down .tick { flex-direction: column-reverse; }
+  .tick i { display: block; width: 1px; height: var(--th); background: var(--acc); opacity: .55; }
+  .tick b { display: block; width: 7px; height: 1px; background: var(--acc); }
+  @media (max-width: 1439px) { .logos { --k: .86; } .gh { width: 260px; } }
+  /* Tablet and phone: 3-column grid, no staff line */
+  @media (max-width: 1199px) {
+    .group { display: block; padding: 32px 0 36px; }
+    .gh { width: auto; }
+    .gh { display: flex; align-items: center; gap: 10px; }
+    .big { font-size: 30px; -webkit-text-stroke-width: 1px; }
+    h3 { margin: 0; font-size: 12px; letter-spacing: .12em; }
+    .dash { display: none; }
+    .staff { position: static; display: block; margin-top: 14px; background: linear-gradient(90deg, var(--acc), rgba(255, 210, 28, .1)); }
+    .logos { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 18px; row-gap: 22px; padding: 0; margin-top: 22px; }
+    .logos li, .logos li.up, .logos li.down { height: auto; min-height: 72px; margin: 0; justify-content: center; align-items: center; }
+    .tick { display: none; }
+    .logos img { height: max(30px, calc(var(--h) * .66)); max-width: 108px; }
+  }
+  @media (min-width: 720px) and (max-width: 1199px) { .logos { grid-template-columns: repeat(4, 1fr); } .logos img { max-width: 140px; } }
+</style>

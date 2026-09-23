@@ -1,0 +1,14 @@
+---
+/** Image with intrinsic size; Sanity images get a responsive srcset + automatic format. */
+import type {Img} from '../lib/content'
+interface Props { img: Img; alt?: string; sizes?: string; class?: string; eager?: boolean; style?: string }
+const {img, alt, sizes = '100vw', class: cls, eager = false, style} = Astro.props
+const isSanity = !!img?.src?.includes('cdn.sanity.io')
+const widths = [400, 700, 1000, 1400, 2000].filter((w) => !img?.w || w <= img.w * 1.1)
+const srcset = isSanity ? widths.map((w) => `${img!.src}?w=${w}&auto=format&fit=max ${w}w`).join(', ') : undefined
+const src = isSanity ? `${img!.src}?w=1400&auto=format&fit=max` : img?.src
+---
+{img?.src && (
+  <img src={src} srcset={srcset} sizes={srcset ? sizes : undefined} width={img.w} height={img.h} alt={alt ?? img.alt ?? ''}
+       loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : undefined} class={cls} style={style} />
+)}

@@ -1,0 +1,123 @@
+---
+import '../styles/global.css'
+import {getSite, navHref, isExternal, type Seo} from '../lib/content'
+interface Props { seo?: Seo; title?: string; description?: string; image?: string }
+const site = await getSite()
+const {title, description, image} = Astro.props
+const seo = Astro.props.seo || {}
+const d = site.settings.seo
+const pageTitle = seo.title || title || d.title || site.settings.siteName
+const desc = seo.description || description || d.description || ''
+const og = seo.ogImage || image || d.ogImage
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined
+const ogAbs = og && Astro.site && og.startsWith('/') ? new URL(og, Astro.site).href : og
+const path = Astro.url.pathname
+const logo = site.settings.logo
+const flogo = site.settings.footerLogo?.src ? site.settings.footerLogo : logo
+const f = site.settings.footer
+const c = site.contact
+const quick = [
+  c.email && {label: 'Email', href: `mailto:${c.email}`, ext: false},
+  c.whatsapp && {label: 'WhatsApp', href: c.whatsapp, ext: true},
+  c.linkedin && {label: 'LinkedIn', href: c.linkedin, ext: true},
+].filter(Boolean) as {label: string; href: string; ext: boolean}[]
+const navItems = site.navigation.map((n) => {
+  const href = navHref(n.target, n.url)
+  const ext = isExternal(href)
+  return {...n, href, ext, current: !ext && href !== '/' && path.startsWith(href)}
+})
+const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{pageTitle}</title>
+  {desc && <meta name="description" content={desc} />}
+  {(seo.noIndex || d.noIndex) && <meta name="robots" content="noindex" />}
+  {canonical && <link rel="canonical" href={canonical} />}
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  {desc && <meta property="og:description" content={desc} />}
+  {ogAbs && <meta property="og:image" content={ogAbs} />}
+  {canonical && <meta property="og:url" content={canonical} />}
+  <meta name="twitter:card" content={ogAbs ? 'summary_large_image' : 'summary'} />
+  <meta name="theme-color" content="#161513" />
+  {site.settings.favicon ? <link rel="icon" href={site.settings.favicon} /> : <link rel="icon" href="/favicon.svg" type="image/svg+xml" />}
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav wrap">
+    <a href="/" class="brand" aria-label={`${site.settings.siteName}, home`}>
+      {logo?.src ? <img src={logo.src} width={logo.w} height={logo.h} alt={site.settings.siteName} /> : <span>{site.settings.siteName}</span>}
+    </a>
+    <nav aria-label="Main" class="desk">
+      <ul>
+        {navItems.map((n) => <li><a href={n.href} class:list={[{hl: n.highlight}]} aria-current={n.current ? 'page' : undefined} {...(n.ext ? extAttrs : {})}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>Menu</button>
+    <nav id="mobile-menu" class="mobile" aria-label="Main" hidden data-menu>
+      <ul class="big-links">
+        {navItems.map((n) => <li><a href={n.href} class:list={[{acc: n.highlight}]} aria-current={n.current ? 'page' : undefined} {...(n.ext ? extAttrs : {})}>{n.label}</a></li>)}
+      </ul>
+      {quick.length > 0 && <ul class="quick">{quick.map((q) => <li><a class="ext" href={q.href} {...(q.ext ? extAttrs : {})}>{q.label}{q.ext ? ' ↗' : ''}</a></li>)}</ul>}
+    </nav>
+  </header>
+  <main id="main"><slot /></main>
+  <footer class="foot wrap">
+    {site.settings.showFooterSignature && flogo?.src && <a href="#main" class="sig" aria-label={`${site.settings.siteName}, back to top`}><img src={flogo.src} width={flogo.w} height={flogo.h} alt="" loading="lazy" /></a>}
+    <div class="row muted">
+      <span>© {new Date().getFullYear()}{f.copyrightName ? ` ${f.copyrightName}` : ''}{f.locationLine ? ` · ${f.locationLine}` : ''}</span>
+      {f.showEmail && c.email && <a href={`mailto:${c.email}`} class="muted">{c.email}</a>}
+      <a href="#main" class="muted">{f.backToTopLabel || 'Back to top ↑'}</a>
+    </div>
+  </footer>
+  <script>
+    // Mobile menu: a plain disclosure (button + panel). Closes on Escape, on link tap, and when the screen widens.
+    const btn = document.querySelector<HTMLButtonElement>('[data-menu-btn]')
+    const panel = document.querySelector<HTMLElement>('[data-menu]')
+    if (btn && panel) {
+      const set = (open: boolean) => {
+        panel.hidden = !open
+        btn.setAttribute('aria-expanded', String(open))
+        btn.textContent = open ? 'Close' : 'Menu'
+      }
+      btn.addEventListener('click', () => set(panel.hidden))
+      panel.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false) })
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { set(false); btn.focus() } })
+      matchMedia('(min-width: 720px)').addEventListener('change', (m) => { if (m.matches) set(false) })
+    }
+  </script>
+</body>
+</html>
+<style>
+  .nav { height: 80px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--rule); max-width: none; position: relative; z-index: 40; background: var(--bg); }
+  .brand { display: flex; align-items: center; padding: 10px 0; }
+  .brand img { height: 24px; width: auto; }
+  .desk ul { list-style: none; margin: 0; padding: 0; display: flex; gap: clamp(20px, 3vw, 40px); }
+  .desk a { font-size: 16px; padding: 12px 0; display: inline-block; }
+  .desk a[aria-current='page'] { box-shadow: inset 0 -2px 0 var(--acc); }
+  .desk a.hl { color: var(--acc); font-weight: 600; }
+  .desk a.hl:hover { color: var(--text); }
+  .menu-btn, .mobile { display: none; }
+  .foot { padding-top: 48px; padding-bottom: 32px; border-top: 1px solid var(--rule); max-width: none; }
+  .sig { display: inline-block; }
+  .sig img { width: min(340px, 60vw); height: auto; opacity: .9; }
+  .row { display: flex; justify-content: space-between; gap: 16px; font-size: 14px; margin-top: 36px; flex-wrap: wrap; }
+  @media (max-width: 719px) {
+    .nav { height: 64px; }
+    .brand img { height: 18px; }
+    .desk { display: none; }
+    .menu-btn { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; background: transparent; border: 1px solid var(--rule); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+    .mobile:not([hidden]) { display: block; position: absolute; left: 0; right: 0; top: 64px; background: var(--bg); border-bottom: 1px solid var(--rule); padding: 12px var(--gutter) 28px; }
+    .big-links { list-style: none; margin: 0; padding: 0; }
+    .big-links a { display: block; padding: 8px 0; font-size: 40px; font-weight: 600; letter-spacing: -0.02em; }
+    .big-links a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--acc); text-underline-offset: 6px; }
+    .quick { list-style: none; margin: 22px 0 0; padding: 18px 0 0; border-top: 1px solid var(--rule); display: flex; gap: 22px; flex-wrap: wrap; }
+    .foot { padding-top: 36px; padding-bottom: 28px; }
+    .sig img { width: 220px; }
+    .row { font-size: 13px; margin-top: 28px; }
+  }
+</style>

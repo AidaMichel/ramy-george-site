@@ -1,0 +1,75 @@
+---
+import {getSite, section, ratio} from '../lib/content'
+import Img from './Img.astro'
+import CarouselControls from './CarouselControls.astro'
+interface Props { num: string }
+const site = await getSite()
+const sec = section(site, 'motion')!
+const items = site.projects.filter((p) => p.kind === 'motion' && p.showOnHome)
+if (!items.length) return
+const TAG: Record<string, string> = {motion: 'Motion', ai: 'AI-assisted', logo: 'Logo animation'}
+const filters = site.home.motionFilters
+  .map((f) => ({...f, n: f.key === 'all' ? items.length : items.filter((p) => (p.motionType || 'motion') === f.key).length}))
+  .filter((f) => f.n > 0)
+---
+<section class="sec motion" aria-labelledby="motion-h" data-motion>
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-num">{Astro.props.num}</div><h2 class="h2" id="motion-h">{sec.heading || 'Motion & AI'}</h2></div>
+      <div class="side">
+        {filters.length > 2 && (
+          <div class="filters" role="group" aria-label="Filter motion work">
+            {filters.map((f, i) => <button type="button" class="pill" aria-pressed={String(i === 0)} data-filter={f.key}>{f.label}<span class="c">{String(f.n).padStart(2, '0')}</span></button>)}
+          </div>
+        )}
+        {sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
+      </div>
+    </div>
+  </div>
+  <div class="wrap" data-carousel>
+    <ul class="track" data-track tabindex="0" role="region" aria-roledescription="carousel" aria-label="Motion and AI work">
+      {items.map((p) => (
+        <li class="item" data-type={p.motionType || 'motion'} style={`--ar:${ratio(p.aspect)}`}>
+          <a href={`/work/${p.slug}/`} class="tile">
+            <span class="med media">
+              {p.previewLoop
+                ? <video src={p.previewLoop} poster={p.poster?.src} muted loop playsinline preload="none" data-autoplay aria-hidden="true"></video>
+                : <Img img={p.poster} class="cover" sizes="40vw" />}
+              <span class="tag">{TAG[p.motionType || 'motion']}</span>
+            </span>
+            <span class="cap"><b>{p.title}</b>{p.org && <span class="muted"> · {p.org}</span>}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <CarouselControls label="motion piece" />
+  </div>
+</section>
+<script>
+  import {initCarousels} from '../scripts/carousel'
+  initCarousels()
+  const root = document.querySelector<HTMLElement>('[data-motion]')
+  root?.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((b) => b.addEventListener('click', () => {
+    const k = b.dataset.filter
+    root.querySelectorAll('[data-filter]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
+    root.querySelectorAll<HTMLElement>('.item').forEach((it) => (it.hidden = k !== 'all' && it.dataset.type !== k))
+    root.querySelector('[data-carousel]')?.dispatchEvent(new Event('carousel:refresh'))
+  }))
+</script>
+<style>
+  .side { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .hint { font-size: 14px; }
+  .track { list-style: none; margin: 0; padding: 0; display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; outline-offset: 4px; }
+  .track::-webkit-scrollbar { display: none; }
+  .track:global(.grabbing) { cursor: grabbing; scroll-snap-type: none; }
+  .item { flex: none; scroll-snap-align: start; }
+  .item[hidden] { display: none; }
+  .tile { display: block; }
+  .med { display: block; position: relative; height: clamp(220px, 24vw, 320px); aspect-ratio: var(--ar); }
+  .med :global(img), .med video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+  .tag { position: absolute; left: 10px; top: 10px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: var(--bg); padding: 4px 7px; }
+  .cap { display: block; margin-top: 12px; font-size: 15px; }
+  .tile:hover b { color: var(--acc); }
+  @media (max-width: 1023px) { .sec-head { flex-direction: column; align-items: flex-start; } .side { align-items: flex-start; } .filters { justify-content: flex-start; } }
+</style>

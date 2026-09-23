@@ -1,0 +1,82 @@
+---
+import {getSite} from '../lib/content'
+import Img from './Img.astro'
+const site = await getSite()
+const {hero, settings} = site
+const cta = hero.ctaTarget === 'work' ? '/work/' : '#work'
+// "RAMY GEORGE" breaks onto two lines like the approved design; the first skill is emphasised
+const [first, ...rest] = settings.siteName.split(' ')
+const [lead, ...others] = settings.supportingSkills
+---
+<section class:list={['hero wrap', {'has-visual': hero.mode !== 'none'}]} aria-labelledby="hero-name">
+  <div class="text">
+    <h1 id="hero-name">{first}{rest.length > 0 && <><br />{rest.join(' ')}</>}</h1>
+    <div class="meta">
+      <div>
+        <p class="title">{settings.professionalTitle}</p>
+        {lead && <p class="skills"><strong>{lead}</strong>{others.length > 0 && <span class="muted"> · {others.join(' · ')}</span>}</p>}
+        <div class="cta-row"><a class="cta" href={cta}>{hero.ctaLabel}</a></div>
+      </div>
+      {hero.shortLine && <p class="line muted">{hero.shortLine}</p>}
+    </div>
+  </div>
+  {hero.mode !== 'none' && (
+    <div class:list={['visual', hero.mode]}>
+      {(hero.mode === 'portrait' || hero.mode === 'still') && hero.image?.src && (
+        hero.mode === 'still' && hero.stillProjectSlug
+          ? <a href={`/work/${hero.stillProjectSlug}/`} class="frame" aria-label="View project"><Img img={hero.image} eager sizes="(max-width: 719px) 100vw, 40vw" class="cover" /></a>
+          : <div class="frame"><Img img={hero.image} eager sizes="(max-width: 719px) 100vw, 40vw" class="cover" /></div>
+      )}
+      {hero.mode === 'multiframe' && (
+        <div class="frames">{(hero.frames || []).slice(0, 4).map((f) => f.projectSlug
+          ? <a href={`/work/${f.projectSlug}/`} class="frame"><Img img={f.img} sizes="20vw" class="cover" /></a>
+          : <div class="frame"><Img img={f.img} sizes="20vw" class="cover" /></div>)}</div>
+      )}
+      {hero.mode === 'showreel' && hero.showreel && (
+        <div class="frame reel">
+          <video src={hero.showreel} poster={hero.showreelPoster?.src} muted loop playsinline autoplay preload="metadata" aria-label="Short muted showreel" data-reel></video>
+          <button type="button" class="reel-toggle" data-reel-toggle aria-pressed="false">Pause</button>
+        </div>
+      )}
+    </div>
+  )}
+</section>
+<script>
+  // Showreel: respect reduced motion and provide a pause control (WCAG 2.2.2)
+  const v = document.querySelector<HTMLVideoElement>('[data-reel]')
+  const b = document.querySelector<HTMLButtonElement>('[data-reel-toggle]')
+  if (v && b) {
+    const set = (paused: boolean) => { paused ? v.pause() : v.play().catch(() => {}); b.textContent = paused ? 'Play' : 'Pause'; b.setAttribute('aria-pressed', String(paused)) }
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) set(true)
+    b.addEventListener('click', () => set(!v.paused))
+  }
+</script>
+<style>
+  .hero { display: flex; gap: var(--gap); padding-top: clamp(44px, 6vw, 88px); align-items: stretch; }
+  .text { flex: 1 1 auto; min-width: 0; }
+  h1 { font-size: clamp(76px, 13.9vw, 200px); line-height: .84; font-weight: 600; letter-spacing: -0.05em; text-transform: uppercase; font-stretch: 88%; }
+  .meta { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--gap); margin-top: clamp(28px, 4.4vw, 64px); }
+  .title { font-size: clamp(26px, 3.2vw, 46px); line-height: 1; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase; }
+  .skills { margin-top: 18px; font-size: 15px; line-height: 1.7; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
+  .skills strong { font-weight: 700; color: var(--text); }
+  .line { width: min(432px, 40%); font-size: 18px; line-height: 1.55; margin-bottom: 6px; }
+  .cta-row { margin-top: 40px; }
+  .cta { display: inline-flex; align-items: center; height: 52px; padding: 0 22px; border: 1px solid var(--text); font-size: 16px; font-weight: 600; }
+  .cta:hover { border-color: var(--acc); }
+  .has-visual .meta { flex-direction: column; align-items: flex-start; }
+  .has-visual .line { width: auto; max-width: 520px; }
+  .visual { flex: 0 1 432px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .frame { display: block; aspect-ratio: 4 / 5; background: var(--s1); overflow: hidden; position: relative; }
+  .frames { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .reel { aspect-ratio: 16 / 9; }
+  .reel video { width: 100%; height: 100%; object-fit: cover; }
+  .reel-toggle { position: absolute; right: 10px; bottom: 10px; background: var(--bg); border: 1px solid var(--rule); padding: 6px 10px; font-size: 12px; cursor: pointer; }
+  .visual.showreel { flex-basis: 560px; }
+  @media (max-width: 1023px) { .hero { flex-direction: column; } .visual { flex-basis: auto; max-width: 480px; } }
+  @media (max-width: 719px) {
+    .meta { flex-direction: column; align-items: flex-start; gap: 0; margin-top: 28px; }
+    .meta > div { display: contents; }
+    .title { order: 1; } .skills { order: 2; font-size: 12px; margin-top: 12px; } .line { order: 3; width: auto; font-size: 16px; line-height: 1.5; margin: 22px 0 0; } .cta-row { order: 4; margin-top: 28px; }
+    .cta { height: 48px; padding: 0 20px; font-size: 15px; }
+  }
+</style>

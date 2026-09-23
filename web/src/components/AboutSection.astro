@@ -1,0 +1,40 @@
+---
+import {getSite, section, linkHref, isExternal} from '../lib/content'
+import Img from './Img.astro'
+interface Props { num: string }
+const site = await getSite()
+const sec = section(site, 'about')
+const a = site.about
+const links = a.links.map((l) => ({...l, href: linkHref(site, l.kind, l.url)})).filter((l) => l.href)
+---
+<section id="about" class:list={['sec wrap about', {solo: !a.portrait?.src}]} aria-labelledby="about-h">
+  {a.portrait?.src && (
+    <div class="portrait"><Img img={a.portrait} alt={a.portrait.alt || site.settings.siteName} class="cover" sizes="(max-width: 719px) 300px, 432px" /></div>
+  )}
+  <div class="copy">
+    <h2 class="sec-num" id="about-h">{Astro.props.num ? `${Astro.props.num} · ` : ''}{sec?.heading || a.heading}</h2>
+    <p class="para">{a.paragraph}</p>
+    {links.length > 0 && (
+      <ul class="links">{links.map((l) => {
+        const ext = isExternal(l.href) || l.kind === 'cv'
+        const arrow = ext && !/[↗→]\s*$/.test(l.label) ? ' ↗' : ''
+        return <li><a class="ext" href={l.href} {...(ext ? {target: '_blank', rel: 'noopener noreferrer'} : {})}>{l.label}{arrow}</a></li>
+      })}</ul>
+    )}
+  </div>
+</section>
+<style>
+  .about { display: flex; align-items: center; gap: var(--gap); }
+  .portrait { width: min(432px, 32%); aspect-ratio: 3 / 4; flex: none; background: var(--s1); overflow: hidden; }
+  .portrait :global(img) { object-position: 55% 40%; }
+  .copy { flex: 1; min-width: 0; margin-left: clamp(0px, 10vw, 180px); max-width: 690px; }
+  .solo .copy { margin-left: auto; margin-right: 8%; }
+  .para { font-size: 26px; line-height: 1.5; font-weight: 500; letter-spacing: -0.01em; max-width: 640px; }
+  .links { list-style: none; padding: 0; margin: 40px 0 0; display: flex; gap: 28px; flex-wrap: wrap; align-items: baseline; }
+  @media (max-width: 1023px) {
+    .about { flex-direction: column; align-items: flex-start; }
+    .portrait { width: min(300px, 100%); }
+    .copy { margin-left: 0; margin-top: 16px; }
+  }
+  @media (max-width: 719px) { .para { font-size: 19px; line-height: 1.55; } .links { gap: 22px; margin-top: 28px; } }
+</style>

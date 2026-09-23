@@ -1,0 +1,16 @@
+---
+interface Props { label: string; showBar?: boolean }
+const {label, showBar = true} = Astro.props
+---
+<div class="ctrl">
+  <button type="button" class="ib" data-prev aria-label={`Previous ${label}`}>←</button>
+  <button type="button" class="ib" data-next aria-label={`Next ${label}`}>→</button>
+  {showBar && <div class="bar" aria-hidden="true"><span data-bar></span></div>}
+  <span class="cnt num" aria-live="polite"><b data-count>01</b> <span class="muted">/ <span data-total>00</span></span></span>
+</div>
+<style>
+  .ctrl { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
+  .bar { flex: 1; height: 2px; background: var(--rule); margin-left: 12px; }
+  .bar span { display: block; height: 2px; width: 0; background: var(--text); transition: width 300ms var(--ease); }
+  .cnt { font-size: 15px; margin-left: 12px; }
+</style>
