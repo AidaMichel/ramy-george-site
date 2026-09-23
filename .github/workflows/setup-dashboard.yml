@@ -1,0 +1,71 @@
+# One-button launch. GitHub → Actions → "Set up dashboard" → Run workflow.
+# 1. Puts the dashboard (Sanity Studio) online at https://<SANITY_STUDIO_HOST>.sanity.studio
+# 2. Loads the starter content (videos, logos, About, Info page, portrait, contact, CV) — skipped if the dashboard already has content
+# 3. Builds and publishes the website to Cloudflare
+# Keys live only in GitHub → Settings → Secrets and variables → Actions. Never in the code, never in chat.
+name: Set up dashboard
+on:
+  workflow_dispatch:
+    inputs:
+      load_starter_content:
+        description: Load the starter content (skipped automatically if the dashboard already has content)
+        type: boolean
+        default: true
+      publish_website:
+        description: Publish the website to Cloudflare afterwards
+        type: boolean
+        default: true
+permissions: {contents: read, actions: write}
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    defaults: {run: {working-directory: studio}}
+    env:
+      SANITY_STUDIO_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID }}
+      SANITY_STUDIO_DATASET: ${{ vars.SANITY_DATASET || 'production' }}
+      SANITY_STUDIO_HOST: ${{ vars.SANITY_STUDIO_HOST }}
+      SANITY_STUDIO_PREVIEW_URL: ${{ vars.SANITY_STUDIO_PREVIEW_URL }}
+    steps:
+      - name: Check the settings are filled in
+        id: check
+        working-directory: .
+        env:
+          HAS_DEPLOY: ${{ secrets.SANITY_DEPLOY_TOKEN != '' }}
+          HAS_WRITE: ${{ secrets.SANITY_WRITE_TOKEN != '' }}
+          WANT_CONTENT: ${{ inputs.load_starter_content }}
+        run: |
+          missing=""
+          [ -z "$SANITY_STUDIO_PROJECT_ID" ] && missing="$missing\n - Variable SANITY_PROJECT_ID (the Project ID from sanity.io/manage)"
+          [ -z "$SANITY_STUDIO_HOST" ] && missing="$missing\n - Variable SANITY_STUDIO_HOST (the dashboard name, e.g. ramygeorge)"
+          [ "$HAS_DEPLOY" != "true" ] && missing="$missing\n - Secret SANITY_DEPLOY_TOKEN (Sanity token with the 'Deploy Studio' role)"
+          if [ -n "$missing" ]; then echo -e "::error::Missing in Settings → Secrets and variables → Actions:$missing"; exit 1; fi
+          if [ "$WANT_CONTENT" = "true" ] && [ "$HAS_WRITE" != "true" ]; then
+            echo "::warning::No SANITY_WRITE_TOKEN secret — starter content not loaded. That's fine if it was loaded before."
+            echo "content=no" >> "$GITHUB_OUTPUT"
+          else echo "content=$WANT_CONTENT" >> "$GITHUB_OUTPUT"; fi
+          echo "All required settings found."
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: npm, cache-dependency-path: studio/package-lock.json}
+      - run: npm ci
+      - name: Put the dashboard online
+        env: {SANITY_AUTH_TOKEN: '${{ secrets.SANITY_DEPLOY_TOKEN }}'}
+        run: npx sanity deploy --yes
+      - name: Load the starter content
+        if: steps.check.outputs.content == 'true'
+        env: {SANITY_WRITE_TOKEN: '${{ secrets.SANITY_WRITE_TOKEN }}'}
+        run: node seed/import.mjs
+      - name: Publish the website
+        if: inputs.publish_website
+        working-directory: .
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: gh workflow run deploy.yml --ref "${{ github.ref_name }}" && echo "Website deploy started — see the Deploy workflow."
+      - name: Done
+        working-directory: .
+        run: |
+          {
+            echo "### Dashboard is online"
+            echo "Open **https://${SANITY_STUDIO_HOST}.sanity.studio** and log in with your Sanity account."
+            echo ""
+            echo "Next: delete the SANITY_WRITE_TOKEN secret (it was only needed once) and the Editor token in sanity.io/manage."
+          } >> "$GITHUB_STEP_SUMMARY"
