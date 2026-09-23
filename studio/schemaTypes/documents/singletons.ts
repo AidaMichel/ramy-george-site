@@ -1,10 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
-import {CogIcon} from '@sanity/icons/Cog'
-import {HomeIcon} from '@sanity/icons/Home'
-import {UserIcon} from '@sanity/icons/User'
-import {EnvelopeIcon} from '@sanity/icons/Envelope'
-import {MenuIcon} from '@sanity/icons/Menu'
-import {StarIcon} from '@sanity/icons/Star'
+import {CogIcon, EnvelopeIcon, HomeIcon, MenuIcon, StarIcon, UserIcon} from '@sanity/icons'
 import {LOGO_GROUPS} from './credibilityLogo'
 
 export const siteSettings = defineType({
