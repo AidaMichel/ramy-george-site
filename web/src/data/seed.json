@@ -1,0 +1,1339 @@
+{
+ "settings": {
+  "siteName": "Ramy George",
+  "professionalTitle": "Video Generalist",
+  "supportingSkills": [
+   "Editing",
+   "Motion",
+   "Design",
+   "Sound",
+   "Camera",
+   "AI Gen"
+  ],
+  "location": "Based in Dubai",
+  "logo": {
+   "src": "/media/wordmark.png",
+   "w": 1407,
+   "h": 194
+  },
+  "showFooterSignature": true,
+  "footer": {
+   "showEmail": false,
+   "locationLine": "Dubai, UAE",
+   "copyrightName": "",
+   "backToTopLabel": "Back to top ↑"
+  },
+  "cv": "/files/Ramy_George_CV.pdf",
+  "siteUrl": "",
+  "seo": {
+   "title": "Ramy George — Video Editor & Video Generalist in Dubai",
+   "description": "Ramy George is a video editor based in Dubai, working across news, podcasts, documentary, events and branded content, with motion design, graphic design and sound."
+  }
+ },
+ "navigation": [
+  {
+   "label": "Work",
+   "target": "work",
+   "highlight": false
+  },
+  {
+   "label": "Info",
+   "target": "about",
+   "highlight": false
+  },
+  {
+   "label": "Let’s talk",
+   "target": "contact",
+   "highlight": true
+  }
+ ],
+ "contact": {
+  "email": "Ramy903@gmail.com",
+  "whatsapp": "https://wa.me/message/MX6HDX77H4RWG1",
+  "linkedin": "https://www.linkedin.com/in/ramy-george/",
+  "kicker": "Have a project in mind?",
+  "heading": "Let’s talk.",
+  "buttonLabel": "LET’S TALK",
+  "buttonTarget": "whatsapp"
+ },
+ "hero": {
+  "mode": "none",
+  "shortLine": "Based in Dubai. I spend most of my time editing news, documentaries, podcasts, social and branded work, with motion, design and sound often part of the same job.",
+  "ctaLabel": "See the work ↓",
+  "ctaTarget": "section"
+ },
+ "about": {
+  "heading": "About",
+  "paragraph": "I’m Ramy, a Video generalist and former Team Lead with experience across reels, documentaries, news reports, and large-scale event coverage, including the World Government Summit, Davos, One Billion Summit, The Economist, World’s Coolest Winter, and Emirates Love. I’ve worked with clients such as Hala Kazim, Anas Bukhash, McDonald’s, Elsewedy Electric, Al Maryah Island, and Blue Cherry. I studied Computer Science at SCU, then developed my creative career through a Graphic Design specialization at CalArts, advanced animation training at The School of Motion, and Cinematic Videography at SAE Dubai. I’m also a Golden Visa holder under Dubai Culture & Arts Authority.",
+  "portrait": {
+   "src": "/media/portrait.jpg",
+   "w": 1200,
+   "h": 1600,
+   "alt": "Ramy George at the edit suite"
+  },
+  "links": [
+   {
+    "label": "More on the Info page →",
+    "kind": "info"
+   },
+   {
+    "label": "LinkedIn",
+    "kind": "linkedin"
+   },
+   {
+    "label": "Email",
+    "kind": "email"
+   }
+  ]
+ },
+ "info": {
+  "heading": "Info",
+  "useAboutParagraph": true,
+  "intro": "",
+  "showPortrait": true,
+  "experience": [
+   {
+    "role": "Motion Designer & Video Editor",
+    "organisation": "Al Mal Channel",
+    "location": "UAE",
+    "years": "2023 – present"
+   },
+   {
+    "role": "Video Editor, Colorist & Motion Designer",
+    "organisation": "Hala Kazim — Halat Hala series",
+    "location": "UAE",
+    "years": "2023 – present"
+   },
+   {
+    "role": "Team Lead — Lead Video Editor & Content Producer",
+    "organisation": "Abu Dhabi Media Network (Mohtawa)",
+    "location": "UAE",
+    "years": "2018 – present"
+   },
+   {
+    "role": "Senior Video Editor",
+    "organisation": "Al Ain News",
+    "location": "UAE",
+    "years": "2018 – 2023"
+   },
+   {
+    "role": "Video Editor / Colorist",
+    "organisation": "Al Maryah Island restaurant promos",
+    "location": "UAE",
+    "years": "2017"
+   },
+   {
+    "role": "Video Editor / Colorist",
+    "organisation": "Faces Studio",
+    "location": "Egypt",
+    "years": "2016"
+   },
+   {
+    "role": "Video Editor & Motion Designer",
+    "organisation": "Sada El Balad website",
+    "location": "Egypt",
+    "years": "2014 – 2017"
+   }
+  ],
+  "training": [
+   {
+    "course": "Cinematic Videography",
+    "institution": "SAE Dubai",
+    "year": "2026"
+   },
+   {
+    "course": "Animation Bootcamp",
+    "institution": "School of Motion",
+    "year": "2023"
+   },
+   {
+    "course": "Graphic Design Specialization",
+    "institution": "California Institute of the Arts (CalArts)",
+    "year": "2018"
+   },
+   {
+    "course": "Premiere Pro CC 2018 (diploma)",
+    "institution": "Udemy",
+    "year": "2018"
+   },
+   {
+    "course": "BSc Computer Science",
+    "institution": "Suez Canal University",
+    "year": "2010 – 2015"
+   }
+  ],
+  "showCv": true,
+  "cvLabel": "Download CV ↗"
+ },
+ "home": {
+  "sections": [
+   {
+    "key": "hero",
+    "visible": true,
+    "heading": "",
+    "microcopy": ""
+   },
+   {
+    "key": "video",
+    "visible": true,
+    "heading": "Video",
+    "microcopy": "BROWSE DIFFERENT FORMATS"
+   },
+   {
+    "key": "motion",
+    "visible": true,
+    "heading": "Motion & AI",
+    "microcopy": "Short muted loops · drag, swipe or use the arrows"
+   },
+   {
+    "key": "posts",
+    "visible": true,
+    "heading": "Posts & Carousels",
+    "microcopy": "Original artwork, in its original order"
+   },
+   {
+    "key": "clients",
+    "visible": true,
+    "heading": "Clients & Coverage",
+    "microcopy": ""
+   },
+   {
+    "key": "about",
+    "visible": true,
+    "heading": "About",
+    "microcopy": ""
+   },
+   {
+    "key": "contact",
+    "visible": true,
+    "heading": "",
+    "microcopy": ""
+   }
+  ],
+  "defaultCategory": "news",
+  "defaultProject": "",
+  "motionFilters": [
+   {
+    "key": "all",
+    "label": "All"
+   },
+   {
+    "key": "motion",
+    "label": "Motion"
+   },
+   {
+    "key": "ai",
+    "label": "AI Gen"
+   },
+   {
+    "key": "logo",
+    "label": "Logo Animation"
+   }
+  ],
+  "logoGroupHeadings": {
+   "clients": "Clients & Collaborations",
+   "media": "Media & Organisations",
+   "events": "Events & Coverage"
+  },
+  "logoGroupVisibility": {
+   "clients": true,
+   "media": true,
+   "events": true
+  }
+ },
+ "categories": [
+  {
+   "id": "cat-news",
+   "title": "News",
+   "slug": "news",
+   "order": 0
+  },
+  {
+   "id": "cat-podcasts",
+   "title": "Podcasts",
+   "slug": "podcasts",
+   "order": 1
+  },
+  {
+   "id": "cat-influencers",
+   "title": "Influencers",
+   "slug": "influencers",
+   "order": 2
+  },
+  {
+   "id": "cat-talking-head-reels",
+   "title": "Talking Head Reels",
+   "slug": "talking-head-reels",
+   "order": 3
+  },
+  {
+   "id": "cat-documentary",
+   "title": "Documentary",
+   "slug": "documentary",
+   "order": 4
+  },
+  {
+   "id": "cat-events-corporate",
+   "title": "Events & Corporate",
+   "slug": "events-corporate",
+   "order": 5
+  },
+  {
+   "id": "cat-promos-teasers",
+   "title": "Promos & Teasers",
+   "slug": "promos-teasers",
+   "order": 6
+  },
+  {
+   "id": "cat-social",
+   "title": "Social",
+   "slug": "social",
+   "order": 7
+  }
+ ],
+ "projects": [
+  {
+   "id": "project-larry",
+   "slug": "larry-the-cat",
+   "title": "Larry the Cat",
+   "kind": "video",
+   "category": "news",
+   "org": "Al Aan TV",
+   "role": "Editing · Music & sound · Thumbnail",
+   "poster": {
+    "src": "/media/posters/larry.jpg",
+    "w": 440,
+    "h": 782
+   },
+   "watchUrl": "https://vimeo.com/1156803331",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 0,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-alboom",
+   "slug": "al-boom",
+   "title": "Al-Boom",
+   "kind": "video",
+   "category": "news",
+   "org": "Mohtawa",
+   "role": "Editing · Music & sound · Thumbnail",
+   "poster": {
+    "src": "/media/posters/alboom.jpg",
+    "w": 440,
+    "h": 782
+   },
+   "watchUrl": "https://vimeo.com/1156803922",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 1,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-astro",
+   "slug": "voting-from-space",
+   "title": "Voting from space",
+   "kind": "video",
+   "category": "news",
+   "org": "Al Ain News",
+   "role": "Editing · Music & sound · Thumbnail",
+   "poster": {
+    "src": "/media/posters/astro.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://vimeo.com/1156803508",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 2,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-y2020",
+   "slug": "2020-the-year-the-earth-stopped",
+   "title": "2020: the year the earth stopped",
+   "kind": "video",
+   "category": "news",
+   "org": "Mohtawa",
+   "role": "Editing · Music & sound · Thumbnail",
+   "poster": {
+    "src": "/media/posters/y2020.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://vimeo.com/581981516",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 3,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-crime",
+   "slug": "crime-in-london",
+   "title": "Crime in London",
+   "kind": "video",
+   "category": "news",
+   "org": "Al Ain News",
+   "role": "Editing · Music & sound · Thumbnail",
+   "poster": {
+    "src": "/media/posters/crime.jpg",
+    "w": 356,
+    "h": 353
+   },
+   "watchUrl": "https://www.linkedin.com/posts/ramy-george_crime-in-london-%D8%A7%D9%84%D8%AC%D8%B1%D9%8A%D9%85%D8%A9-%D8%AA%D8%BA%D9%8A%D8%B1-%D8%B5%D9%88%D8%B1%D8%A9-%D9%84%D9%86%D8%AF%D9%86-activity-6950059730182496257-22A9",
+   "platform": "LinkedIn",
+   "aspect": "4:5",
+   "order": 4,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-flag",
+   "slug": "uae-flag-day",
+   "title": "UAE Flag Day",
+   "kind": "video",
+   "category": "news",
+   "org": "Mohtawa",
+   "role": "Editing · Music & sound · Thumbnail",
+   "poster": {
+    "src": "/media/posters/flag.jpg",
+    "w": 355,
+    "h": 353
+   },
+   "watchUrl": "https://www.linkedin.com/posts/ramy-george_united-arab-emirates-flag-day-%D9%8A%D9%88%D9%85-%D8%A7%D9%84%D8%B9%D9%84%D9%85-activity-6993836483040153600-8g78",
+   "platform": "LinkedIn",
+   "aspect": "4:5",
+   "order": 5,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-singapore",
+   "slug": "the-power-of-the-singaporean-army",
+   "title": "The power of the Singaporean army",
+   "kind": "video",
+   "category": "news",
+   "org": "Al Ain News",
+   "role": "Editing · Music & sound · Thumbnail",
+   "poster": {
+    "src": "/media/posters/singapore.jpg",
+    "w": 356,
+    "h": 353
+   },
+   "watchUrl": "https://www.linkedin.com/posts/ramy-george_the-power-of-singaporean-army-%D9%82%D9%88%D8%A9-%D8%A7%D9%84%D8%AC%D9%8A%D8%B4-activity-6979739352486563840-GZVd",
+   "platform": "LinkedIn",
+   "aspect": "4:5",
+   "order": 6,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-wan",
+   "slug": "podcash-wannisni",
+   "title": "PODCASH: Wannisni",
+   "kind": "video",
+   "category": "podcasts",
+   "org": "Al Mal Channel",
+   "role": "Question flow · Editing · Promos",
+   "poster": {
+    "src": "/media/posters/wan_ep.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://www.youtube.com/watch?v=_sP2TsXFwt8&list=PLTgk7ZczcBOrXMR3UsOTk07-IweNsab92&index=22",
+   "platform": "YouTube",
+   "aspect": "16:9",
+   "order": 0,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true,
+   "secondScreen": {
+    "label": "9:16 PROMO",
+    "aspect": "9:16",
+    "url": "https://vimeo.com/1156801942",
+    "watchLabel": "Promo on Vimeo ↗",
+    "poster": {
+     "src": "/media/posters/stylish.jpg",
+     "w": 440,
+     "h": 782
+    }
+   }
+  },
+  {
+   "id": "project-moh",
+   "slug": "podcash-mohanad-alwadiya",
+   "title": "PODCASH: Mohanad Alwadiya",
+   "kind": "video",
+   "category": "podcasts",
+   "org": "Al Mal Channel",
+   "role": "Question flow · Editing · Promos · Reels",
+   "poster": {
+    "src": "/media/posters/moh_ep.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://www.youtube.com/watch?v=3DQ2f3FjxE8&list=PLTgk7ZczcBOrXMR3UsOTk07-IweNsab92&index=26",
+   "platform": "YouTube",
+   "aspect": "16:9",
+   "order": 1,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-tou",
+   "slug": "podcash-toufic-kreidieh",
+   "title": "PODCASH: Toufic Kreidieh",
+   "kind": "video",
+   "category": "podcasts",
+   "org": "Al Mal Channel",
+   "role": "Question flow · Editing · Promos · Reels",
+   "poster": {
+    "src": "/media/posters/tou_ep.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://www.youtube.com/watch?v=q_e1Dss74v4&list=PLTgk7ZczcBOrXMR3UsOTk07-IweNsab92&index=27",
+   "platform": "YouTube",
+   "aspect": "16:9",
+   "order": 2,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-hala",
+   "slug": "halat-hala",
+   "title": "Halat Hala",
+   "kind": "video",
+   "category": "influencers",
+   "org": "Hala Kazim",
+   "role": "Editing · Color",
+   "poster": {
+    "src": "/media/posters/hala.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://www.youtube.com/watch?v=knkuqpWuvkk&list=PLnofMnEZlwpJthJUZ9k9GG1aGi7Q7OPtq&index=30",
+   "platform": "YouTube",
+   "aspect": "16:9",
+   "order": 0,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-anas",
+   "slug": "harvard-business-school-visit",
+   "title": "Harvard Business School visit",
+   "kind": "video",
+   "category": "influencers",
+   "org": "Anas Bukhash",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/anas.jpg",
+    "w": 440,
+    "h": 782
+   },
+   "watchUrl": "https://vimeo.com/1156797911",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 1,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-ali",
+   "slug": "life-endowment",
+   "title": "Life Endowment",
+   "kind": "video",
+   "category": "influencers",
+   "org": "Dr. Ali Khammas",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/ali.jpg",
+    "w": 440,
+    "h": 782
+   },
+   "watchUrl": "https://vimeo.com/1156798201",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 2,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-usa",
+   "slug": "what-does-the-usa-want",
+   "title": "What does the USA want?",
+   "kind": "video",
+   "category": "talking-head-reels",
+   "org": "Al Mal Channel",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/usa.jpg",
+    "w": 440,
+    "h": 782
+   },
+   "watchUrl": "https://vimeo.com/1156799185",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 0,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-ice",
+   "slug": "ice-and-fire",
+   "title": "Ice and Fire",
+   "kind": "video",
+   "category": "talking-head-reels",
+   "org": "Al Mal Channel",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/ice.jpg",
+    "w": 880,
+    "h": 501
+   },
+   "watchUrl": "https://vimeo.com/1041653301",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 1,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-daheh",
+   "slug": "dahehs-ai-prophecy",
+   "title": "Daheh’s AI prophecy",
+   "kind": "video",
+   "category": "talking-head-reels",
+   "org": "Al Mal Channel",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/daheh.jpg",
+    "w": 440,
+    "h": 782
+   },
+   "watchUrl": "https://vimeo.com/1156799534",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 2,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-antarctica",
+   "slug": "antarctica-the-worlds-biggest-desert",
+   "title": "Antarctica: the world’s biggest desert",
+   "kind": "video",
+   "category": "talking-head-reels",
+   "org": "",
+   "role": "",
+   "poster": null,
+   "watchUrl": "",
+   "platform": "",
+   "aspect": "9:16",
+   "order": 3,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": false
+  },
+  {
+   "id": "project-ain",
+   "slug": "ain-al-hayat",
+   "title": "Ain al-Hayat",
+   "kind": "video",
+   "category": "documentary",
+   "org": "Mada Masr",
+   "role": "Editing · Sound",
+   "poster": {
+    "src": "/media/posters/ain.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://vimeo.com/581979417",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 0,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-mcd",
+   "slug": "whats-behind-the-counter",
+   "title": "What’s behind the counter?",
+   "kind": "video",
+   "category": "documentary",
+   "org": "McDonald’s",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/mcd.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://vimeo.com/1156386046",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 1,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-eli",
+   "slug": "emirates-loves-india",
+   "title": "Emirates Loves India",
+   "kind": "video",
+   "category": "events-corporate",
+   "org": "Visioneers",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/eli_w.jpg",
+    "w": 342,
+    "h": 192
+   },
+   "watchUrl": "https://vimeo.com/showcase/12069943",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 0,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-b1",
+   "slug": "1-billion-followers-summit-f-b-recaps",
+   "title": "1 Billion Followers Summit: F&B recaps",
+   "kind": "video",
+   "category": "events-corporate",
+   "org": "1 Billion Followers Summit",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/b1_w.jpg",
+    "w": 404,
+    "h": 228
+   },
+   "watchUrl": "https://vimeo.com/showcase/12067760",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 1,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-wcw",
+   "slug": "worlds-coolest-winter",
+   "title": "World’s Coolest Winter",
+   "kind": "video",
+   "category": "events-corporate",
+   "org": "Visioneers",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/wcw_w.jpg",
+    "w": 405,
+    "h": 228
+   },
+   "watchUrl": "https://vimeo.com/showcase/11500231",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 2,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-maryah",
+   "slug": "ramadan-promos",
+   "title": "Ramadan promos",
+   "kind": "video",
+   "category": "events-corporate",
+   "org": "Al Maryah Island",
+   "role": "Editing · Color",
+   "poster": {
+    "src": "/media/posters/maryah.jpg",
+    "w": 405,
+    "h": 505
+   },
+   "watchUrl": "https://vimeo.com/showcase/4715818",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 3,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-sewedy",
+   "slug": "beyond-tomorrow",
+   "title": "Beyond Tomorrow",
+   "kind": "video",
+   "category": "events-corporate",
+   "org": "Elsewedy Electric",
+   "role": "Script · Editing · AI voice-over",
+   "poster": {
+    "src": "/media/posters/sewedy.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://vimeo.com/1156390569",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 4,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-etihad",
+   "slug": "etihad-rail-stand",
+   "title": "Etihad Rail stand",
+   "kind": "video",
+   "category": "events-corporate",
+   "org": "BlueCherry",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/etihad.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://vimeo.com/1156409355",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 5,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-buildup",
+   "slug": "build-up-recap",
+   "title": "Build Up recap",
+   "kind": "video",
+   "category": "events-corporate",
+   "org": "Middle East Event Show",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/buildup.jpg",
+    "w": 880,
+    "h": 501
+   },
+   "watchUrl": "https://vimeo.com/1156402285",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 6,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-gitex",
+   "slug": "syria-is-online-recap",
+   "title": "Syria is Online recap",
+   "kind": "video",
+   "category": "events-corporate",
+   "org": "GITEX",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/gitex.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://vimeo.com/1156414994",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 7,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-wanpromo",
+   "slug": "wannisni-promo",
+   "title": "Wannisni promo",
+   "kind": "video",
+   "category": "promos-teasers",
+   "org": "Al Mal Channel",
+   "role": "Promo edit",
+   "poster": {
+    "src": "/media/posters/stylish.jpg",
+    "w": 440,
+    "h": 782
+   },
+   "watchUrl": "https://vimeo.com/1156801942",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 0,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-gar",
+   "slug": "garemet-akl-restaurant-commercial",
+   "title": "Garemet Akl restaurant commercial",
+   "kind": "video",
+   "category": "promos-teasers",
+   "org": "Garemet Akl",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/gar.jpg",
+    "w": 640,
+    "h": 360
+   },
+   "watchUrl": "https://vimeo.com/228820416",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 1,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-food",
+   "slug": "food-showreel-2017",
+   "title": "Food showreel (2017)",
+   "kind": "video",
+   "category": "promos-teasers",
+   "org": "Showreel",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/food.jpg",
+    "w": 640,
+    "h": 360
+   },
+   "watchUrl": "https://vimeo.com/245468514",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 2,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-hormuz",
+   "slug": "portuguese-conquest-of-hormuz",
+   "title": "Portuguese conquest of Hormuz",
+   "kind": "video",
+   "category": "promos-teasers",
+   "org": "Unofficial work",
+   "role": "Promo edit",
+   "poster": {
+    "src": "/media/posters/hormuz.jpg",
+    "w": 640,
+    "h": 360
+   },
+   "watchUrl": "https://vimeo.com/1156801779",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 3,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-overspend",
+   "slug": "why-do-we-overspend-in-ramadan",
+   "title": "Why do we overspend in Ramadan?",
+   "kind": "video",
+   "category": "social",
+   "org": "Al Mal Channel",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/overspend.jpg",
+    "w": 440,
+    "h": 782
+   },
+   "watchUrl": "https://vimeo.com/1156634269",
+   "platform": "Vimeo",
+   "aspect": "9:16",
+   "order": 0,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-scarface",
+   "slug": "the-legacy-of-scarface",
+   "title": "The Legacy of Scarface",
+   "kind": "video",
+   "category": "social",
+   "org": "Mohtawa",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/scarface.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://vimeo.com/736673569",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 1,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-boeing",
+   "slug": "why-do-boeing-737s-keep-crashing",
+   "title": "Why do Boeing 737s keep crashing?",
+   "kind": "video",
+   "category": "social",
+   "org": "Mohtawa",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/boeing.jpg",
+    "w": 880,
+    "h": 495
+   },
+   "watchUrl": "https://vimeo.com/736666907",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 2,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  },
+  {
+   "id": "project-biodiv",
+   "slug": "convention-on-biological-diversity",
+   "title": "Convention on Biological Diversity",
+   "kind": "video",
+   "category": "social",
+   "org": "Unofficial work",
+   "role": "Editing",
+   "poster": {
+    "src": "/media/posters/biodiv.jpg",
+    "w": 640,
+    "h": 360
+   },
+   "watchUrl": "https://vimeo.com/1156632645",
+   "platform": "Vimeo",
+   "aspect": "16:9",
+   "order": 3,
+   "featured": false,
+   "showOnHome": true,
+   "showOnWork": true,
+   "visible": true
+  }
+ ],
+ "logos": [
+  {
+   "id": "logo-hala-kazim",
+   "name": "Hala Kazim",
+   "group": "clients",
+   "logo": {
+    "src": "/media/logos/hala.png",
+    "w": 117,
+    "h": 128
+   },
+   "size": 66,
+   "order": 0
+  },
+  {
+   "id": "logo-mcdonalds",
+   "name": "McDonald’s",
+   "group": "clients",
+   "logo": {
+    "src": "/media/logos/mcd.png",
+    "w": 118,
+    "h": 104
+   },
+   "size": 54,
+   "order": 1
+  },
+  {
+   "id": "logo-elsewedy-electric",
+   "name": "Elsewedy Electric",
+   "group": "clients",
+   "logo": {
+    "src": "/media/logos/elsewedy.png",
+    "w": 216,
+    "h": 81
+   },
+   "size": 44,
+   "order": 2
+  },
+  {
+   "id": "logo-bukhash-brothers",
+   "name": "Bukhash Brothers",
+   "group": "clients",
+   "logo": {
+    "src": "/media/logos/bukhash.png",
+    "w": 299,
+    "h": 74
+   },
+   "size": 42,
+   "order": 3
+  },
+  {
+   "id": "logo-buildup",
+   "name": "Buildup",
+   "group": "clients",
+   "logo": {
+    "src": "/media/logos/buildup.png",
+    "w": 299,
+    "h": 74
+   },
+   "size": 38,
+   "order": 4
+  },
+  {
+   "id": "logo-bluecherry",
+   "name": "BlueCherry",
+   "group": "clients",
+   "logo": {
+    "src": "/media/logos/bluecherry.png",
+    "w": 153,
+    "h": 61
+   },
+   "size": 42,
+   "order": 5
+  },
+  {
+   "id": "logo-emirates-red-crescent",
+   "name": "Emirates Red Crescent",
+   "group": "clients",
+   "logo": {
+    "src": "/media/logos/erc.png",
+    "w": 384,
+    "h": 520
+   },
+   "size": 88,
+   "order": 6
+  },
+  {
+   "id": "logo-al-mal-channel",
+   "name": "Al Mal Channel",
+   "group": "media",
+   "logo": {
+    "src": "/media/logos/almal.png",
+    "w": 221,
+    "h": 154
+   },
+   "size": 68,
+   "order": 7
+  },
+  {
+   "id": "logo-al-ain-news",
+   "name": "Al Ain News",
+   "group": "media",
+   "logo": {
+    "src": "/media/logos/alain.png",
+    "w": 104,
+    "h": 128
+   },
+   "size": 62,
+   "order": 8
+  },
+  {
+   "id": "logo-abu-dhabi-media-network-mohtawa",
+   "name": "Abu Dhabi Media Network · Mohtawa",
+   "group": "media",
+   "logo": {
+    "src": "/media/logos/admn.png",
+    "w": 382,
+    "h": 145
+   },
+   "size": 58,
+   "order": 9
+  },
+  {
+   "id": "logo-mada-masr",
+   "name": "Mada Masr",
+   "group": "media",
+   "logo": {
+    "src": "/media/logos/mada.png",
+    "w": 122,
+    "h": 153
+   },
+   "size": 64,
+   "order": 10
+  },
+  {
+   "id": "logo-al-aan-tv",
+   "name": "Al Aan TV",
+   "group": "media",
+   "logo": {
+    "src": "/media/logos/alaan.png",
+    "w": 129,
+    "h": 89
+   },
+   "size": 50,
+   "order": 11
+  },
+  {
+   "id": "logo-imi",
+   "name": "IMI",
+   "group": "media",
+   "logo": {
+    "src": "/media/logos/imi.png",
+    "w": 261,
+    "h": 148
+   },
+   "size": 50,
+   "order": 12
+  },
+  {
+   "id": "logo-wasl",
+   "name": "Wasl",
+   "group": "media",
+   "logo": {
+    "src": "/media/logos/wasl.png",
+    "w": 676,
+    "h": 310
+   },
+   "size": 54,
+   "order": 13
+  },
+  {
+   "id": "logo-new-media-academy",
+   "name": "New Media Academy",
+   "group": "media",
+   "logo": {
+    "src": "/media/logos/nma.png",
+    "w": 1301,
+    "h": 773
+   },
+   "size": 70,
+   "order": 14
+  },
+  {
+   "id": "logo-world-government-summit",
+   "name": "World Government Summit",
+   "group": "events",
+   "logo": {
+    "src": "/media/logos/wgs.png",
+    "w": 284,
+    "h": 157
+   },
+   "size": 64,
+   "order": 15
+  },
+  {
+   "id": "logo-world-economic-forum",
+   "name": "World Economic Forum",
+   "group": "events",
+   "logo": {
+    "src": "/media/logos/wef.png",
+    "w": 201,
+    "h": 125
+   },
+   "size": 56,
+   "order": 16
+  },
+  {
+   "id": "logo-gitex-global",
+   "name": "GITEX Global",
+   "group": "events",
+   "logo": {
+    "src": "/media/logos/gitex.png",
+    "w": 251,
+    "h": 95
+   },
+   "size": 44,
+   "order": 17
+  },
+  {
+   "id": "logo-1-billion-followers-summit",
+   "name": "1 Billion Followers Summit",
+   "group": "events",
+   "logo": {
+    "src": "/media/logos/1b.png",
+    "w": 132,
+    "h": 95
+   },
+   "size": 48,
+   "order": 18
+  },
+  {
+   "id": "logo-worlds-coolest-winter",
+   "name": "World’s Coolest Winter",
+   "group": "events",
+   "logo": {
+    "src": "/media/logos/wcw.png",
+    "w": 190,
+    "h": 117
+   },
+   "size": 54,
+   "order": 19
+  },
+  {
+   "id": "logo-the-economist",
+   "name": "The Economist",
+   "group": "events",
+   "logo": {
+    "src": "/media/logos/economist.png",
+    "w": 182,
+    "h": 95
+   },
+   "size": 44,
+   "order": 20
+  },
+  {
+   "id": "logo-emirates-loves-india",
+   "name": "Emirates Loves India",
+   "group": "events",
+   "logo": {
+    "src": "/media/logos/eli.png",
+    "w": 347,
+    "h": 280
+   },
+   "size": 54,
+   "order": 21
+  }
+ ]
+}

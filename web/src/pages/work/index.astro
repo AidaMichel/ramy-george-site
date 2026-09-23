@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro'
+import Img from '../../components/Img.astro'
+import {getSite} from '../../lib/content'
+const site = await getSite()
+const onWork = site.projects.filter((p) => p.showOnWork)
+const groups = [
+  ...site.categories.map((c) => ({id: c.slug, title: c.title, items: onWork.filter((p) => p.kind === 'video' && p.category === c.slug)})),
+  {id: 'motion-ai', title: 'Motion & AI', items: onWork.filter((p) => p.kind === 'motion')},
+  {id: 'posts-carousels', title: 'Posts & Carousels', items: onWork.filter((p) => p.kind === 'post')},
+].filter((g) => g.items.length)
+---
+<Base title={`Work — ${site.settings.siteName}`} description={`Selected video editing, motion and design work by ${site.settings.siteName}.`}>
+  <div class="wrap page">
+    <h1 class="h1">Work</h1>
+    <nav class="jump" aria-label="Jump to a format">
+      <ul>{groups.map((g) => <li><a class="pill" href={`#${g.id}`}>{g.title}<span class="c">{String(g.items.length).padStart(2, '0')}</span></a></li>)}</ul>
+    </nav>
+    {groups.map((g) => (
+      <section id={g.id} class="grp" aria-labelledby={`${g.id}-h`}>
+        <h2 id={`${g.id}-h`}>{g.title}</h2>
+        <ul class="grid">
+          {g.items.map((p) => (
+            <li>
+              <a href={`/work/${p.slug}/`} class="card">
+                <span class="thumb media"><Img img={p.cover || p.poster} alt="" class="contain" sizes="(max-width: 719px) 100vw, (max-width: 1023px) 50vw, 33vw" /></span>
+                <span class="ct">{p.title}</span>
+                <span class="co muted">{p.org}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Base>
+<style>
+  .page { padding-top: clamp(48px, 6vw, 80px); padding-bottom: 120px; }
+  .h1 { font-size: clamp(56px, 9vw, 128px); line-height: .9; font-weight: 600; letter-spacing: -0.045em; }
+  .jump ul { list-style: none; margin: 32px 0 0; padding: 0; display: flex; gap: 8px; flex-wrap: wrap; }
+  .jump .pill { display: inline-flex; align-items: center; }
+  .jump .pill:hover { border-color: var(--acc); color: var(--text); }
+  .grp { padding-top: 88px; scroll-margin-top: 24px; }
+  .grp h2 { font-size: 15px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding-bottom: 14px; border-bottom: 1px solid var(--text); margin-bottom: 24px; }
+  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px var(--gap); }
+  .card { display: block; }
+  .thumb { display: flex; align-items: center; justify-content: center; aspect-ratio: 16 / 10; }
+  .thumb :global(img) { max-height: 100%; max-width: 100%; object-fit: contain; }
+  .ct { display: block; margin-top: 12px; font-size: 18px; font-weight: 600; }
+  .co { display: block; font-size: 14px; margin-top: 2px; }
+  .card:hover .ct { color: var(--acc); }
+  @media (max-width: 1023px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 599px) { .grid { grid-template-columns: 1fr; } }
+</style>

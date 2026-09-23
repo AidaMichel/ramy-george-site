@@ -1,0 +1,132 @@
+---
+import Base from '../../layouts/Base.astro'
+import Img from '../../components/Img.astro'
+import {getSite, watchLabel, embedUrl, ratio, type Project} from '../../lib/content'
+
+export async function getStaticPaths() {
+  const site = await getSite()
+  return site.projects.map((p) => ({params: {slug: p.slug}, props: {slug: p.slug}}))
+}
+const site = await getSite()
+const p = site.projects.find((x) => x.slug === Astro.props.slug) as Project
+const cat = site.categories.find((c) => c.slug === p.category)
+const kindLabel = p.kind === 'video' ? `Video${cat ? ' · ' + cat.title : ''}` : p.kind === 'motion' ? 'Motion & AI' : 'Posts & Carousels'
+const embed = p.watchUrl ? embedUrl(p.watchUrl) : ''
+const siblings = site.projects.filter((x) => x.kind === p.kind && (p.kind !== 'video' || x.category === p.category))
+const i = siblings.findIndex((x) => x.slug === p.slug)
+const prev = siblings[i - 1], next = siblings[i + 1]
+const related = siblings.filter((x) => x.slug !== p.slug).slice(0, 3)
+const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p.org : ''} — ${p.role || 'edited'} by ${site.settings.siteName}, video editor in Dubai.`
+---
+<Base seo={p.seo} title={`${p.title}${p.org ? ' — ' + p.org : ''} · ${site.settings.siteName}`} description={desc} image={(p.cover || p.poster)?.src}>
+  <article class="wrap proj">
+    <a class="back muted" href={p.kind === 'video' && cat ? `/work/#${cat.slug}` : '/work/'}>← All work</a>
+    <header class="hd">
+      <p class="lbl">{kindLabel}</p>
+      <h1>{p.title}</h1>
+      {p.org && <p class="org">{p.org}</p>}
+    </header>
+
+    <div class="player" data-player style={`--ar:${ratio(p.aspect)}`}>
+      <div class="frame media">
+        {p.kind === 'post' && p.slides?.length
+          ? <Img img={p.slides[0]} class="contain" eager />
+          : <Img img={p.poster} alt={p.poster?.alt || p.title} class="contain" eager sizes="(max-width: 1023px) 100vw, 80vw" />}
+        {embed && (
+          <button type="button" class="play" data-embed={embed} aria-label={`Play ${p.title} here`}>
+            <span class="tri" aria-hidden="true"></span><span>Play here</span>
+          </button>
+        )}
+      </div>
+      {embed && <p class="note muted">Plays from {p.platform}. Nothing loads from {p.platform} until you press play.</p>}
+    </div>
+
+    <div class="info">
+      <dl>
+        {p.role && <><dt class="lbl">Role</dt><dd>{p.role}</dd></>}
+        {p.org && <><dt class="lbl">For</dt><dd>{p.org}</dd></>}
+        {p.credits && <><dt class="lbl">Credits</dt><dd class="pre">{p.credits}</dd></>}
+      </dl>
+      <div class="side">
+        {p.summary && <p class="sum">{p.summary}</p>}
+        <div class="acts">
+          {p.watchUrl && <a class="ext" href={p.watchUrl} target="_blank" rel="noopener noreferrer">{watchLabel(p)}</a>}
+          {p.secondScreen?.url && <a class="ext" href={p.secondScreen.url} target="_blank" rel="noopener noreferrer">{p.secondScreen.watchLabel}</a>}
+        </div>
+      </div>
+    </div>
+
+    {p.secondScreen && (
+      <section class="two" aria-label="Two screens">
+        <figure><div class="media sc" style="--ar:16 / 9"><Img img={p.poster} alt="" class="cover" /></div><figcaption class="lbl">16:9 episode</figcaption></figure>
+        <figure><div class="media sc" style={`--ar:${ratio(p.secondScreen.aspect)}`}><Img img={p.secondScreen.poster} alt="" class="cover" /></div><figcaption class="lbl">{p.secondScreen.label}</figcaption></figure>
+      </section>
+    )}
+
+    {p.kind === 'post' && p.slides && p.slides.length > 1 && (
+      <ol class="slides">{p.slides.map((s, k) => <li style={`--ar:${ratio(p.slideAspect || '4:5')}`}><Img img={s} alt={s?.alt || `Slide ${k + 1}`} class="cover" /><span class="num muted">{String(k + 1).padStart(2, '0')} / {String(p.slides!.length).padStart(2, '0')}</span></li>)}</ol>
+    )}
+
+    <nav class="pn" aria-label="More projects">
+      {prev ? <a href={`/work/${prev.slug}/`}><span class="lbl">Previous</span><span>{prev.title}</span></a> : <span></span>}
+      {next ? <a class="r" href={`/work/${next.slug}/`}><span class="lbl">Next</span><span>{next.title}</span></a> : <span></span>}
+    </nav>
+
+    {related.length > 0 && (
+      <section class="rel" aria-labelledby="rel-h">
+        <h2 id="rel-h" class="lbl">Related work</h2>
+        <ul>{related.map((r) => <li><a href={`/work/${r.slug}/`}><span class="media rt"><Img img={r.cover || r.poster} alt="" class="contain" sizes="33vw" /></span><b>{r.title}</b><span class="muted">{r.org}</span></a></li>)}</ul>
+      </section>
+    )}
+  </article>
+</Base>
+<script>
+  // Click-to-load player: the Vimeo/YouTube iframe (and its cookies) only loads after the visitor asks for it.
+  document.querySelectorAll<HTMLButtonElement>('[data-embed]').forEach((b) => b.addEventListener('click', () => {
+    const frame = b.parentElement!
+    const f = document.createElement('iframe')
+    f.src = b.dataset.embed!
+    f.title = b.getAttribute('aria-label')!.replace('Play ', '') + ' — video player'
+    f.allow = 'autoplay; fullscreen; picture-in-picture'
+    f.allowFullscreen = true
+    f.referrerPolicy = 'strict-origin-when-cross-origin'
+    frame.replaceChildren(f)
+    f.focus()
+  }))
+</script>
+<style>
+  .proj { padding-top: 32px; padding-bottom: 120px; }
+  .back { display: inline-block; font-size: 14px; padding: 8px 0; }
+  .hd { margin-top: 40px; }
+  h1 { margin-top: 12px; font-size: clamp(40px, 6vw, 88px); line-height: .95; font-weight: 600; letter-spacing: -0.035em; max-width: 18ch; }
+  .org { margin-top: 12px; font-size: 20px; color: var(--muted); }
+  .player { margin-top: 48px; }
+  .frame { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 16 / 9; max-height: 82vh; }
+  .frame :global(img) { max-height: 100%; max-width: 100%; object-fit: contain; }
+  .frame :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .play { position: absolute; inset: auto auto 20px 20px; display: inline-flex; align-items: center; gap: 12px; height: 56px; padding: 0 22px 0 18px; background: var(--text); color: var(--bg); border: 0; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .play:hover { background: var(--acc); }
+  .tri { width: 0; height: 0; border-left: 14px solid currentColor; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+  .note { font-size: 13px; margin-top: 10px; }
+  .info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--gap); margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--rule); }
+  dl { margin: 0; display: grid; grid-template-columns: 120px 1fr; gap: 14px 16px; }
+  dd { margin: 0; } .pre { white-space: pre-line; }
+  .sum { font-size: 20px; line-height: 1.5; margin-bottom: 24px; }
+  .acts { display: flex; gap: 24px; flex-wrap: wrap; }
+  .two { display: flex; gap: 16px; align-items: flex-end; margin-top: 72px; }
+  .two figure { margin: 0; } .sc { height: clamp(220px, 30vw, 420px); aspect-ratio: var(--ar); } .two figcaption { margin-top: 10px; }
+  .slides { list-style: none; padding: 0; margin: 72px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .slides li { aspect-ratio: var(--ar); position: relative; background: var(--media); }
+  .slides .num { position: absolute; left: 8px; bottom: 8px; font-size: 12px; background: var(--bg); padding: 2px 6px; }
+  .pn { display: flex; justify-content: space-between; gap: 24px; margin-top: 96px; padding-top: 24px; border-top: 1px solid var(--text); }
+  .pn a { display: flex; flex-direction: column; gap: 6px; font-size: 20px; font-weight: 600; max-width: 45%; }
+  .pn .r { text-align: right; }
+  .rel { margin-top: 96px; }
+  .rel ul { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+  .rel a { display: flex; flex-direction: column; gap: 4px; }
+  .rt { display: flex; align-items: center; justify-content: center; aspect-ratio: 16 / 10; margin-bottom: 8px; }
+  .rt :global(img) { max-height: 100%; }
+  .rel a:hover b { color: var(--acc); }
+  @media (max-width: 1023px) { .info { grid-template-columns: 1fr; } .rel ul { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 599px) { .rel ul { grid-template-columns: 1fr; } dl { grid-template-columns: 90px 1fr; } }
+</style>

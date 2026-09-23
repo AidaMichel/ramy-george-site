@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro'
+import Hero from '../components/Hero.astro'
+import VideoSection from '../components/VideoSection.astro'
+import MotionSection from '../components/MotionSection.astro'
+import PostsSection from '../components/PostsSection.astro'
+import ClientsSection from '../components/ClientsSection.astro'
+import AboutSection from '../components/AboutSection.astro'
+import ContactSection from '../components/ContactSection.astro'
+import {getSite} from '../lib/content'
+const site = await getSite()
+// Sections render in CMS order; hidden ones are skipped; numbering follows what is actually shown.
+const has = {
+  video: site.projects.some((p) => p.kind === 'video' && p.showOnHome),
+  motion: site.projects.some((p) => p.kind === 'motion' && p.showOnHome),
+  posts: site.projects.some((p) => p.kind === 'post' && p.showOnHome && p.slides?.length),
+  clients: site.logos.length > 0,
+} as Record<string, boolean>
+const shown = site.home.sections.filter((s) => s.visible !== false && has[s.key] !== false)
+let n = 0
+const numbered = shown.map((s) => ({...s, num: ['video', 'motion', 'posts', 'clients', 'about'].includes(s.key) ? String(++n).padStart(2, '0') : ''}))
+---
+<Base seo={site.home.seo}>
+  {numbered.map((s) =>
+    s.key === 'hero' ? <Hero /> :
+    s.key === 'video' ? <VideoSection num={s.num} /> :
+    s.key === 'motion' ? <MotionSection num={s.num} /> :
+    s.key === 'posts' ? <PostsSection num={s.num} /> :
+    s.key === 'clients' ? <ClientsSection num={s.num} /> :
+    s.key === 'about' ? <AboutSection num={s.num} /> :
+    s.key === 'contact' ? <ContactSection /> : null)}
+</Base>
