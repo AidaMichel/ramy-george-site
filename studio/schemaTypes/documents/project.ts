@@ -1,6 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {orderRankField, orderRankOrdering} from '@sanity/orderable-document-list'
-import {PlayIcon} from '@sanity/icons/Play'
+import {PlayIcon} from '@sanity/icons'
 
 const ASPECTS = ['16:9', '9:16', '1:1', '4:5', '3:4']
 
