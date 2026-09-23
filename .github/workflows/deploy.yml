@@ -29,19 +29,17 @@ jobs:
       - name: Normalize pasted settings
         working-directory: .
         run: |
-          strip_assignment() {
-            value="$1"
-            case "$value" in
-              *=*) value="${value#*=}" ;;
-            esac
-            printf '%s' "$value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+          strip_named() {
+            name="$1"
+            value="$2"
+            printf '%s' "$value" | sed -E "s/^[[:space:]]*${name}[[:space:]]*=[[:space:]]*//;s/^[[:space:]]*//;s/[[:space:]]*$//"
           }
-          echo "SANITY_PROJECT_ID=$(strip_assignment "$SANITY_PROJECT_ID")" >> "$GITHUB_ENV"
-          echo "SANITY_DATASET=$(strip_assignment "$SANITY_DATASET")" >> "$GITHUB_ENV"
-          echo "SITE_URL=$(strip_assignment "$SITE_URL")" >> "$GITHUB_ENV"
-          echo "SANITY_READ_TOKEN=$(strip_assignment "$SANITY_READ_TOKEN")" >> "$GITHUB_ENV"
-          echo "CLOUDFLARE_API_TOKEN=$(strip_assignment "$CLOUDFLARE_API_TOKEN")" >> "$GITHUB_ENV"
-          echo "CLOUDFLARE_ACCOUNT_ID=$(strip_assignment "$CLOUDFLARE_ACCOUNT_ID")" >> "$GITHUB_ENV"
+          echo "SANITY_PROJECT_ID=$(strip_named "SANITY_PROJECT_ID" "$SANITY_PROJECT_ID")" >> "$GITHUB_ENV"
+          echo "SANITY_DATASET=$(strip_named "SANITY_DATASET" "$SANITY_DATASET")" >> "$GITHUB_ENV"
+          echo "SITE_URL=$(strip_named "SITE_URL" "$SITE_URL")" >> "$GITHUB_ENV"
+          echo "SANITY_READ_TOKEN=$(strip_named "SANITY_READ_TOKEN" "$SANITY_READ_TOKEN")" >> "$GITHUB_ENV"
+          echo "CLOUDFLARE_API_TOKEN=$(strip_named "CLOUDFLARE_API_TOKEN" "$CLOUDFLARE_API_TOKEN")" >> "$GITHUB_ENV"
+          echo "CLOUDFLARE_ACCOUNT_ID=$(strip_named "CLOUDFLARE_ACCOUNT_ID" "$CLOUDFLARE_ACCOUNT_ID")" >> "$GITHUB_ENV"
       - name: Cloudflare connected?
         if: env.CLOUDFLARE_API_TOKEN == '' || env.CLOUDFLARE_ACCOUNT_ID == ''
         working-directory: .
@@ -82,18 +80,16 @@ jobs:
       - name: Normalize pasted settings
         working-directory: .
         run: |
-          strip_assignment() {
-            value="$1"
-            case "$value" in
-              *=*) value="${value#*=}" ;;
-            esac
-            printf '%s' "$value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+          strip_named() {
+            name="$1"
+            value="$2"
+            printf '%s' "$value" | sed -E "s/^[[:space:]]*${name}[[:space:]]*=[[:space:]]*//;s/^[[:space:]]*//;s/[[:space:]]*$//"
           }
-          echo "SANITY_AUTH_TOKEN=$(strip_assignment "$SANITY_AUTH_TOKEN")" >> "$GITHUB_ENV"
-          echo "SANITY_STUDIO_PROJECT_ID=$(strip_assignment "$SANITY_STUDIO_PROJECT_ID")" >> "$GITHUB_ENV"
-          echo "SANITY_STUDIO_DATASET=$(strip_assignment "$SANITY_STUDIO_DATASET")" >> "$GITHUB_ENV"
-          echo "SANITY_STUDIO_HOST=$(strip_assignment "$SANITY_STUDIO_HOST")" >> "$GITHUB_ENV"
-          echo "SANITY_STUDIO_PREVIEW_URL=$(strip_assignment "$SANITY_STUDIO_PREVIEW_URL")" >> "$GITHUB_ENV"
+          echo "SANITY_AUTH_TOKEN=$(strip_named "SANITY_AUTH_TOKEN" "$SANITY_AUTH_TOKEN")" >> "$GITHUB_ENV"
+          echo "SANITY_STUDIO_PROJECT_ID=$(strip_named "SANITY_STUDIO_PROJECT_ID" "$SANITY_STUDIO_PROJECT_ID")" >> "$GITHUB_ENV"
+          echo "SANITY_STUDIO_DATASET=$(strip_named "SANITY_STUDIO_DATASET" "$SANITY_STUDIO_DATASET")" >> "$GITHUB_ENV"
+          echo "SANITY_STUDIO_HOST=$(strip_named "SANITY_STUDIO_HOST" "$SANITY_STUDIO_HOST")" >> "$GITHUB_ENV"
+          echo "SANITY_STUDIO_PREVIEW_URL=$(strip_named "SANITY_STUDIO_PREVIEW_URL" "$SANITY_STUDIO_PREVIEW_URL")" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
         with: {fetch-depth: 2}
       - name: Did studio/ change?
