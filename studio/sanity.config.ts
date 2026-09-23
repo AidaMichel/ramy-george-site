@@ -1,3 +1,4 @@
+// Ramy George Studio — content dashboard configuration
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
