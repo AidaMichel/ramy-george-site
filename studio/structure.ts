@@ -1,18 +1,20 @@
 import type {StructureResolver} from 'sanity/structure'
 import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
-import {HomeIcon} from '@sanity/icons/Home'
-import {CogIcon} from '@sanity/icons/Cog'
-import {PlayIcon} from '@sanity/icons/Play'
-import {ImageIcon} from '@sanity/icons/Image'
-import {TagIcon} from '@sanity/icons/Tag'
-import {CaseIcon} from '@sanity/icons/Case'
-import {SparklesIcon} from '@sanity/icons/Sparkles'
-import {ImagesIcon} from '@sanity/icons/Images'
-import {UserIcon} from '@sanity/icons/User'
-import {EnvelopeIcon} from '@sanity/icons/Envelope'
-import {MenuIcon} from '@sanity/icons/Menu'
-import {StarIcon} from '@sanity/icons/Star'
-import {ArchiveIcon} from '@sanity/icons/Archive'
+import {
+  ArchiveIcon,
+  CaseIcon,
+  CogIcon,
+  EnvelopeIcon,
+  HomeIcon,
+  ImageIcon,
+  ImagesIcon,
+  MenuIcon,
+  PlayIcon,
+  SparklesIcon,
+  StarIcon,
+  TagIcon,
+  UserIcon,
+} from '@sanity/icons'
 
 const single = (S: any, type: string, title: string, icon: any) =>
   S.listItem().title(title).icon(icon).child(S.document().schemaType(type).documentId(type).title(title))
