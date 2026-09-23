@@ -1,25 +1,25 @@
 import type {StructureResolver} from 'sanity/structure'
-import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
-import {
-  ArchiveIcon,
-  CaseIcon,
-  CogIcon,
-  EnvelopeIcon,
-  HomeIcon,
-  ImageIcon,
-  ImagesIcon,
-  MenuIcon,
-  PlayIcon,
-  SparklesIcon,
-  StarIcon,
-  TagIcon,
-  UserIcon,
-} from '@sanity/icons'
+import {ArchiveIcon} from '@sanity/icons/Archive'
+import {CaseIcon} from '@sanity/icons/Case'
+import {CogIcon} from '@sanity/icons/Cog'
+import {EnvelopeIcon} from '@sanity/icons/Envelope'
+import {HomeIcon} from '@sanity/icons/Home'
+import {ImageIcon} from '@sanity/icons/Image'
+import {ImagesIcon} from '@sanity/icons/Images'
+import {MenuIcon} from '@sanity/icons/Menu'
+import {PlayIcon} from '@sanity/icons/Play'
+import {SparklesIcon} from '@sanity/icons/Sparkles'
+import {StarIcon} from '@sanity/icons/Star'
+import {TagIcon} from '@sanity/icons/Tag'
+import {UserIcon} from '@sanity/icons/User'
 
 const single = (S: any, type: string, title: string, icon: any) =>
   S.listItem().title(title).icon(icon).child(S.document().schemaType(type).documentId(type).title(title))
 
 export const structure: StructureResolver = async (S, context) => {
+  // Load the drag-and-drop UI plugin only when the Studio structure actually runs.
+  // This keeps Sanity's schema extraction process from evaluating UI-only CommonJS code.
+  const {orderableDocumentListDeskItem} = await import('@sanity/orderable-document-list')
   const client = context.getClient({apiVersion: '2025-01-01'})
   const categories: {_id: string; title: string}[] = await client.fetch('*[_type=="videoCategory"]|order(orderRank){_id,title}')
 
