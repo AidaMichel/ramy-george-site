@@ -1,123 +1,210 @@
 ---
-import {getSite, section, watchLabel, ratio, type Project} from '../lib/content'
+import {getSite, section, watchLabel, type Project} from '../lib/content'
 interface Props { num: string }
 const {num} = Astro.props
 const site = await getSite()
 const sec = section(site, 'video')!
 const cats = site.categories
   .map((c) => ({...c, items: site.projects.filter((p) => p.kind === 'video' && p.category === c.slug && p.showOnHome)}))
-  .filter((c) => c.items.length)
-if (!cats.length) return
-const activeCat = Math.max(0, cats.findIndex((c) => c.slug === site.home.defaultCategory))
-const first = cats[activeCat].items.find((p) => p.slug === site.home.defaultProject) || cats[activeCat].items[0]
+  .filter((c) => c.items.length > 0)
+
+const hasItems = cats.length > 0
+const activeCat = hasItems ? Math.max(0, cats.findIndex((c) => c.slug === site.home.defaultCategory)) : 0
+const first = hasItems
+  ? cats[activeCat].items.find((p) => p.slug === site.home.defaultProject) || cats[activeCat].items[0]
+  : null
+
 const pv = (p: Project) => ({
-  slug: p.slug, title: p.title, meta: [p.org, p.role].filter(Boolean).join(' · '),
-  img: (p.homepagePreview || p.poster)?.src || '', w: (p.homepagePreview || p.poster)?.w, h: (p.homepagePreview || p.poster)?.h,
-  loop: p.previewLoop || p.hoverPreview || '', url: p.watchUrl, watch: p.watchUrl ? watchLabel(p) : '',
-  two: p.secondScreen ? {img: p.secondScreen.poster?.src || '', label: p.secondScreen.label, url: p.secondScreen.url, watch: p.secondScreen.watchLabel, aspect: p.secondScreen.aspect} : null,
+  slug: p.slug,
+  title: p.title,
+  meta: [p.org, p.role].filter(Boolean).join(' · '),
+  img: (p.homepagePreview || p.poster)?.src || '',
+  w: (p.homepagePreview || p.poster)?.w,
+  h: (p.homepagePreview || p.poster)?.h,
+  loop: p.previewLoop || p.hoverPreview || '',
+  url: p.watchUrl,
+  watch: p.watchUrl ? watchLabel(p) : '',
+  aspect: p.aspect || '16:9',
+  two: p.secondScreen ? {
+    img: p.secondScreen.poster?.src || '',
+    label: p.secondScreen.label,
+    url: p.secondScreen.url,
+    watch: p.secondScreen.watchLabel,
+    aspect: p.secondScreen.aspect,
+  } : null,
 })
-const f = pv(first)
+
+const f = first ? pv(first) : null
 const cue = sec.microcopy || 'BROWSE DIFFERENT FORMATS'
 ---
-<section id="video" class="sec wrap video" aria-labelledby="video-h" data-video>
+<section id="video" class:list={['sec wrap video', {empty: !hasItems}]} aria-labelledby="video-h" data-video data-ready={String(hasItems)}>
   <div class="sec-head">
     <div><div class="sec-num">{num}</div><h2 class="h2" id="video-h">{sec.heading || 'Video'}</h2></div>
-    <div class="cue" aria-hidden="true">
-      <span class="cue-text">{cue}</span>
-      <svg class="cue-arrow" width="170" height="118" viewBox="0 0 170 118" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M160 10 C 118 2, 78 14, 84 42 C 89 64, 122 58, 112 38 C 102 20, 58 40, 40 72 C 30 90, 26 100, 24 110"/><path d="M12 96 L24 111 L37 99"/></svg>
-    </div>
+    {hasItems && cats.length > 1 && (
+      <div class="cue" aria-hidden="true">
+        <span class="cue-text">{cue}</span>
+        <svg class="cue-arrow" width="170" height="118" viewBox="0 0 170 118" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M160 10 C 118 2, 78 14, 84 42 C 89 64, 122 58, 112 38 C 102 20, 58 40, 40 72 C 30 90, 26 100, 24 110"/><path d="M12 96 L24 111 L37 99"/></svg>
+      </div>
+    )}
+    {hasItems && cats.length === 1 && <p class="muted one-format">{cats[0].title} · {String(cats[0].items.length).padStart(2, '0')}</p>}
   </div>
-  <div class="mcue" aria-hidden="true">Swipe for more formats <svg width="30" height="16" viewBox="0 0 34 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6 C 10 18, 20 16, 30 10"/><path d="M23 6 L31 10 L25 17"/></svg></div>
-  <div class="tabs" role="tablist" aria-label="Video formats">
-    {cats.map((c, i) => (
-      <button type="button" role="tab" class="tab" id={`vt-${c.slug}`} aria-controls={`vp-${c.slug}`} aria-selected={String(i === activeCat)} tabindex={i === activeCat ? 0 : -1} data-tab={i}>
-        <span>{c.title}</span><sup class="num">{String(c.items.length).padStart(2, '0')}</sup>
-      </button>
-    ))}
-  </div>
-  <div class="body">
-    <div class="list">
-      {cats.map((c, i) => (
-        <ol class="rows" role="tabpanel" id={`vp-${c.slug}`} aria-labelledby={`vt-${c.slug}`} hidden={i !== activeCat} data-panel={i}>
-          {c.items.map((p, k) => (
-            <li>
-              <a class:list={['row', {on: p.slug === first.slug}]} href={`/work/${p.slug}/`} data-pv={JSON.stringify(pv(p))}>
-                <span class="n num">{String(k + 1).padStart(2, '0')}</span>
-                <span class="t">{p.title}</span>
-                <span class="o">{p.org}</span>
-              </a>
-            </li>
+
+  {hasItems && f ? (
+    <>
+      {cats.length > 1 && <div class="mcue" aria-hidden="true">Swipe for more formats <svg width="30" height="16" viewBox="0 0 34 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6 C 10 18, 20 16, 30 10"/><path d="M23 6 L31 10 L25 17"/></svg></div>}
+
+      {cats.length > 1 && (
+        <div class="tabs" role="tablist" aria-label="Video formats">
+          {cats.map((c, i) => (
+            <button type="button" role="tab" class="tab" id={`vt-${c.slug}`} aria-controls={`vp-${c.slug}`} aria-selected={String(i === activeCat)} tabindex={i === activeCat ? 0 : -1} data-tab={i}>
+              <span>{c.title}</span><sup class="num">{String(c.items.length).padStart(2, '0')}</sup>
+            </button>
           ))}
-        </ol>
-      ))}
-    </div>
-    <div class="preview">
-      <a class="stage" href={`/work/${f.slug}/`} data-stage aria-label={`Open project: ${f.title}`}>
-        <span class="single" data-single hidden={!!f.two}>
-          <img src={f.img} width={f.w} height={f.h} alt={f.title} decoding="async" />
-          <video muted loop playsinline preload="none" data-loop hidden></video>
-        </span>
-        <span class="two" data-two hidden={!f.two}>
-          <span class="scr wide"><img data-two-a src={f.img} alt="" loading="lazy" /><em>16:9 EPISODE</em></span>
-          <span class="scr tall"><img data-two-b src={f.two?.img || ''} alt="" loading="lazy" /><em data-two-label>{f.two?.label}</em></span>
-        </span>
-        <span class="chip">PREVIEW · MUTED</span>
-      </a>
-      <div class="meta">
-        <div><div class="pt" data-title>{f.title}</div><div class="pm muted" data-meta>{f.meta}</div></div>
-        <div class="acts">
-          <a class="ext" href={`/work/${f.slug}/`} data-open>View project</a>
-          <a class="ext" href={f.url || undefined} target="_blank" rel="noopener noreferrer" data-watch hidden={!f.url}>{f.watch}</a>
-          <a class="ext" href={f.two?.url || undefined} target="_blank" rel="noopener noreferrer" data-watch2 hidden={!f.two?.url}>{f.two?.watch}</a>
+        </div>
+      )}
+
+      <div class="body">
+        <div class="list">
+          {cats.map((c, i) => (
+            <ol class="rows" role={cats.length > 1 ? 'tabpanel' : undefined} id={cats.length > 1 ? `vp-${c.slug}` : undefined} aria-labelledby={cats.length > 1 ? `vt-${c.slug}` : undefined} hidden={cats.length > 1 && i !== activeCat} data-panel={i}>
+              {c.items.map((p, k) => (
+                <li>
+                  <a class:list={['row', {on: p.slug === first.slug}]} href={`/work/${p.slug}/`} data-pv={JSON.stringify(pv(p))}>
+                    <span class="n num">{String(k + 1).padStart(2, '0')}</span>
+                    <span class="t">{p.title}</span>
+                    <span class="o">{p.org}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          ))}
+        </div>
+
+        <div class="preview">
+          <a class="stage" href={`/work/${f.slug}/`} data-stage aria-label={`Open project: ${f.title}`}>
+            <span class="single" data-single hidden={!!f.two}>
+              <img src={f.img} width={f.w} height={f.h} alt={f.title} decoding="async" />
+              <video muted loop playsinline preload="none" data-loop hidden></video>
+            </span>
+            <span class="two" data-two hidden={!f.two}>
+              <span class="scr wide"><img data-two-a src={f.img} alt="" loading="lazy" /><em>16:9 EPISODE</em></span>
+              <span class="scr tall"><img data-two-b src={f.two?.img || ''} alt="" loading="lazy" /><em data-two-label>{f.two?.label}</em></span>
+            </span>
+            <span class="chip">PREVIEW · MUTED</span>
+          </a>
+          <div class="meta">
+            <div><div class="pt" data-title>{f.title}</div><div class="pm muted" data-meta>{f.meta}</div></div>
+            <div class="acts">
+              <a class="ext" href={`/work/${f.slug}/`} data-open>View project</a>
+              <a class="ext" href={f.url || undefined} target="_blank" rel="noopener noreferrer" data-watch hidden={!f.url}>{f.watch}</a>
+              <a class="ext" href={f.two?.url || undefined} target="_blank" rel="noopener noreferrer" data-watch2 hidden={!f.two?.url}>{f.two?.watch}</a>
+            </div>
+          </div>
         </div>
       </div>
+    </>
+  ) : (
+    <div class="video-empty" role="status" aria-label="Video work is being updated">
+      <div class="empty-mark" aria-hidden="true"><span>01</span><i></i><span>PLAY</span></div>
+      <div>
+        <p class="empty-kicker">EDIT IN PROGRESS</p>
+        <p class="empty-title">Selected video work is being updated.</p>
+        <p class="muted empty-desc">Published editing work will appear here automatically.</p>
+      </div>
     </div>
-  </div>
+  )}
 </section>
+
 <script>
   const root = document.querySelector<HTMLElement>('[data-video]')
-  if (root) {
+  if (root?.dataset.ready === 'true') {
     const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')]
     const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')]
     const $ = <T extends Element>(s: string) => root.querySelector<T>(s)!
-    const stage = $<HTMLAnchorElement>('[data-stage]'), single = $<HTMLElement>('[data-single]'), two = $<HTMLElement>('[data-two]')
-    const loop = $<HTMLVideoElement>('[data-loop]'), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+    const stage = $<HTMLAnchorElement>('[data-stage]')
+    const single = $<HTMLElement>('[data-single]')
+    const two = $<HTMLElement>('[data-two]')
+    const loop = $<HTMLVideoElement>('[data-loop]')
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+
     const show = (row: HTMLAnchorElement) => {
       const d = JSON.parse(row.dataset.pv || '{}')
       root.querySelectorAll('.row.on').forEach((r) => r.classList.remove('on'))
       row.classList.add('on')
-      stage.href = row.href; stage.setAttribute('aria-label', 'Open project: ' + d.title)
+      stage.href = row.href
+      stage.setAttribute('aria-label', 'Open project: ' + d.title)
+
       const img = single.querySelector('img')
-      if (img) { img.src = d.img; img.removeAttribute('srcset'); img.alt = d.title; if (d.w) { img.width = d.w; img.height = d.h } }
-      single.hidden = !!d.two; two.hidden = !d.two
-      if (d.two) { $<HTMLImageElement>('[data-two-a]').src = d.img; $<HTMLImageElement>('[data-two-b]').src = d.two.img; $('[data-two-label]').textContent = d.two.label }
-      if (d.loop && !reduce) { loop.src = d.loop; loop.hidden = false; loop.play().catch(() => {}) } else { loop.pause(); loop.hidden = true; loop.removeAttribute('src') }
-      $('[data-title]').textContent = d.title; $('[data-meta]').textContent = d.meta
+      if (img) {
+        img.src = d.img
+        img.removeAttribute('srcset')
+        img.alt = d.title
+        if (d.w) { img.width = d.w; img.height = d.h }
+      }
+
+      single.hidden = !!d.two
+      two.hidden = !d.two
+      if (d.two) {
+        $<HTMLImageElement>('[data-two-a]').src = d.img
+        $<HTMLImageElement>('[data-two-b]').src = d.two.img
+        $('[data-two-label]').textContent = d.two.label
+      }
+
+      if (d.loop && !reduce) {
+        loop.src = d.loop
+        loop.hidden = false
+        loop.play().catch(() => {})
+      } else {
+        loop.pause()
+        loop.hidden = true
+        loop.removeAttribute('src')
+      }
+
+      $('[data-title]').textContent = d.title
+      $('[data-meta]').textContent = d.meta
       $<HTMLAnchorElement>('[data-open]').href = row.href
-      const w = $<HTMLAnchorElement>('[data-watch]'); w.hidden = !d.url; if (d.url) { w.href = d.url; w.textContent = d.watch } else w.removeAttribute('href')
-      const w2 = $<HTMLAnchorElement>('[data-watch2]'); w2.hidden = !d.two?.url; if (d.two?.url) { w2.href = d.two.url; w2.textContent = d.two.watch } else w2.removeAttribute('href')
+
+      const w = $<HTMLAnchorElement>('[data-watch]')
+      w.hidden = !d.url
+      if (d.url) { w.href = d.url; w.textContent = d.watch } else w.removeAttribute('href')
+
+      const w2 = $<HTMLAnchorElement>('[data-watch2]')
+      w2.hidden = !d.two?.url
+      if (d.two?.url) { w2.href = d.two.url; w2.textContent = d.two.watch } else w2.removeAttribute('href')
     }
+
     const select = (i: number, focus = false) => {
+      if (!tabs.length) return
       tabs.forEach((t, k) => { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1 })
       panels.forEach((p, k) => (p.hidden = k !== i))
       if (focus) tabs[i].focus()
       tabs[i].scrollIntoView({block: 'nearest', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth'})
-      const r = panels[i].querySelector<HTMLAnchorElement>('.row'); if (r) show(r)
+      const r = panels[i].querySelector<HTMLAnchorElement>('.row')
+      if (r) show(r)
     }
+
     tabs.forEach((t, i) => {
       t.addEventListener('click', () => select(i))
       t.addEventListener('keydown', (e) => {
         const n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null
-        if (n === null) return; e.preventDefault(); select((n + tabs.length) % tabs.length, true)
+        if (n === null) return
+        e.preventDefault()
+        select((n + tabs.length) % tabs.length, true)
       })
     })
-    root.querySelectorAll<HTMLAnchorElement>('.row').forEach((r) => { r.addEventListener('mouseenter', () => show(r)); r.addEventListener('focus', () => show(r)) })
+
+    root.querySelectorAll<HTMLAnchorElement>('.row').forEach((r) => {
+      r.addEventListener('mouseenter', () => show(r))
+      r.addEventListener('focus', () => show(r))
+    })
   }
 </script>
+
 <style>
   .cue { position: absolute; right: 0; bottom: -30px; width: 330px; height: 118px; pointer-events: none; color: var(--acc); }
   .cue-text { position: absolute; right: 0; top: 0; font-size: 13px; font-weight: 700; letter-spacing: .12em; transform: rotate(-3deg); transform-origin: right; white-space: nowrap; }
   .cue-arrow { position: absolute; right: 210px; top: -4px; transform: scale(.82); transform-origin: top right; }
+  .one-format { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
   .mcue { display: none; color: var(--acc); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; align-items: center; gap: 6px; margin-bottom: 10px; }
   .tabs { display: flex; gap: 30px; border-bottom: 1px solid var(--rule); margin-bottom: 28px; position: relative; z-index: 2; overflow-x: auto; scrollbar-width: none; }
   .tabs::-webkit-scrollbar { display: none; }
@@ -126,16 +213,18 @@ const cue = sec.microcopy || 'BROWSE DIFFERENT FORMATS'
   .tab sup { font-size: 11px; color: var(--muted); top: 0; }
   .tab:hover, .tab[aria-selected='true'] { color: var(--text); }
   .tab[aria-selected='true'] { box-shadow: inset 0 -2px 0 var(--acc); }
-  .body { display: grid; grid-template-columns: minmax(0, 546fr) minmax(0, 774fr); gap: var(--gap); align-items: start; }
+
+  .body { display: grid; grid-template-columns: minmax(280px, .72fr) minmax(0, 1.28fr); gap: clamp(20px, 2.5vw, 36px); align-items: start; }
   .rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--text); }
-  .row { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 12px; min-height: 60px; padding: 10px 16px; border-bottom: 1px solid var(--rule); }
+  .row { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 60px; padding: 10px 16px; border-bottom: 1px solid var(--rule); }
   .row .n { font-size: 13px; color: var(--muted); }
-  .row .t { font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
-  .row .o { font-size: 14px; color: var(--muted); text-align: right; }
+  .row .t { font-size: 19px; font-weight: 500; letter-spacing: -0.01em; min-width: 0; }
+  .row .o { max-width: 160px; font-size: 14px; color: var(--muted); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .row:hover .t { color: var(--acc); }
   .row.on { background: var(--s1); box-shadow: inset 3px 0 0 var(--acc); }
   .row.on .t { font-weight: 600; color: var(--text); }
-  .stage { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 774 / 548; background: var(--media); overflow: hidden; }
+
+  .stage { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 774 / 548; min-height: 300px; background: var(--media); overflow: hidden; }
   .single { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; position: relative; }
   .single :global(img) { max-height: 100%; max-width: 100%; object-fit: contain; }
   .single video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--media); }
@@ -143,21 +232,45 @@ const cue = sec.microcopy || 'BROWSE DIFFERENT FORMATS'
   .two[hidden], .single[hidden] { display: none; }
   .scr { position: relative; height: 100%; display: block; }
   .scr img { height: 100%; width: auto; object-fit: cover; }
-  .scr.wide { aspect-ratio: 16 / 9; } .scr.tall { aspect-ratio: 9 / 16; }
+  .scr.wide { aspect-ratio: 16 / 9; }
+  .scr.tall { aspect-ratio: 9 / 16; }
   .scr.wide img, .scr.tall img { width: 100%; }
   .scr em { position: absolute; left: 8px; top: 8px; background: var(--bg); font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: .08em; padding: 4px 7px; }
   .chip { position: absolute; right: 12px; top: 12px; font-size: 11px; letter-spacing: .1em; color: var(--muted); background: var(--bg); padding: 4px 8px; }
   .meta { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-top: 16px; }
-  .pt { font-size: 20px; font-weight: 600; } .pm { font-size: 14px; margin-top: 4px; }
+  .pt { font-size: 20px; font-weight: 600; }
+  .pm { font-size: 14px; margin-top: 4px; }
   .acts { display: flex; gap: 22px; flex-wrap: wrap; justify-content: flex-end; }
+
+  .video.empty .sec-head { margin-bottom: 28px; }
+  .video-empty { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: clamp(36px, 5vw, 62px) 0; display: grid; grid-template-columns: minmax(160px, .65fr) minmax(0, 1.35fr); align-items: center; gap: clamp(32px, 6vw, 88px); margin-bottom: clamp(56px, 7vw, 96px); }
+  .empty-mark { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 11px; letter-spacing: .1em; }
+  .empty-mark i { height: 1px; background: var(--rule); flex: 1; max-width: 120px; }
+  .empty-kicker { color: var(--acc); font-size: 11px; font-weight: 700; letter-spacing: .15em; }
+  .empty-title { margin-top: 14px; font-size: clamp(32px, 4vw, 52px); line-height: 1.02; font-weight: 600; letter-spacing: -.03em; }
+  .empty-desc { margin-top: 12px; max-width: 520px; font-size: 16px; }
+
   [hidden] { display: none !important; }
+
   @media (max-width: 1023px) {
-    .body { grid-template-columns: 1fr; } .preview { order: -1; } .cue { display: none; } .mcue { display: inline-flex; }
+    .body { grid-template-columns: 1fr; }
+    .preview { order: -1; }
+    .cue { display: none; }
+    .mcue { display: inline-flex; }
     .tabs { gap: 8px; border-bottom: 0; margin-inline: calc(var(--gutter) * -1); padding: 4px var(--gutter) 14px; }
     .tab { min-height: 40px; padding: 0 14px; align-items: center; border: 1px solid var(--rule); border-radius: 20px; font-size: 14px; font-weight: 600; color: var(--text); }
     .tab[aria-selected='true'] { background: var(--text); color: var(--bg); box-shadow: none; border-color: var(--text); }
     .tab sup { display: none; }
-    .row { grid-template-columns: 30px 1fr; } .row .o { grid-column: 2; text-align: left; margin-top: -8px; }
-    .meta { flex-direction: column; gap: 10px; } .acts { justify-content: flex-start; }
+    .row { grid-template-columns: 30px minmax(0, 1fr); }
+    .row .o { grid-column: 2; max-width: none; text-align: left; margin-top: -8px; }
+    .meta { flex-direction: column; gap: 10px; }
+    .acts { justify-content: flex-start; }
+  }
+
+  @media (max-width: 719px) {
+    .stage { min-height: 220px; }
+    .video-empty { grid-template-columns: 1fr; gap: 28px; padding: 30px 0 34px; margin-bottom: 56px; }
+    .empty-mark i { max-width: none; }
+    .empty-desc { font-size: 15px; }
   }
 </style>
