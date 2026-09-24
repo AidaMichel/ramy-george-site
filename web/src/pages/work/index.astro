@@ -37,7 +37,7 @@ const total = groups.reduce((n, g) => n + g.items.length, 0)
           {g.items.map((p) => (
             <li>
               <a href={`/work/${p.slug}/`} class="card">
-                <span class="thumb media"><Img img={p.cover || p.poster} alt={p.title} class="cover" sizes="(max-width: 719px) 100vw, (max-width: 1199px) 50vw, 33vw" /></span>
+                <span class="thumb media"><Img img={p.cover || p.poster} alt="" class="cover" sizes="(max-width: 719px) 100vw, (max-width: 1199px) 50vw, 33vw" /></span>
                 <span class="ct">{p.title}</span>
                 {p.org && <span class="co muted">{p.org}</span>}
               </a>

@@ -125,7 +125,14 @@ export const project = defineType({
     defineField({name: 'aspect', title: 'Main aspect ratio', type: 'string', group: 'advanced', options: {list: ASPECTS}, initialValue: '16:9'}),
     defineField({name: 'homepagePreview', title: 'Homepage preview image (overrides poster)', type: 'image', group: 'advanced', options: {hotspot: true}}),
     defineField({name: 'hoverPreview', title: 'Hover preview (MP4)', type: 'file', group: 'advanced', options: {accept: 'video/mp4,video/webm'}}),
-    defineField({name: 'cover', title: 'Thumbnail / cover (Work page)', type: 'image', group: 'advanced', options: {hotspot: true}}),
+    defineField({
+      name: 'cover',
+      title: 'Thumbnail / cover (Work page)',
+      type: 'image',
+      group: 'advanced',
+      options: {hotspot: true},
+      description: 'Optional dedicated Work-grid crop. Recommended around 16:10 (for example 1600 × 1000). Use the hotspot to keep faces/titles safely inside the crop, especially for vertical projects.',
+    }),
     defineField({name: 'mobilePoster', title: 'Mobile poster (optional)', type: 'image', group: 'advanced', options: {hotspot: true}}),
     defineField({
       name: 'watchLabel',

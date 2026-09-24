@@ -7,7 +7,7 @@ const {hero, settings} = site
 const cta = hero.ctaTarget === 'work' || !hasWorkAnchor ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
-const fallbackHero = '/hero-rg-approved.webp?v=4'
+const fallbackHero = '/hero-rg-master.webp?v=1'
 const editorialSrc = hero.mode === 'none'
   ? (hero.useDashboardImage && hero.image?.src ? hero.image.src : fallbackHero)
   : (hero.image?.src || hero.showreelPoster?.src || fallbackHero)
@@ -150,7 +150,7 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
     display: block;
     object-fit: cover;
     object-position: 61% center;
-    filter: brightness(1.32) contrast(1.01) saturate(1.04);
+    filter: brightness(1.06) contrast(1.02) saturate(1.03);
   }
 
   .frames { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -182,7 +182,7 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
     }
     .editorial-frame img {
       object-position: center;
-      filter: brightness(1.28) contrast(1) saturate(1.03);
+      filter: brightness(1.04) contrast(1.01) saturate(1.02);
     }
   }
   @media (max-width: 719px) {

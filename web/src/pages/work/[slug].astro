@@ -83,7 +83,7 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
     {related.length > 0 && (
       <section class="rel" aria-labelledby="rel-h">
         <h2 id="rel-h" class="lbl">Related work</h2>
-        <ul>{related.map((r) => <li><a href={`/work/${r.slug}/`}><span class="media rt"><Img img={r.cover || r.poster} alt={r.title} class="contain" sizes="33vw" /></span><b>{r.title}</b><span class="muted">{r.org}</span></a></li>)}</ul>
+        <ul>{related.map((r) => <li><a href={`/work/${r.slug}/`}><span class="media rt"><Img img={r.cover || r.poster} alt="" class="contain" sizes="33vw" /></span><b>{r.title}</b><span class="muted">{r.org}</span></a></li>)}</ul>
       </section>
     )}
   </article>
