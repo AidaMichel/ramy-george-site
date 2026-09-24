@@ -47,6 +47,9 @@ const checks = [
   ['stale curated Posts refs fall back to published posts', posts.includes("const curated") && posts.includes("const chosen = curated.length ? curated : all")],
   ['hidden two-screen previews do not play background loops', editing.includes("d.loop && !d.two && !reduce")],
   ['missing projects use the real 404 route', project.includes("Astro.rewrite('/404')")],
+  ['hero image has a runtime photo fallback', hero.includes('data-fallback={fallbackHero}') && hero.includes("heroImg.addEventListener('error'")],
+  ['hero includes a concise storytelling line', hero.includes('const storyLine') && hero.includes('class="story muted"')],
+  ['hero blend includes warm atmospheric depth', hero.includes('hero-float') && hero.includes('sepia(.035)') && hero.includes('rgba(255,169,78,.105)')],
 ]
 
 const failed = checks.filter(([, ok]) => !ok)
