@@ -13,7 +13,7 @@ const embed = p.watchUrl ? embedUrl(p.watchUrl) : ''
 const motionLoop = p.kind === 'motion' ? (p.previewLoop || p.hoverPreview || '') : ''
 const mainAspect = p.kind === 'post' ? (p.slideAspect || '4:5') : (p.aspect || '16:9')
 const mainShape = mainAspect === '9:16' ? 'vertical' : ['4:5', '3:4'].includes(mainAspect) ? 'portrait' : mainAspect === '1:1' ? 'square' : 'wide'
-const siblings = site.projects.filter((x) => x.kind === p.kind && (p.kind !== 'video' || x.category === p.category))
+const siblings = site.projects.filter((x) => x.showOnWork && x.kind === p.kind && (p.kind !== 'video' || x.category === p.category))
 const i = siblings.findIndex((x) => x.slug === p.slug)
 const prev = siblings[i - 1], next = siblings[i + 1]
 const related = siblings.filter((x) => x.slug !== p.slug).slice(0, 3)
