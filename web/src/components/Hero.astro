@@ -6,8 +6,8 @@ const {hero, settings} = site
 const cta = hero.ctaTarget === 'work' ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
-const useEditorialPortrait = hero.mode === 'none'
-const editorialSrc = hero.image?.src || '/hero-ramy-final.webp'
+const useEditorialPortrait = true
+const editorialSrc = '/hero-ramy-final.webp'
 ---
 <section class:list={['hero wrap', {'has-visual': hero.mode !== 'none' || useEditorialPortrait, editorial: useEditorialPortrait}]} aria-labelledby="hero-name">
   <div class="text">
@@ -18,33 +18,18 @@ const editorialSrc = hero.image?.src || '/hero-ramy-final.webp'
         {lead && <p class="skills"><strong>{lead}</strong>{others.length > 0 && <span class="muted"> · {others.join(' · ')}</span>}</p>}
         <div class="cta-row"><a class="cta" href={cta}>{hero.ctaLabel}</a></div>
       </div>
-      {!useEditorialPortrait && hero.shortLine && <p class="line muted">{hero.shortLine}</p>}
+      {false && hero.shortLine && <p class="line muted">{hero.shortLine}</p>}
     </div>
   </div>
 
-  {(hero.mode !== 'none' || useEditorialPortrait) && (
+  {useEditorialPortrait && (
     <div class:list={['visual', useEditorialPortrait ? 'editorial-portrait' : hero.mode]}>
       {useEditorialPortrait && (
         <div class="editorial-frame">
           <img src={editorialSrc} alt="Ramy George editing at his workstation" />
         </div>
       )}
-      {!useEditorialPortrait && (hero.mode === 'portrait' || hero.mode === 'still') && hero.image?.src && (
-        hero.mode === 'still' && hero.stillProjectSlug
-          ? <a href={`/work/${hero.stillProjectSlug}/`} class="frame" aria-label="View project"><Img img={hero.image} eager sizes="(max-width: 719px) 100vw, 40vw" class="cover" /></a>
-          : <div class="frame"><Img img={hero.image} eager sizes="(max-width: 719px) 100vw, 40vw" class="cover" /></div>
-      )}
-      {!useEditorialPortrait && hero.mode === 'multiframe' && (
-        <div class="frames">{(hero.frames || []).slice(0, 4).map((f) => f.projectSlug
-          ? <a href={`/work/${f.projectSlug}/`} class="frame"><Img img={f.img} sizes="20vw" class="cover" /></a>
-          : <div class="frame"><Img img={f.img} sizes="20vw" class="cover" /></div>)}</div>
-      )}
-      {!useEditorialPortrait && hero.mode === 'showreel' && hero.showreel && (
-        <div class="frame reel">
-          <video src={hero.showreel} poster={hero.showreelPoster?.src} muted loop playsinline autoplay preload="metadata" aria-label="Short muted showreel" data-reel></video>
-          <button type="button" class="reel-toggle" data-reel-toggle aria-pressed="false">Pause</button>
-        </div>
-      )}
+
     </div>
   )}
 </section>
@@ -88,7 +73,7 @@ const editorialSrc = hero.image?.src || '/hero-ramy-final.webp'
   .editorial-frame {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     background: var(--bg);
   }
@@ -130,6 +115,6 @@ const editorialSrc = hero.image?.src || '/hero-ramy-final.webp'
     .line { order: 3; width: auto; font-size: 16px; line-height: 1.5; margin: 22px 0 0; }
     .cta-row { order: 4; margin-top: 28px; }
     .cta { height: 48px; padding: 0 20px; font-size: 15px; }
-    .editorial-frame { aspect-ratio: 3 / 2; }
+    .editorial-frame { aspect-ratio: 1 / 1; }
   }
 </style>
