@@ -1,8 +1,7 @@
 /**
- * Content layer. At build time it reads from Sanity when SANITY_PROJECT_ID is set,
- * otherwise from the bundled seed (src/data/seed.json) so the site always builds.
- * Only a read token (optional, for draft previews) is ever used here — never a write token,
- * and nothing from this file is shipped to the browser (the site is fully static).
+ * Content layer. In production it reads published Sanity content while rendering each
+ * request on Cloudflare; without SANITY_PROJECT_ID it falls back to the bundled seed.
+ * Only a read token (optional, for draft previews/private datasets) is ever used here.
  */
 import {createClient} from '@sanity/client'
 import seed from '../data/seed.json'
