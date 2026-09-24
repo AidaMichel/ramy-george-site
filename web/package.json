@@ -8,7 +8,8 @@
     "preview": "astro preview",
     "check": "node scripts/check-links.mjs",
     "deploy": "astro build && wrangler deploy",
-    "check:flow": "node scripts/check-flow.mjs"
+    "check:flow": "node scripts/check-flow.mjs",
+    "check:live": "node scripts/smoke-live.mjs"
   },
   "keywords": [],
   "author": "",
