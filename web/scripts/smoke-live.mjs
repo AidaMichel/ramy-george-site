@@ -31,18 +31,19 @@ assert(/Home/.test(homeHtml) && /Work/.test(homeHtml) && /Info/.test(homeHtml), 
 assert(/id="main"/.test(homeHtml), 'Main landmark renders')
 assert(/href="\/work\//.test(homeHtml) || /id="work"/.test(homeHtml), 'Home exposes a valid work path or work anchor')
 assert(!/Ramy George editing at his workstation/.test(homeHtml), 'Broken hero alt-text fallback is not visible in HTML')
-assert(/hero-rg-master\.webp/.test(homeHtml), 'Homepage renders the current high-resolution hero master')
+assert(/hero-rg-approved\.webp/.test(homeHtml), 'Homepage renders the approved hero photo')
 
 const work = await request('/work/')
 assert(work.status === 200, 'Work returns 200')
 const workHtml = await work.text()
 assert(/Selected Work/i.test(workHtml) || />Work</.test(workHtml), 'Work page content renders')
 
+let projectHtml = ''
 const projectMatch = workHtml.match(/href="(\/work\/[^"#?]+\/)"/)
 if (projectMatch) {
   const project = await request(projectMatch[1])
   assert(project.status === 200, 'A live project detail returns 200')
-  const projectHtml = await project.text()
+  projectHtml = await project.text()
   assert(/Back to Work/.test(projectHtml), 'Project detail renders Back to Work')
   assert(/Previous|Next|Related work/.test(projectHtml), 'Project browsing controls render')
 } else {
@@ -65,6 +66,21 @@ assert(missing.status === 404, 'Unknown route returns a real 404')
 const heroAsset = await request('/hero-rg-approved.webp?v=6')
 assert(heroAsset.status === 200, 'Approved hero asset returns 200')
 assert((heroAsset.headers.get('content-type') || '').includes('image'), 'Approved hero asset has an image content type')
+
+const decodeHtmlUrl = (u) => u.replaceAll('&amp;', '&')
+const imageSrcs = [...new Set(
+  [homeHtml, workHtml, infoHtml, projectHtml]
+    .flatMap((html) => [...html.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/gi)].map((m) => decodeHtmlUrl(m[1])))
+    .filter((src) => src && !src.startsWith('data:'))
+)].slice(0, 36)
+
+for (const src of imageSrcs) {
+  const img = await request(src)
+  assert(img.status === 200, `Image loads: ${src}`)
+  assert((img.headers.get('content-type') || '').includes('image'), `Image has valid content type: ${src}`)
+}
+assert(imageSrcs.length > 0, 'Live pages expose image assets')
+console.log(`✓ Verified ${imageSrcs.length} live image assets\n`)
 
 const cssMatch = homeHtml.match(/<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/) || homeHtml.match(/<link[^>]+href="([^"]+)"[^>]+rel="stylesheet"/)
 if (cssMatch) {
