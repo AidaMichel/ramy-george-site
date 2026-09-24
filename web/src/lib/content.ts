@@ -67,11 +67,15 @@ const QUERY = `{
   "logos": *[_type=="credibilityLogo" && visible != false]|order(orderRank){"id": _id, name, group, "logo": select(displayVersion=="official" && defined(officialLogo) => officialLogo${IMG}, displayVersion=="dark" && defined(darkLogo) => darkLogo${IMG}, logo${IMG}), "size": coalesce(size, 48)}
 }`
 
-let cached: Promise<Site> | null = null
+let cached: {value: Promise<Site>; at: number} | null = null
+const LIVE_CACHE_MS = 2000
 
 export function getSite(): Promise<Site> {
-  if (!cached) cached = load()
-  return cached
+  const now = Date.now()
+  // Coalesce the many getSite() calls made while rendering a page, but keep the
+  // cache intentionally tiny so a Sanity Publish appears on the live site almost immediately.
+  if (!cached || now - cached.at > LIVE_CACHE_MS) cached = {value: load(), at: now}
+  return cached.value
 }
 
 async function load(): Promise<Site> {
