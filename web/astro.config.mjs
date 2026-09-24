@@ -1,12 +1,14 @@
 import {defineConfig} from 'astro/config'
+import cloudflare from '@astrojs/cloudflare'
 import sitemap from '@astrojs/sitemap'
 
-// SITE_URL is set in Cloudflare (e.g. https://ramygeorge.com). Without it, canonical URLs and the sitemap are skipped.
+// SITE_URL is set once a custom domain is connected. Until then the workers.dev URL is used directly.
 const site = process.env.SITE_URL || undefined
 
 export default defineConfig({
   site,
-  output: 'static',
+  output: 'server',
+  adapter: cloudflare({imageService: 'passthrough'}),
   trailingSlash: 'ignore',
   build: {format: 'directory', inlineStylesheets: 'never'},
   integrations: site ? [sitemap()] : [],
