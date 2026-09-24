@@ -30,6 +30,8 @@ const navItems = site.navigation
     const current = !ext && (href === '/' ? path === '/' : path.startsWith(href))
     return {...n, href, ext, current}
   })
+const primaryNav = navItems.filter((n) => !n.highlight)
+const navCta = navItems.find((n) => n.highlight)
 const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
 ---
 <!doctype html>
@@ -59,9 +61,10 @@ const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
     </a>
     <nav aria-label="Main" class="desk">
       <ul>
-        {navItems.map((n) => <li><a href={n.href} class:list={[{hl: n.highlight}]} aria-current={n.current ? 'page' : undefined} {...(n.ext ? extAttrs : {})}>{n.label}</a></li>)}
+        {primaryNav.map((n) => <li><a href={n.href} aria-current={n.current ? 'page' : undefined} {...(n.ext ? extAttrs : {})}>{n.label}</a></li>)}
       </ul>
     </nav>
+    {navCta && <a class="nav-cta" href={navCta.href} aria-current={navCta.current ? 'page' : undefined} {...(navCta.ext ? extAttrs : {})}>{navCta.label}<span aria-hidden="true">↗</span></a>}
     <button type="button" class="menu-btn" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>Menu</button>
     <nav id="mobile-menu" class="mobile" aria-label="Main" hidden data-menu>
       <ul class="big-links">
@@ -109,15 +112,34 @@ const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
     z-index: 40;
     background: var(--bg);
   }
-  .nav::after { content: ''; grid-column: 3; }
   .brand { grid-column: 1; justify-self: start; display: flex; align-items: center; padding: 10px 0; }
   .brand img { height: 24px; width: auto; }
-  .desk { grid-column: 2; justify-self: center; }
-  .desk ul { list-style: none; margin: 0; padding: 0; display: flex; gap: clamp(20px, 3vw, 40px); }
+  .desk {
+    grid-column: 2;
+    justify-self: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .desk ul { list-style: none; margin: 0; padding: 0; display: flex; gap: clamp(26px, 3.2vw, 44px); }
   .desk a { font-size: 16px; padding: 12px 0; display: inline-block; }
   .desk a[aria-current='page'] { box-shadow: inset 0 -2px 0 var(--acc); }
-  .desk a.hl { color: var(--acc); font-weight: 600; }
-  .desk a.hl:hover { color: var(--text); }
+  .nav-cta {
+    grid-column: 3;
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid color-mix(in srgb, var(--acc) 80%, transparent);
+    border-radius: 999px;
+    color: var(--acc);
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { color: var(--text); border-color: var(--text); }
   .menu-btn, .mobile { display: none; }
   .foot { padding-top: 48px; padding-bottom: 32px; border-top: 1px solid var(--rule); max-width: none; }
   .sig { display: inline-block; }
@@ -125,9 +147,8 @@ const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
   .row { display: flex; justify-content: space-between; gap: 16px; font-size: 14px; margin-top: 36px; flex-wrap: wrap; }
   @media (max-width: 719px) {
     .nav { height: 64px; display: flex; justify-content: space-between; }
-    .nav::after { display: none; }
     .brand img { height: 18px; }
-    .desk { display: none; }
+    .desk, .nav-cta { display: none; }
     .menu-btn { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; background: transparent; border: 1px solid var(--rule); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
     .mobile:not([hidden]) { display: block; position: absolute; left: 0; right: 0; top: 64px; background: var(--bg); border-bottom: 1px solid var(--rule); padding: 12px var(--gutter) 28px; }
     .big-links { list-style: none; margin: 0; padding: 0; }
