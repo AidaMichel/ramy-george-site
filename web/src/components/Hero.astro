@@ -8,10 +8,6 @@ const cta = hero.ctaTarget === 'work' || !hasWorkAnchor ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const displaySkills = settings.supportingSkills.map((skill) => skill.trim().toLowerCase() === 'sound' ? 'Sound Design' : skill)
 const [lead, ...others] = displaySkills
-const storySkills = others.slice(0, 4).map((x) => x.toLowerCase())
-const storyList = storySkills.length > 1
-  ? `${storySkills.slice(0, -1).join(', ')} and ${storySkills.at(-1)}`
-  : storySkills[0] || ''
 const storyLine = hero.positioningLine || (lead
   ? 'The edit is the spine — motion, design and sound design make every beat land.'
   : hero.shortLine)
@@ -104,11 +100,11 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
   .title { font-size: clamp(26px, 3vw, 44px); line-height: 1; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase; }
   .skills { margin-top: 18px; font-size: 15px; line-height: 1.7; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
   .skills strong { font-weight: 700; color: var(--text); }
-  .story { margin-top: 16px; max-width: 52ch; font-size: 16px; line-height: 1.48; letter-spacing: -.005em; text-wrap: balance; }
+  .story { margin-top: 16px; max-width: var(--measure-copy); font-size: 16px; line-height: 1.48; letter-spacing: -.005em; text-wrap: balance; }
   .line { width: min(432px, 40%); font-size: 18px; line-height: 1.55; margin-bottom: 6px; }
   .cta-row { margin-top: 30px; }
-  .cta { display: inline-flex; align-items: center; height: 52px; padding: 0 22px; border: 1px solid var(--text); font-size: 16px; font-weight: 600; }
-  .cta:hover { border-color: var(--acc); }
+  .cta { display: inline-flex; align-items: center; min-height: var(--control-lg); padding: 0 22px; border: 1px solid var(--text); font-size: 16px; font-weight: 600; transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+  .cta:hover { border-color: var(--acc); color: var(--acc); transform: translateY(-1px); }
 
   .visual {
     min-width: 0;
@@ -120,7 +116,7 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
     z-index: 1;
     isolation: isolate;
     filter:
-      drop-shadow(0 28px 64px rgba(0,0,0,.24))
+      drop-shadow(var(--shadow-float))
       drop-shadow(0 0 46px rgba(255,178,82,.035));
   }
   .visual::before {
