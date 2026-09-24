@@ -223,7 +223,15 @@ export const about = defineType({
   icon: UserIcon,
   fields: [
     defineField({name: 'heading', type: 'string', initialValue: 'About'}),
-    defineField({name: 'paragraph', type: 'text', rows: 6, validation: (r) => r.required()}),
+    defineField({name: 'paragraph', title: 'Full bio (used on Info)', type: 'text', rows: 6, validation: (r) => r.required()}),
+    defineField({
+      name: 'homepageParagraph',
+      title: 'Short homepage intro',
+      type: 'text',
+      rows: 4,
+      description: 'Keep this natural and short. The full biography belongs on the Info page.',
+      initialValue: 'I’m Ramy, a video generalist based in Dubai. Editing is where I spend most of my time, but I also work across motion, design, sound and camera. I’ve worked on everything from news and documentaries to podcasts, social content and branded work.',
+    }),
     defineField({name: 'portrait', type: 'image', options: {hotspot: true}, fields: [defineField({name: 'alt', type: 'string', initialValue: 'Ramy George'})]}),
     defineField({name: 'links', type: 'array', of: [{type: 'linkItem'}]}),
     defineField({name: 'seo', title: 'SEO (About page)', type: 'seo'}),
