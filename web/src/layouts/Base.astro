@@ -13,8 +13,8 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
 const ogAbs = og && Astro.site && og.startsWith('/') ? new URL(og, Astro.site).href : og
 const path = Astro.url.pathname
 const logo = site.settings.logo
-const faviconBase = site.settings.favicon || logo?.src || '/favicon.svg'
-const faviconHref = faviconBase.includes('?') ? `${faviconBase}&v=4` : `${faviconBase}?v=4`
+const faviconBase = logo?.src || '/favicon.svg'
+const faviconHref = faviconBase.includes('?') ? `${faviconBase}&v=5` : `${faviconBase}?v=5`
 const flogo = site.settings.footerLogo?.src ? site.settings.footerLogo : logo
 const f = site.settings.footer
 const c = site.contact
