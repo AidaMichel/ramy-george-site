@@ -18,7 +18,7 @@ export type Project = {
 export type Seo = {title?: string; description?: string; ogImage?: string; noIndex?: boolean}
 export type Logo = {id: string; name: string; group: 'clients' | 'media' | 'events'; logo: Img; size: number}
 export type Site = {
-  settings: {siteName: string; professionalTitle: string; supportingSkills: string[]; location: string; logo: Img; footerLogo?: Img; showFooterSignature: boolean; cv: string; siteUrl: string; favicon?: string; seo: Seo
+  settings: {siteName: string; professionalTitle: string; supportingSkills: string[]; location: string; logo: Img; footerLogo?: Img; showFooterSignature: boolean; cv: string; siteUrl: string; favicon?: string; seo: Seo; workSeo?: Seo; workIntro?: string; googleSiteVerification?: string; bingSiteVerification?: string
     footer: {showEmail: boolean; creditLine: string; locationLine: string; copyrightName: string; backToTopLabel: string}}
   navigation: {label: string; target: string; url?: string; highlight: boolean; visible?: boolean}[]
   contact: {email: string; whatsapp: string; linkedin: string; kicker: string; heading: string; buttonLabel: string; buttonTarget: 'email' | 'whatsapp'; seo?: Seo}
@@ -44,7 +44,7 @@ function platformOf(url?: string) {
 
 const IMG = `{"src": asset->url, "w": asset->metadata.dimensions.width, "h": asset->metadata.dimensions.height, alt}`
 const QUERY = `{
-  "settings": *[_id=="siteSettings"][0]{siteName, professionalTitle, supportingSkills, location, "logo": logo${IMG}, "footerLogo": footerLogo${IMG}, showFooterSignature, footer, "cv": cv.asset->url, siteUrl, "favicon": favicon.asset->url, "seo": defaultSeo{title, description, noIndex, "ogImage": ogImage.asset->url}},
+  "settings": *[_id=="siteSettings"][0]{siteName, professionalTitle, supportingSkills, location, "logo": logo${IMG}, "footerLogo": footerLogo${IMG}, showFooterSignature, footer, "cv": cv.asset->url, siteUrl, "favicon": favicon.asset->url, googleSiteVerification, bingSiteVerification, workIntro, "seo": defaultSeo{title, description, noIndex, "ogImage": ogImage.asset->url}, "workSeo": workSeo{title, description, noIndex, "ogImage": ogImage.asset->url}},
   "navigation": *[_id=="navigation"][0].items[]{label, target, url, highlight, visible},
   "contact": *[_id=="contact"][0]{email, whatsapp, linkedin, kicker, heading, buttonLabel, buttonTarget, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
   "hero": *[_id=="hero"][0]{mode, useDashboardImage, shortLine, positioningLine, ctaLabel, ctaTarget,
@@ -115,7 +115,7 @@ function normalise(input: any): Site {
     .map((p: any) => ({...p, platform: p.platform || platformOf(p.watchUrl), watchUrl: p.watchUrl || '', slides: (p.slides || []).filter((x: any) => x?.src)}))
   // Contact & settings: fall back to seed defaults field-by-field so a half-filled CMS never breaks a page
   return {
-    settings: {...s.settings, ...(r.settings || {}), seo: {...s.settings.seo, ...(r.settings?.seo || {})}, footer: {...s.settings.footer, ...(r.settings?.footer || {})}},
+    settings: {...s.settings, ...(r.settings || {}), seo: {...s.settings.seo, ...(r.settings?.seo || {})}, workSeo: {...(s.settings.workSeo || {}), ...(r.settings?.workSeo || {})}, footer: {...s.settings.footer, ...(r.settings?.footer || {})}},
     navigation: (() => {
       const nav = r.navigation?.length ? r.navigation : s.navigation
       return nav.some((n: any) => n.target === 'home')
