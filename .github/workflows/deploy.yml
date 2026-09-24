@@ -63,7 +63,9 @@ jobs:
 
       - name: Pull-request preview version
         if: env.CLOUDFLARE_API_TOKEN != '' && (github.event_name == 'pull_request')
-        run: npm run build && npx wrangler versions upload --message "PR #${{ github.event.number }}"
+        run: |
+          npm run build
+          npx wrangler versions upload --message "PR #${{ github.event.number }}"
 
   # Redeploys the dashboard (Sanity Studio) when studio/ changes. Skipped until the SANITY_DEPLOY_TOKEN secret is added.
   studio:
