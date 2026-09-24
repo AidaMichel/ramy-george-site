@@ -80,8 +80,8 @@ const editorialSrc = hero.image?.src || heroFallback
     aspect-ratio: 1 / 1;
     overflow: visible;
     background: transparent;
-    -webkit-mask-image: radial-gradient(ellipse 88% 84% at 62% 46%, #000 0%, #000 54%, rgba(0,0,0,.92) 63%, transparent 100%);
-    mask-image: radial-gradient(ellipse 88% 84% at 62% 46%, #000 0%, #000 54%, rgba(0,0,0,.92) 63%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 86% at 62% 46%, #000 0%, #000 58%, rgba(0,0,0,.90) 68%, transparent 100%);
+    mask-image: radial-gradient(ellipse 90% 86% at 62% 46%, #000 0%, #000 58%, rgba(0,0,0,.90) 68%, transparent 100%);
   }
   .editorial-frame::after {
     content: '';
@@ -89,8 +89,8 @@ const editorialSrc = hero.image?.src || heroFallback
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.72) 8%, rgba(22,21,19,.20) 24%, rgba(22,21,19,0) 46%),
-      linear-gradient(180deg, rgba(22,21,19,.30) 0%, rgba(22,21,19,0) 18%, rgba(22,21,19,0) 70%, rgba(22,21,19,.72) 100%);
+      linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.56) 8%, rgba(22,21,19,.12) 24%, rgba(22,21,19,0) 46%),
+      linear-gradient(180deg, rgba(22,21,19,.16) 0%, rgba(22,21,19,0) 18%, rgba(22,21,19,0) 72%, rgba(22,21,19,.48) 100%);
   }
   .editorial-frame img {
     width: 100%;
@@ -98,7 +98,7 @@ const editorialSrc = hero.image?.src || heroFallback
     display: block;
     object-fit: cover;
     object-position: center;
-    filter: brightness(1.10) contrast(1.03) saturate(.82);
+    filter: brightness(1.24) contrast(1.02) saturate(.88);
   }
 
   .frame { display: block; aspect-ratio: 4 / 5; background: var(--s1); overflow: hidden; position: relative; }
