@@ -8,7 +8,7 @@ const slug = Astro.params.slug
 const p = site.projects.find((x) => x.slug === slug) as Project | undefined
 if (!p) return Astro.redirect('/404', 302)
 const cat = site.categories.find((c) => c.slug === p.category)
-const kindLabel = p.kind === 'video' ? `Video${cat ? ' · ' + cat.title : ''}` : p.kind === 'motion' ? 'Motion & AI' : 'Posts & Carousels'
+const kindLabel = p.kind === 'video' ? `Editing${cat ? ' · ' + cat.title : ''}` : p.kind === 'motion' ? 'Motion & AI' : 'Posts & Carousels'
 const embed = p.watchUrl ? embedUrl(p.watchUrl) : ''
 const motionLoop = p.kind === 'motion' ? (p.previewLoop || p.hoverPreview || '') : ''
 const mainAspect = p.kind === 'post' ? (p.slideAspect || '4:5') : (p.aspect || '16:9')
@@ -22,9 +22,9 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
 ---
 <Base seo={p.seo} title={`${p.title}${p.org ? ' — ' + p.org : ''} · ${site.settings.siteName}`} description={desc} image={(p.cover || p.poster)?.src}>
   <article class="wrap proj">
-    <a class="back" href={p.kind === 'video' && cat ? `/work/#${cat.slug}` : '/work/'} aria-label="Back to all work">
+    <a class="back" href={p.kind === 'video' && cat ? `/work/#${cat.slug}` : '/work/'} aria-label="Back to Work">
       <span class="back-arrow" aria-hidden="true">←</span>
-      <span>All work</span>
+      <span>Back to Work</span>
     </a>
     <header class="hd">
       <p class="lbl">{kindLabel}</p>
