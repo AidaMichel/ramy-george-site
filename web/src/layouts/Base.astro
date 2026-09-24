@@ -6,8 +6,12 @@ const site = await getSite()
 const {title, description, image} = Astro.props
 const seo = Astro.props.seo || {}
 const d = site.settings.seo
-const pageTitle = seo.title || title || d.title || site.settings.siteName
-const desc = seo.description || description || d.description || ''
+const fallbackTitle = title || d.title || site.settings.siteName
+const requestedTitle = (seo.title || '').trim()
+const pageTitle = requestedTitle.length >= 15 && requestedTitle.length <= 70 ? requestedTitle : fallbackTitle
+const fallbackDesc = (description || d.description || '').trim()
+const requestedDesc = (seo.description || '').trim()
+const desc = requestedDesc.length >= 50 && requestedDesc.length <= 180 ? requestedDesc : fallbackDesc
 const og = seo.ogImage || image || d.ogImage
 const canonicalPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/+$/, '') + '/'
 const siteBase = Astro.site || new URL(site.settings.siteUrl || Astro.url.origin)
