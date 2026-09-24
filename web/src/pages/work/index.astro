@@ -10,13 +10,17 @@ const groups = [
   {id: 'posts-carousels', title: 'Posts & Carousels', items: onWork.filter((p) => p.kind === 'post')},
 ].filter((g) => g.items.length > 0)
 const total = groups.reduce((n, g) => n + g.items.length, 0)
+const workTitle = site.settings.workSeo?.title || `Video Editing & Motion Design Work — ${site.settings.siteName}`
+const workDescription = site.settings.workSeo?.description || `Selected video editing, motion design, sound design and visual storytelling work by ${site.settings.siteName} in Dubai.`
+const workIntro = site.settings.workIntro || 'Selected video editing, motion design, sound design and visual storytelling work from Dubai.'
 ---
-<Base title={`Work — ${site.settings.siteName}`} description={`Selected video editing, motion and design work by ${site.settings.siteName}.`}>
+<Base seo={site.settings.workSeo} title={workTitle} description={workDescription}>
   <div class="wrap page">
     <div class="head">
       <div>
         <p class="eyebrow">SELECTED WORK</p>
         <h1 class="h1">Work</h1>
+        <p class="intro muted">{workIntro}</p>
       </div>
       {total > 0 && <p class="muted count">{String(total).padStart(2, '0')} projects</p>}
     </div>
@@ -61,6 +65,7 @@ const total = groups.reduce((n, g) => n + g.items.length, 0)
   .eyebrow { color: var(--acc); font-size: 11px; font-weight: 700; letter-spacing: .14em; }
   .h1 { margin-top: 12px; font-size: clamp(56px, 9vw, 128px); line-height: .9; font-weight: 600; letter-spacing: -0.045em; }
   .count { font-size: 14px; padding-bottom: 10px; }
+  .intro { margin-top: 18px; max-width: 62ch; font-size: 17px; line-height: 1.55; text-wrap: pretty; }
   .jump ul { list-style: none; margin: 34px 0 0; padding: 0; display: flex; gap: 8px; flex-wrap: wrap; }
   .jump .pill { display: inline-flex; align-items: center; }
   .jump .pill:hover { border-color: var(--acc); color: var(--text); }
