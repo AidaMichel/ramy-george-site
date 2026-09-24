@@ -1,13 +1,13 @@
 ---
 import {getSite} from '../lib/content'
-import Img from './Img.astro'
 const site = await getSite()
 const {hero, settings} = site
 const cta = hero.ctaTarget === 'work' ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
 const useEditorialPortrait = hero.mode === 'none'
-const editorialSrc = '/hero-rg-approved.webp?v=3'
+const fallbackHero = '/hero-rg-approved.webp?v=4'
+const editorialSrc = hero.useDashboardImage && hero.image?.src ? hero.image.src : fallbackHero
 ---
 <section class:list={['hero wrap', {'has-visual': useEditorialPortrait, editorial: useEditorialPortrait}]} aria-labelledby="hero-name">
   <div class="text">
@@ -87,10 +87,10 @@ const editorialSrc = '/hero-rg-approved.webp?v=3'
   }
   .editorial-portrait {
     align-self: stretch;
-    width: 126%;
+    width: 118%;
     height: 100%;
-    margin-left: -15%;
-    margin-right: -8%;
+    margin-left: -10%;
+    margin-right: -5%;
     transform: none;
   }
   .editorial-frame {
@@ -144,7 +144,7 @@ const editorialSrc = '/hero-rg-approved.webp?v=3'
 
   @media (max-width: 1100px) {
     .hero { grid-template-columns: minmax(0, .96fr) minmax(390px, 1.04fr); min-height: auto; align-items: center; }
-    .editorial-portrait { width: 121%; margin-left: -13%; margin-right: -7%; }
+    .editorial-portrait { width: 116%; margin-left: -9%; margin-right: -5%; }
     h1 { font-size: clamp(74px, 10.4vw, 136px); }
   }
   @media (max-width: 899px) {
@@ -168,6 +168,9 @@ const editorialSrc = '/hero-rg-approved.webp?v=3'
     }
   }
   @media (max-width: 719px) {
+    .text { padding-block: 24px 16px; }
+    h1 { font-size: clamp(58px, 18vw, 92px); line-height: .86; }
+    .title { font-size: clamp(24px, 7.2vw, 34px); }
     .meta { flex-direction: column; align-items: flex-start; gap: 0; margin-top: 28px; }
     .meta > div { display: contents; }
     .title { order: 1; }
@@ -176,5 +179,9 @@ const editorialSrc = '/hero-rg-approved.webp?v=3'
     .cta-row { order: 4; margin-top: 28px; }
     .cta { height: 48px; padding: 0 20px; font-size: 15px; }
     .editorial-frame { aspect-ratio: 1.08 / 1; }
+  }
+  @media (max-width: 380px) {
+    h1 { font-size: clamp(52px, 17vw, 64px); }
+    .skills { letter-spacing: .05em; }
   }
 </style>
