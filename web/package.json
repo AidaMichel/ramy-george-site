@@ -10,7 +10,8 @@
     "deploy": "astro build && wrangler deploy",
     "check:flow": "node scripts/check-flow.mjs",
     "check:live": "node scripts/smoke-live.mjs",
-    "check:design": "node scripts/check-design.mjs"
+    "check:design": "node scripts/check-design.mjs",
+    "check:seo": "node scripts/check-seo-live.mjs"
   },
   "keywords": [],
   "author": "",
