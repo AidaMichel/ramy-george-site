@@ -11,9 +11,9 @@ const storySkills = others.slice(0, 4).map((x) => x.toLowerCase())
 const storyList = storySkills.length > 1
   ? `${storySkills.slice(0, -1).join(', ')} and ${storySkills.at(-1)}`
   : storySkills[0] || ''
-const storyLine = lead
-  ? 'Editing-led visual storytelling across motion, design, sound design, camera and AI.'
-  : hero.shortLine
+const storyLine = hero.positioningLine || (lead
+  ? 'The edit is the spine — motion, design and sound design make every beat land.'
+  : hero.shortLine)
 const fallbackHero = '/hero-rg-approved.webp?v=7'
 const editorialSrc = hero.mode === 'none'
   ? (hero.useDashboardImage && hero.image?.src ? hero.image.src : fallbackHero)
