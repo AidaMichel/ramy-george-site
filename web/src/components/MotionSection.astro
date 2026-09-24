@@ -6,7 +6,6 @@ interface Props { num: string }
 const site = await getSite()
 const sec = section(site, 'motion')!
 const items = site.projects.filter((p) => p.kind === 'motion' && p.showOnHome)
-if (!items.length) return
 const TAG: Record<string, string> = {motion: 'Motion', ai: 'AI-assisted', logo: 'Logo animation'}
 const filters = site.home.motionFilters
   .map((f) => ({...f, n: f.key === 'all' ? items.length : items.filter((p) => (p.motionType || 'motion') === f.key).length}))
@@ -26,24 +25,26 @@ const filters = site.home.motionFilters
       </div>
     </div>
   </div>
-  <div class="wrap" data-carousel>
-    <ul class="track" data-track tabindex="0" role="region" aria-roledescription="carousel" aria-label="Motion and AI work">
-      {items.map((p) => (
-        <li class="item" data-type={p.motionType || 'motion'} style={`--ar:${ratio(p.aspect)}`}>
-          <a href={`/work/${p.slug}/`} class="tile">
-            <span class="med media">
-              {p.previewLoop
-                ? <video src={p.previewLoop} poster={p.poster?.src} muted loop playsinline preload="none" data-autoplay aria-hidden="true"></video>
-                : <Img img={p.poster} class="cover" sizes="40vw" />}
-              <span class="tag">{TAG[p.motionType || 'motion']}</span>
-            </span>
-            <span class="cap"><b>{p.title}</b>{p.org && <span class="muted"> · {p.org}</span>}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-    <CarouselControls label="motion piece" />
-  </div>
+  {items.length > 0 && (
+    <div class="wrap" data-carousel>
+      <ul class="track" data-track tabindex="0" role="region" aria-roledescription="carousel" aria-label="Motion and AI work">
+        {items.map((p) => (
+          <li class="item" data-type={p.motionType || 'motion'} style={`--ar:${ratio(p.aspect)}`}>
+            <a href={`/work/${p.slug}/`} class="tile">
+              <span class="med media">
+                {p.previewLoop
+                  ? <video src={p.previewLoop} poster={p.poster?.src} muted loop playsinline preload="none" data-autoplay aria-hidden="true"></video>
+                  : <Img img={p.poster} class="cover" sizes="40vw" />}
+                <span class="tag">{TAG[p.motionType || 'motion']}</span>
+              </span>
+              <span class="cap"><b>{p.title}</b>{p.org && <span class="muted"> · {p.org}</span>}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <CarouselControls label="motion piece" />
+    </div>
+  )}
 </section>
 <script>
   import {initCarousels} from '../scripts/carousel'

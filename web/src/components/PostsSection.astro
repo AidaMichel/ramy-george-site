@@ -7,7 +7,6 @@ const site = await getSite()
 const sec = section(site, 'posts')!
 const all = site.projects.filter((p) => p.kind === 'post' && p.showOnHome && p.slides?.length)
 const chosen = site.home.posts?.length ? site.home.posts.map((s) => all.find((p) => p.slug === s)).filter(Boolean) as typeof all : all
-if (!chosen.length) return
 ---
 <section class="posts" aria-labelledby="posts-h">
   <div class="wrap">
