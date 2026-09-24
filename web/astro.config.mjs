@@ -8,6 +8,7 @@ const site = process.env.SITE_URL || undefined
 export default defineConfig({
   site,
   output: 'server',
+  session: false,
   adapter: cloudflare({imageService: 'passthrough'}),
   trailingSlash: 'ignore',
   build: {format: 'directory', inlineStylesheets: 'never'},
