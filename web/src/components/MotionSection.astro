@@ -88,11 +88,14 @@ const filters = site.home.motionFilters
   .empty-state {
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
-    display: block;
-    padding: 34px 0;
+    min-height: clamp(250px, 28vw, 390px);
+    display: grid;
+    place-items: center;
+    padding: clamp(44px, 6vw, 72px) 0;
     margin-bottom: clamp(56px, 7vw, 96px);
+    text-align: center;
   }
-  .empty-copy { max-width: 620px; }
+  .empty-copy { max-width: 620px; display: flex; flex-direction: column; align-items: center; }
   .empty-status { font-size: 11px; letter-spacing: .14em; font-weight: 700; color: var(--muted); display: flex; align-items: center; gap: 10px; }
   .empty-status span { width: 30px; height: 2px; background: var(--acc); display: inline-block; }
   .empty-title { margin-top: 16px; font-size: clamp(34px, 4vw, 54px); line-height: 1; letter-spacing: -.03em; font-weight: 600; }
@@ -104,7 +107,7 @@ const filters = site.home.motionFilters
     .filters { justify-content: flex-start; }
   }
   @media (max-width: 719px) {
-    .empty-state { min-height: 0; padding: 30px 0 34px; margin-bottom: 56px; }
+    .empty-state { min-height: 220px; padding: 36px 20px; margin-bottom: 56px; }
     .empty-desc { font-size: 15px; }
   }
 </style>
