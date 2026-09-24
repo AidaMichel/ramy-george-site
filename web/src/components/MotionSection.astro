@@ -10,6 +10,7 @@ const TAG: Record<string, string> = {motion: 'Motion', ai: 'AI Gen', logo: 'Logo
 const filters = site.home.motionFilters
   .map((f) => ({...f, n: f.key === 'all' ? items.length : items.filter((p) => (p.motionType || 'motion') === f.key).length}))
   .filter((f) => items.length === 0 || f.key === 'all' || f.n > 0)
+const initialFilter = filters.find((f) => f.key === 'all')?.key || filters[0]?.key || 'all'
 ---
 <section class:list={['sec motion', {empty: items.length === 0}]} aria-labelledby="motion-h" data-motion>
   <div class="wrap">
@@ -18,7 +19,7 @@ const filters = site.home.motionFilters
       <div class="side">
         {filters.length > 0 && (
           <div class="filters" role="group" aria-label="Filter motion work">
-            {filters.map((f, i) => <button type="button" class="pill" aria-pressed={String(i === 0)} data-filter={f.key}>{f.label}<span class="c">{String(f.n).padStart(2, '0')}</span></button>)}
+            {filters.map((f) => <button type="button" class="pill" aria-pressed={String(f.key === initialFilter)} data-filter={f.key}>{f.label}<span class="c">{String(f.n).padStart(2, '0')}</span></button>)}
           </div>
         )}
         {sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
@@ -30,7 +31,7 @@ const filters = site.home.motionFilters
     <div class="wrap" data-carousel>
       <ul class="track" data-track tabindex="0" role="region" aria-roledescription="carousel" aria-label="Motion and AI work">
         {items.map((p) => (
-          <li class="item" data-type={p.motionType || 'motion'} style={`--ar:${ratio(p.aspect)}`}>
+          <li class="item" data-type={p.motionType || 'motion'} hidden={initialFilter !== 'all' && (p.motionType || 'motion') !== initialFilter} style={`--ar:${ratio(p.aspect)}`}>
             <a href={`/work/${p.slug}/`} class="tile">
               <span class="med media">
                 {p.previewLoop
