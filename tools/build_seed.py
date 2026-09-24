@@ -151,11 +151,11 @@ site = {
               'footer': {'showEmail': False, 'locationLine': 'Dubai, UAE', 'copyrightName': '', 'backToTopLabel': 'Back to top ↑'},
               'cv': '/files/Ramy_George_CV.pdf', 'siteUrl': '',
               'seo': {'title': 'Ramy George — Video Editor & Video Generalist in Dubai', 'description': 'Ramy George is a video editor based in Dubai, working across news, podcasts, documentary, events and branded content, with motion design, graphic design and sound.'}},
- 'navigation': [{'label': 'Work', 'target': 'work', 'highlight': False}, {'label': 'Info', 'target': 'about', 'highlight': False}, {'label': 'Let’s talk', 'target': 'contact', 'highlight': True}],
+ 'navigation': [{'label': 'Home', 'target': 'home', 'highlight': False, 'visible': True}, {'label': 'Work', 'target': 'work', 'highlight': False}, {'label': 'Info', 'target': 'about', 'highlight': False}, {'label': 'Let’s talk', 'target': 'contact', 'highlight': True}],
  # Contact details come from the portfolio/CV and are still to be CONFIRMED by the owner before launch.
  'contact': {'email': 'Ramy903@gmail.com', 'whatsapp': 'https://wa.me/message/MX6HDX77H4RWG1', 'linkedin': 'https://www.linkedin.com/in/ramy-george/',
              'kicker': 'Have a project in mind?', 'heading': 'Let’s talk.', 'buttonLabel': 'LET’S TALK', 'buttonTarget': 'whatsapp'},
- 'hero': {'mode': 'none', 'shortLine': 'Based in Dubai. I spend most of my time editing news, documentaries, podcasts, social and branded work, with motion, design and sound often part of the same job.', 'ctaLabel': 'See the work ↓', 'ctaTarget': 'section'},
+ 'hero': {'mode': 'none', 'useDashboardImage': False, 'shortLine': 'Based in Dubai. I spend most of my time editing news, documentaries, podcasts, social and branded work, with motion, design and sound often part of the same job.', 'ctaLabel': 'See the work ↓', 'ctaTarget': 'section'},
  'about': {'heading': 'About', 'paragraph': ABOUT, 'portrait': PORTRAIT,
            'links': [{'label': 'More on the Info page →', 'kind': 'info'}, {'label': 'LinkedIn', 'kind': 'linkedin'}, {'label': 'Email', 'kind': 'email'}]},
  'info': {'heading': 'Info', 'useAboutParagraph': True, 'intro': '', 'showPortrait': True,
@@ -163,7 +163,7 @@ site = {
           'training': [{'course': c, 'institution': o, 'year': y} for c, o, y in TRAINING],
           'showCv': True, 'cvLabel': 'Download CV ↗'},
  'home': {'sections': [{'key': k, 'visible': True, 'heading': h, 'microcopy': m} for k, h, m in [
-             ('hero', '', ''), ('video', 'Video', 'BROWSE DIFFERENT FORMATS'), ('motion', 'Motion & AI', 'Short muted loops · drag, swipe or use the arrows'),
+             ('hero', '', ''), ('video', 'Editing', 'BROWSE DIFFERENT FORMATS'), ('motion', 'Motion & AI', 'Short muted loops · drag, swipe or use the arrows'),
              ('posts', 'Posts & Carousels', 'Original artwork, in its original order'), ('clients', 'Clients & Coverage', ''),
              ('about', 'About', ''), ('contact', '', '')]],
           'defaultCategory': 'news', 'defaultProject': '',
@@ -211,7 +211,7 @@ docs.append({'_id': 'siteSettings', '_type': 'siteSettings', 'siteName': 'Ramy G
              'defaultSeo': {'_type': 'seo', **s['settings']['seo']}})
 docs.append({'_id': 'navigation', '_type': 'navigation', 'items': [{'_key': f'n{i}', '_type': 'navItem', **n, 'visible': True} for i, n in enumerate(s['navigation'])]})
 docs.append({'_id': 'contact', '_type': 'contact', **{k: v for k, v in s['contact'].items()}})
-docs.append({'_id': 'hero', '_type': 'hero', 'mode': 'none', 'shortLine': 'Based in Dubai. I spend most of my time editing news, documentaries, podcasts, social and branded work, with motion, design and sound often part of the same job.', 'ctaLabel': 'See the work ↓', 'ctaTarget': 'section'})
+docs.append({'_id': 'hero', '_type': 'hero', 'mode': 'none', 'useDashboardImage': False, 'shortLine': 'Based in Dubai. I spend most of my time editing news, documentaries, podcasts, social and branded work, with motion, design and sound often part of the same job.', 'ctaLabel': 'See the work ↓', 'ctaTarget': 'section'})
 docs.append({'_id': 'about', '_type': 'about', 'heading': 'About', 'paragraph': ABOUT, 'portrait': {**asset(PORTRAIT), 'alt': PORTRAIT['alt']},
              'links': [{'_key': f'l{i}', '_type': 'linkItem', 'visible': True, **l} for i, l in enumerate(s['about']['links'])]})
 docs.append({'_id': 'homepage', '_type': 'homepage',
