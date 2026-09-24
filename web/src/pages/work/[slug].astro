@@ -17,7 +17,8 @@ const siblings = site.projects.filter((x) => x.kind === p.kind && (p.kind !== 'v
 const i = siblings.findIndex((x) => x.slug === p.slug)
 const prev = siblings[i - 1], next = siblings[i + 1]
 const related = siblings.filter((x) => x.slug !== p.slug).slice(0, 3)
-const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p.org : ''} — ${p.role || 'edited'} by ${site.settings.siteName}, video editor in Dubai.`
+const discipline = p.kind === 'video' ? 'video editing' : p.kind === 'motion' ? 'motion and AI work' : 'design and carousel work'
+const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p.org : ''} — ${discipline} by ${site.settings.siteName} in Dubai.`
 ---
 <Base seo={p.seo} title={`${p.title}${p.org ? ' — ' + p.org : ''} · ${site.settings.siteName}`} description={desc} image={(p.cover || p.poster)?.src}>
   <article class="wrap proj">
