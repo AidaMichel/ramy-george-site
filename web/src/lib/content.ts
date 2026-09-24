@@ -138,7 +138,7 @@ export function watchLabel(p: Pick<Project, 'watchLabel' | 'platform'>) {
   return p.watchLabel || (p.platform ? `Watch on ${p.platform} ↗` : 'Watch ↗')
 }
 export function navHref(target: string, url?: string) {
-  return target === 'home' ? '/' : target === 'work' ? '/work/' : target === 'about' || target === 'info' ? '/info/' : target === 'contact' ? '/contact/' : url || '/'
+  return target === 'home' ? '/' : target === 'work' ? '/work/' : target === 'about' || target === 'info' ? '/info/' : target === 'contact' ? '/#contact' : url || '/'
 }
 export function linkHref(site: Site, kind: string, url?: string): string {
   switch (kind) {

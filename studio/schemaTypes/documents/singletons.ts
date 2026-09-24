@@ -65,7 +65,7 @@ export const navigation = defineType({
             defineField({
               name: 'target',
               type: 'string',
-              options: {list: [{title: 'Home', value: 'home'}, {title: 'Work', value: 'work'}, {title: 'Info page', value: 'about'}, {title: 'Let’s talk (contact)', value: 'contact'}, {title: 'Custom URL', value: 'custom'}]},
+              options: {list: [{title: 'Home', value: 'home'}, {title: 'Work', value: 'work'}, {title: 'Info page', value: 'about'}, {title: 'Let’s talk (homepage section)', value: 'contact'}, {title: 'Custom URL', value: 'custom'}]},
               validation: (r) => r.required(),
             }),
             defineField({name: 'url', type: 'url', hidden: ({parent}) => parent?.target !== 'custom'}),
@@ -244,7 +244,7 @@ export const contact = defineType({
     defineField({name: 'heading', type: 'string', initialValue: 'Let’s talk.'}),
     defineField({name: 'buttonLabel', type: 'string', initialValue: 'LET’S TALK'}),
     defineField({name: 'buttonTarget', title: 'LET’S TALK button opens', type: 'string', options: {list: [{title: 'WhatsApp', value: 'whatsapp'}, {title: 'Email', value: 'email'}], layout: 'radio'}, initialValue: 'whatsapp'}),
-    defineField({name: 'seo', title: 'SEO (Contact page)', type: 'seo'}),
+    defineField({name: 'seo', title: 'SEO (legacy contact URL)', type: 'seo', hidden: true}),
   ],
   preview: {prepare: () => ({title: 'Contact'})},
 })

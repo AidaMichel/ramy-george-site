@@ -10,6 +10,9 @@ if (!p) return Astro.redirect('/404', 302)
 const cat = site.categories.find((c) => c.slug === p.category)
 const kindLabel = p.kind === 'video' ? `Video${cat ? ' · ' + cat.title : ''}` : p.kind === 'motion' ? 'Motion & AI' : 'Posts & Carousels'
 const embed = p.watchUrl ? embedUrl(p.watchUrl) : ''
+const motionLoop = p.kind === 'motion' ? (p.previewLoop || p.hoverPreview || '') : ''
+const mainAspect = p.kind === 'post' ? (p.slideAspect || '4:5') : (p.aspect || '16:9')
+const mainShape = mainAspect === '9:16' ? 'vertical' : ['4:5', '3:4'].includes(mainAspect) ? 'portrait' : mainAspect === '1:1' ? 'square' : 'wide'
 const siblings = site.projects.filter((x) => x.kind === p.kind && (p.kind !== 'video' || x.category === p.category))
 const i = siblings.findIndex((x) => x.slug === p.slug)
 const prev = siblings[i - 1], next = siblings[i + 1]
@@ -25,11 +28,13 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
       {p.org && <p class="org">{p.org}</p>}
     </header>
 
-    <div class="player" data-player style={`--ar:${ratio(p.aspect)}`}>
+    <div class:list={['player', mainShape]} data-player style={`--ar:${ratio(mainAspect)}`}>
       <div class="frame media">
-        {p.kind === 'post' && p.slides?.length
-          ? <Img img={p.slides[0]} class="contain" eager />
-          : <Img img={p.poster} alt={p.poster?.alt || p.title} class="contain" eager sizes="(max-width: 1023px) 100vw, 80vw" />}
+        {motionLoop
+          ? <video class="motion-loop" src={motionLoop} poster={p.poster?.src} muted loop playsinline autoplay preload="metadata" aria-label={`${p.title} preview`} data-motion-loop></video>
+          : p.kind === 'post' && p.slides?.length
+            ? <Img img={p.slides[0]} alt={p.slides[0]?.alt || p.title} class="contain" eager />
+            : <Img img={p.poster} alt={p.poster?.alt || p.title} class="contain" eager sizes="(max-width: 1023px) 100vw, 80vw" />}
         {embed && (
           <button type="button" class="play" data-embed={embed} aria-label={`Play ${p.title} here`}>
             <span class="tri" aria-hidden="true"></span><span>Play here</span>
@@ -73,13 +78,16 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
     {related.length > 0 && (
       <section class="rel" aria-labelledby="rel-h">
         <h2 id="rel-h" class="lbl">Related work</h2>
-        <ul>{related.map((r) => <li><a href={`/work/${r.slug}/`}><span class="media rt"><Img img={r.cover || r.poster} alt="" class="contain" sizes="33vw" /></span><b>{r.title}</b><span class="muted">{r.org}</span></a></li>)}</ul>
+        <ul>{related.map((r) => <li><a href={`/work/${r.slug}/`}><span class="media rt"><Img img={r.cover || r.poster} alt={r.title} class="contain" sizes="33vw" /></span><b>{r.title}</b><span class="muted">{r.org}</span></a></li>)}</ul>
       </section>
     )}
   </article>
 </Base>
 <script>
   // Click-to-load player: the Vimeo/YouTube iframe (and its cookies) only loads after the visitor asks for it.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLVideoElement>('[data-motion-loop]').forEach((v) => v.pause())
+  }
   document.querySelectorAll<HTMLButtonElement>('[data-embed]').forEach((b) => b.addEventListener('click', () => {
     const frame = b.parentElement!
     const f = document.createElement('iframe')
@@ -99,8 +107,11 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
   h1 { margin-top: 12px; font-size: clamp(40px, 6vw, 88px); line-height: .95; font-weight: 600; letter-spacing: -0.035em; max-width: 18ch; }
   .org { margin-top: 12px; font-size: 20px; color: var(--muted); }
   .player { margin-top: 48px; }
-  .frame { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 16 / 9; max-height: 82vh; }
-  .frame :global(img) { max-height: 100%; max-width: 100%; object-fit: contain; }
+  .frame { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: var(--ar); width: 100%; overflow: hidden; }
+  .player.portrait .frame { width: min(680px, 100%); margin-inline: auto; }
+  .player.vertical .frame { width: min(520px, 100%); margin-inline: auto; }
+  .player.square .frame { width: min(820px, 100%); margin-inline: auto; }
+  .frame :global(img), .motion-loop { max-height: 100%; max-width: 100%; width: 100%; height: 100%; object-fit: contain; }
   .frame :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   .play { position: absolute; inset: auto auto 20px 20px; display: inline-flex; align-items: center; gap: 12px; height: 56px; padding: 0 22px 0 18px; background: var(--text); color: var(--bg); border: 0; font-size: 16px; font-weight: 700; cursor: pointer; }
   .play:hover { background: var(--acc); }

@@ -7,10 +7,10 @@ Pages are rendered on demand at Cloudflare and read published Sanity content at 
 web/       the public website (Astro)         → Cloudflare
 studio/    the dashboard (Sanity Studio)      → free at https://<name>.sanity.studio
 tools/     build_seed.py (starter content from the confirmed portfolio data)
-.github/   automatic deploys (push, pull request, and every Publish in Sanity)
+.github/   automatic deploys for code/design changes and pull-request previews
 ```
 
-Pages: `/` · `/work/` · `/work/[project]/` · `/info/` (old `/about/` links redirect there) · `/contact/` · 404.
+Pages: `/` · `/work/` · `/work/[project]/` · `/info/` · 404. The old `/contact/` URL redirects to the homepage Let’s Talk section.
 
 ---
 
@@ -65,9 +65,8 @@ If a step turns red, open it — the first line says exactly which setting is mi
 ### Step 7 · Publishing content
 No webhook or GitHub token is needed for normal content publishing. Edit in Sanity Studio and press **Publish**. The live website reads the published dataset on the next request; a tiny ~2-second server cache coalesces repeated reads, so changes normally appear within a couple of seconds after refresh.
 
-### Step 8 · Your own domain (optional — the only paid part)
-Buy the domain (Cloudflare → *Domain Registration* sells at cost), then in `web/wrangler.jsonc` uncomment `routes` with the domain, and add the
-GitHub variable `SITE_URL` = `https://yourdomain.com`. HTTPS is automatic. Check the price before paying.
+### Step 8 · Custom domain
+Production is connected to **https://ramygeorge.com** through Cloudflare Workers. `www.ramygeorge.com` redirects to the apex domain and HTTPS is automatic.
 
 ### Later, optional
 - **Invite Ramy:** sanity.io/manage → *Members* → Invite (free plan includes a few seats).
@@ -115,8 +114,8 @@ when a video poster is too small (under 1920×1080, or 720×1280 for vertical).
 | Preview a draft | document menu → *Open preview* (after step 5) |
 
 Safety rules built in: a project with no Watch link shows no Watch button (never a dead link); homepage logos are never links;
-a logo without a file is not shown; empty sections (e.g. Motion and Posts before real loops/artwork exist) are hidden; external links always open
-in a new tab with `rel="noopener noreferrer"`; internal links never do.
+a logo without a file is not shown; CMS-visible homepage work sections stay visible and show an intentional empty state until real content is published;
+the Work archive omits empty groups; external links open in a new tab with `rel="noopener noreferrer"`; internal links do not.
 
 ## Local development
 
