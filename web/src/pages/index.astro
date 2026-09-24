@@ -16,13 +16,13 @@ let n = 0
 const numbered = shown.map((s) => ({...s, num: ['video', 'motion', 'posts', 'clients', 'about'].includes(s.key) ? String(++n).padStart(2, '0') : ''}))
 const workKeys = new Set(['video', 'motion', 'posts'])
 const firstWork = numbered.findIndex((s) => workKeys.has(s.key))
-const workAnchorAt = firstWork >= 0 ? firstWork : numbered.findIndex((s) => s.key !== 'hero')
+const workAnchorAt = firstWork
 ---
 <Base seo={site.home.seo}>
   {numbered.map((s, i) => (
     <>
       {i === workAnchorAt && <span id="work" aria-hidden="true"></span>}
-      {s.key === 'hero' ? <Hero /> :
+      {s.key === 'hero' ? <Hero hasWorkAnchor={workAnchorAt >= 0} /> :
       s.key === 'video' ? <VideoSection num={s.num} /> :
       s.key === 'motion' ? <MotionSection num={s.num} /> :
       s.key === 'posts' ? <PostsSection num={s.num} /> :
