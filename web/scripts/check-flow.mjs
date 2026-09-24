@@ -32,6 +32,11 @@ const checks = [
   ['project video play is click-to-load', project.includes("data-embed") && project.includes("replaceChildren(f)")],
   ['Info contains an on-page contact destination', info.includes("<ContactSection />")],
   ['project detail uses Editing terminology', project.includes("p.kind === 'video' ? \`Editing")],
+  ['dashboard hero override is opt-in with approved fallback', hero.includes("hero.useDashboardImage && hero.image?.src") && content.includes("useDashboardImage?: boolean")],
+  ['hidden Work projects cannot leak into previous/next or related', project.includes("x.showOnWork && x.kind === p.kind")],
+  ['Work overview uses consistent editorial thumbnail crops', work.includes('class="cover"') && work.includes('object-fit: cover')],
+  ['mobile hero type has a narrow-screen clamp', hero.includes('@media (max-width: 380px)') && hero.includes('17vw')],
+  ['empty Motion and Posts states stay compact', motion.includes('min-height: clamp(176px, 18vw, 240px)') && posts.includes('min-height: clamp(176px, 18vw, 230px)')],
 ]
 
 const failed = checks.filter(([, ok]) => !ok)
