@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css'
 import {getSite, navHref, isExternal, type Seo} from '../lib/content'
-interface Props { seo?: Seo; title?: string; description?: string; image?: string }
+interface Props { seo?: Seo; title?: string; description?: string; image?: string; schema?: Record<string, any> | Record<string, any>[] }
 const site = await getSite()
 const {title, description, image} = Astro.props
 const seo = Astro.props.seo || {}
@@ -10,9 +10,12 @@ const pageTitle = seo.title || title || d.title || site.settings.siteName
 const desc = seo.description || description || d.description || ''
 const og = seo.ogImage || image || d.ogImage
 const canonicalPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/+$/, '') + '/'
-const canonical = Astro.site ? new URL(canonicalPath, Astro.site).href : undefined
-const ogAbs = og && Astro.site && og.startsWith('/') ? new URL(og, Astro.site).href : og
+const siteBase = Astro.site || new URL(site.settings.siteUrl || Astro.url.origin)
+const canonical = new URL(canonicalPath, siteBase).href
+const absolute = (url?: string) => url ? (url.startsWith('/') ? new URL(url, siteBase).href : url) : undefined
+const ogAbs = absolute(og)
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/'
+const noIndex = Boolean(seo.noIndex || d.noIndex)
 const homeHasContact = site.home.sections.some((s) => s.key === 'contact' && s.visible !== false)
 const logo = site.settings.logo
 const faviconHref = site.settings.favicon || '/favicon.svg?v=10'
@@ -39,6 +42,51 @@ const navItems = site.navigation
 const primaryNav = navItems.filter((n) => !n.highlight)
 const navCta = navItems.find((n) => n.highlight)
 const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
+const origin = siteBase.origin
+const personId = `${origin}/#person`
+const websiteId = `${origin}/#website`
+const pageId = `${canonical}#webpage`
+const personImage = absolute(site.about.portrait?.src || site.hero.image?.src)
+const locationName = (site.settings.location || '').replace(/^Based in\s+/i, '').trim()
+const personSchema = {
+  '@type': 'Person',
+  '@id': personId,
+  name: site.settings.siteName,
+  url: new URL('/', siteBase).href,
+  jobTitle: site.settings.professionalTitle,
+  description: site.about.paragraph || desc,
+  ...(personImage ? {image: personImage} : {}),
+  ...(site.contact.linkedin ? {sameAs: [site.contact.linkedin]} : {}),
+  ...(site.settings.supportingSkills?.length ? {knowsAbout: site.settings.supportingSkills} : {}),
+  ...(locationName ? {homeLocation: {'@type': 'Place', name: locationName}} : {}),
+}
+const websiteSchema = {
+  '@type': 'WebSite',
+  '@id': websiteId,
+  url: new URL('/', siteBase).href,
+  name: site.settings.siteName,
+  description: d.description || desc,
+  publisher: {'@id': personId},
+  inLanguage: 'en',
+}
+const pageType = path === '/info' ? 'ProfilePage' : path === '/work' ? 'CollectionPage' : 'WebPage'
+const pageSchema = {
+  '@type': pageType,
+  '@id': pageId,
+  url: canonical,
+  name: pageTitle,
+  ...(desc ? {description: desc} : {}),
+  isPartOf: {'@id': websiteId},
+  ...(path === '/info' ? {mainEntity: {'@id': personId}} : {}),
+  inLanguage: 'en',
+}
+const extraSchema = Astro.props.schema
+  ? (Array.isArray(Astro.props.schema) ? Astro.props.schema : [Astro.props.schema])
+  : []
+const structuredData = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [websiteSchema, personSchema, pageSchema, ...extraSchema],
+}).replace(/</g, '\\u003c')
 ---
 <!doctype html>
 <html lang="en">
@@ -47,15 +95,26 @@ const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{pageTitle}</title>
   {desc && <meta name="description" content={desc} />}
-  {(seo.noIndex || d.noIndex) && <meta name="robots" content="noindex" />}
-  {canonical && <link rel="canonical" href={canonical} />}
+  <meta name="author" content={site.settings.siteName} />
+  <meta name="robots" content={noIndex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1'} />
+  {site.settings.googleSiteVerification && <meta name="google-site-verification" content={site.settings.googleSiteVerification} />}
+  {site.settings.bingSiteVerification && <meta name="msvalidate.01" content={site.settings.bingSiteVerification} />}
+  <link rel="canonical" href={canonical} />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  {site.contact.linkedin && <link rel="me" href={site.contact.linkedin} />}
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={site.settings.siteName} />
+  <meta property="og:locale" content="en_AE" />
   <meta property="og:title" content={pageTitle} />
   {desc && <meta property="og:description" content={desc} />}
   {ogAbs && <meta property="og:image" content={ogAbs} />}
-  {canonical && <meta property="og:url" content={canonical} />}
+  <meta property="og:url" content={canonical} />
   <meta name="twitter:card" content={ogAbs ? 'summary_large_image' : 'summary'} />
+  <meta name="twitter:title" content={pageTitle} />
+  {desc && <meta name="twitter:description" content={desc} />}
+  {ogAbs && <meta name="twitter:image" content={ogAbs} />}
   <meta name="theme-color" content="#161513" />
+  <script type="application/ld+json" set:html={structuredData}></script>
   <link rel="icon" href={faviconHref} />
   <link rel="shortcut icon" href={faviconHref} />
 </head>
