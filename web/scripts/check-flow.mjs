@@ -50,6 +50,11 @@ const checks = [
   ['hero image has a runtime photo fallback', hero.includes('data-fallback={fallbackHero}') && hero.includes("heroImg.addEventListener('error'")],
   ['hero includes a concise storytelling line', hero.includes('const storyLine') && hero.includes('class="story muted"')],
   ['hero blend includes warm atmospheric depth', hero.includes('hero-float') && hero.includes('sepia(.035)') && hero.includes('rgba(255,169,78,.105)')],
+  ['hero positioning line is CMS-driven', hero.includes('hero.positioningLine ||') && content.includes('positioningLine?: string') && content.includes('positioningLine, ctaLabel')],
+  ['project story blocks are CMS-driven', content.includes('storyBlocks?: {label: string; text: string}[]') && project.includes('p.storyBlocks.map')),
+  ['related work can be curated from the dashboard', content.includes('relatedProjects?: string[]') && project.includes('const curatedRelated = (p.relatedProjects || [])')),
+  ['related work uses the same editorial crop language as Work', project.includes('class="cover" sizes="33vw"') && project.includes('.rel a:hover .rt :global(img)')),
+
 ]
 
 const failed = checks.filter(([, ok]) => !ok)
