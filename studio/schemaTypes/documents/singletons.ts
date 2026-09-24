@@ -175,11 +175,18 @@ export const hero = defineType({
       initialValue: 'none',
     }),
     defineField({
+      name: 'useDashboardImage',
+      title: 'Use dashboard hero image',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Off keeps the approved built-in hero. Turn this on only after uploading the replacement image below, then Publish.',
+    }),
+    defineField({
       name: 'editorialPortrait',
       title: 'Homepage hero image',
       type: 'image',
       options: {hotspot: true},
-      description: 'Upload or replace the homepage hero image here. Publish it and the live website updates within a few seconds — no new build needed.',
+      description: 'Upload the replacement image here, switch “Use dashboard hero image” on, then Publish. The live website updates within a few seconds — no new build needed.',
       fields: [defineField({name: 'alt', type: 'string', initialValue: 'Ramy George editing'})],
     }),
     defineField({
