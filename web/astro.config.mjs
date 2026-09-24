@@ -12,7 +12,7 @@ export default defineConfig({
   adapter: cloudflare({imageService: 'passthrough'}),
   trailingSlash: 'ignore',
   build: {format: 'directory', inlineStylesheets: 'never'},
-  integrations: site ? [sitemap()] : [],
+  integrations: site ? [sitemap({filter: (page) => !page.endsWith('/contact/')})] : [],
   // Keep every script as an external file so the Content-Security-Policy can forbid inline scripts.
   vite: {build: {assetsInlineLimit: 0}},
 })
