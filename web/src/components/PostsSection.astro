@@ -7,27 +7,18 @@ const site = await getSite()
 const sec = section(site, 'posts')!
 const all = site.projects.filter((p) => p.kind === 'post' && p.showOnHome && p.slides?.length)
 const chosen = site.home.posts?.length ? site.home.posts.map((s) => all.find((p) => p.slug === s)).filter(Boolean) as typeof all : all
-const postFilters = [
-  {key: 'all', label: 'All', n: chosen.length},
-  {key: 'carousel', label: 'Carousels', n: chosen.filter((p) => (p.slides?.length || 0) > 1).length},
-  {key: 'single', label: 'Single Posts', n: chosen.filter((p) => (p.slides?.length || 0) === 1).length},
-]
 ---
-<section class="posts" aria-labelledby="posts-h" data-posts>
+<section class:list={['posts', {empty: chosen.length === 0}]} aria-labelledby="posts-h" data-posts>
   <div class="wrap">
     <div class="sec-head">
       <div><div class="sec-num">{Astro.props.num}</div><h2 class="h2" id="posts-h">{sec.heading || 'Posts & Carousels'}</h2></div>
-      <div class="side">
-        <div class="filters" role="group" aria-label="Filter posts and carousels">
-          {postFilters.map((f, i) => <button type="button" class="pill" aria-pressed={String(i === 0)} data-post-filter={f.key}>{f.label}<span class="c">{String(f.n).padStart(2, '0')}</span></button>)}
-        </div>
-        {sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
-      </div>
+      {sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
     </div>
-    {chosen.map((p, i) => (
-      <div class="set" data-carousel data-post-type={(p.slides?.length || 0) > 1 ? 'carousel' : 'single'}>
+
+    {chosen.length > 0 ? chosen.map((p) => (
+      <div class="set" data-carousel>
         <div class="info">
-          <div class="lbl">{['Carousel', p.org].filter(Boolean).join(' · ')}</div>
+          <div class="lbl">{[(p.slides?.length || 0) > 1 ? 'Carousel' : 'Post', p.org].filter(Boolean).join(' · ')}</div>
           <h3><a href={`/work/${p.slug}/`}>{p.title}</a></h3>
           <CarouselControls label="slide" showBar={false} />
         </div>
@@ -41,20 +32,21 @@ const postFilters = [
           ))}
         </ol>
       </div>
-    ))}
+    )) : (
+      <div class="empty-state" role="status" aria-label="Posts and carousel work is coming soon">
+        <div>
+          <p class="empty-status">NEXT IN THE EDIT</p>
+          <p class="empty-title">Coming soon</p>
+          <p class="muted empty-desc">Selected posts and carousel work will appear here.</p>
+        </div>
+        <div class="sequence" aria-hidden="true"><span>01</span><i></i><span>02</span><i></i><span>03</span></div>
+      </div>
+    )}
   </div>
 </section>
 <script>
   import {initCarousels} from '../scripts/carousel'
   initCarousels()
-  const postsRoot = document.querySelector<HTMLElement>('[data-posts]')
-  postsRoot?.querySelectorAll<HTMLButtonElement>('[data-post-filter]').forEach((b) => b.addEventListener('click', () => {
-    const key = b.dataset.postFilter
-    postsRoot.querySelectorAll('[data-post-filter]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
-    postsRoot.querySelectorAll<HTMLElement>('[data-post-type]').forEach((item) => {
-      item.hidden = key !== 'all' && item.dataset.postType !== key
-    })
-  }))
   // Click a slide: advance to the next one (last slide returns to the first)
   document.querySelectorAll<HTMLElement>('.posts [data-carousel]').forEach((root) => {
     const track = root.querySelector<HTMLElement>('[data-track]')!
@@ -67,9 +59,7 @@ const postFilters = [
 </script>
 <style>
   .posts { margin-top: clamp(96px, 12vw, 170px); padding-block: clamp(72px, 9vw, 120px); background: var(--s1); }
-  .side { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
-  .filters { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-  .hint { font-size: 14px; }
+  .hint { font-size: 14px; max-width: 420px; text-align: right; }
   .set { display: grid; grid-template-columns: 318px minmax(0, 1fr); gap: var(--gap); }
   .set + .set { margin-top: 72px; padding-top: 48px; border-top: 1px solid var(--rule); }
   h3 { margin-top: 12px; font-size: 28px; line-height: 1.15; font-weight: 600; }
@@ -84,11 +74,34 @@ const postFilters = [
   .slide:global([data-active]) { opacity: 1; }
   .sb { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: var(--media); cursor: pointer; }
   .sb :global(img) { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+
+  .posts.empty { margin-top: clamp(72px, 9vw, 128px); padding-block: clamp(58px, 6.5vw, 92px); }
+  .posts.empty .sec-head { margin-bottom: 28px; }
+  .empty-state {
+    min-height: 220px;
+    border-top: 1px solid rgba(239, 234, 226, .45);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 36px 0;
+  }
+  .empty-status { color: var(--acc); font-size: 11px; font-weight: 700; letter-spacing: .15em; margin-bottom: 16px; }
+  .empty-title { font-size: clamp(34px, 4vw, 54px); line-height: 1; letter-spacing: -.03em; font-weight: 600; }
+  .empty-desc { max-width: 500px; font-size: 16px; line-height: 1.55; margin-top: 12px; }
+  .sequence { display: flex; align-items: center; min-width: min(420px, 36vw); color: var(--muted); font-size: 11px; letter-spacing: .08em; }
+  .sequence i { display: block; height: 1px; background: var(--rule); flex: 1; margin: 0 12px; }
+
   @media (max-width: 1023px) {
     .sec-head { flex-direction: column; align-items: flex-start; }
-    .side { align-items: flex-start; }
-    .filters { justify-content: flex-start; }
+    .hint { text-align: left; }
     .set { grid-template-columns: 1fr; }
     .info :global(.cnt) { font-size: 40px; }
+  }
+  @media (max-width: 719px) {
+    .empty-state { min-height: 0; display: block; padding: 30px 0 34px; }
+    .sequence { min-width: 0; width: 100%; margin-top: 34px; }
+    .empty-desc { font-size: 15px; }
   }
 </style>
