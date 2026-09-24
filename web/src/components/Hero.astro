@@ -44,9 +44,10 @@ const editorialSrc = hero.image?.src || heroFallback
   .hero {
     display: grid;
     grid-template-columns: minmax(0, .92fr) minmax(520px, 1.08fr);
-    gap: clamp(14px, 1.8vw, 30px);
-    padding-top: clamp(30px, 4vw, 58px);
-    padding-bottom: clamp(18px, 2.4vw, 34px);
+    gap: clamp(8px, 1.3vw, 22px);
+    padding-top: 0;
+    padding-bottom: clamp(12px, 1.8vw, 24px);
+    min-height: clamp(560px, calc(100svh - 76px), 760px);
     align-items: center;
     position: relative;
     overflow: clip;
@@ -85,10 +86,10 @@ const editorialSrc = hero.image?.src || heroFallback
   }
   .editorial-portrait {
     align-self: center;
-    width: 132%;
-    margin-left: -19%;
-    margin-right: -10%;
-    transform: translateY(2px);
+    width: 126%;
+    margin-left: -15%;
+    margin-right: -8%;
+    transform: translateY(0);
   }
   .editorial-frame {
     position: relative;
@@ -96,8 +97,8 @@ const editorialSrc = hero.image?.src || heroFallback
     aspect-ratio: 1.32 / 1;
     overflow: visible;
     background: transparent;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.34) 7%, #000 22%, #000 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.34) 7%, #000 22%, #000 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.58) 5%, #000 18%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.58) 5%, #000 18%, #000 100%);
   }
   .editorial-frame::before {
     content: '';
@@ -117,10 +118,10 @@ const editorialSrc = hero.image?.src || heroFallback
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.46) 7%, rgba(22,21,19,.12) 18%, rgba(22,21,19,0) 34%),
-      linear-gradient(180deg, rgba(22,21,19,.025) 0%, rgba(22,21,19,0) 24%, rgba(22,21,19,0) 82%, rgba(22,21,19,.14) 100%),
-      radial-gradient(circle at 78% 18%, rgba(255,190,80,.07), transparent 25%),
-      radial-gradient(circle at 70% 66%, rgba(255,210,28,.045), transparent 30%);
+      linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.34) 6%, rgba(22,21,19,.07) 16%, rgba(22,21,19,0) 30%),
+      linear-gradient(180deg, rgba(22,21,19,0) 0%, rgba(22,21,19,0) 82%, rgba(22,21,19,.10) 100%),
+      radial-gradient(circle at 78% 18%, rgba(255,190,80,.055), transparent 26%),
+      radial-gradient(circle at 70% 66%, rgba(255,210,28,.035), transparent 31%);
   }
   .editorial-frame img {
     width: 100%;
@@ -128,7 +129,7 @@ const editorialSrc = hero.image?.src || heroFallback
     display: block;
     object-fit: cover;
     object-position: 58% center;
-    filter: brightness(1.52) contrast(.96) saturate(.98);
+    filter: brightness(1.78) contrast(.93) saturate(1.02);
   }
 
   .frame { display: block; aspect-ratio: 4 / 5; background: var(--s1); overflow: hidden; position: relative; }
@@ -138,7 +139,7 @@ const editorialSrc = hero.image?.src || heroFallback
   .reel-toggle { position: absolute; right: 10px; bottom: 10px; background: var(--bg); border: 1px solid var(--rule); padding: 6px 10px; font-size: 12px; cursor: pointer; }
 
   @media (max-width: 1100px) {
-    .hero { grid-template-columns: minmax(0, .96fr) minmax(390px, 1.04fr); }
+    .hero { grid-template-columns: minmax(0, .96fr) minmax(390px, 1.04fr); min-height: auto; }
     .editorial-portrait { width: 121%; margin-left: -13%; margin-right: -7%; }
     h1 { font-size: clamp(74px, 10.4vw, 136px); }
   }
@@ -157,7 +158,7 @@ const editorialSrc = hero.image?.src || heroFallback
     }
     .editorial-frame img {
       object-position: center;
-      filter: brightness(1.42) contrast(.97) saturate(.98);
+      filter: brightness(1.55) contrast(.95) saturate(1);
     }
   }
   @media (max-width: 719px) {
