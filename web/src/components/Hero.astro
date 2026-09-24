@@ -1,14 +1,13 @@
 ---
 import {getSite} from '../lib/content'
 import Img from './Img.astro'
-import {heroUploaded} from '../data/heroUploaded'
 const site = await getSite()
 const {hero, settings} = site
 const cta = hero.ctaTarget === 'work' ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
 const useEditorialPortrait = hero.mode === 'none'
-const editorialSrc = heroUploaded
+const editorialSrc = '/hero-rg-approved.webp'
 ---
 <section class:list={['hero wrap', {'has-visual': useEditorialPortrait, editorial: useEditorialPortrait}]} aria-labelledby="hero-name">
   <div class="text">
