@@ -132,12 +132,12 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
     gap: 9px;
     min-height: 40px;
     padding: 7px 14px 7px 9px;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
     font-size: 14px;
     font-weight: 600;
     color: var(--text);
-    transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+    transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
   }
   .back-arrow {
     display: grid;
@@ -149,7 +149,7 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
     color: var(--bg);
     font-size: 17px;
     line-height: 1;
-    transition: transform 160ms ease;
+    transition: transform var(--dur-fast) var(--ease);
   }
   .back:hover,
   .back:focus-visible {
@@ -192,7 +192,7 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
   }
   .play:hover,
   .play:focus-visible {
@@ -209,7 +209,7 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
     border-radius: 50%;
     background: var(--acc);
     color: var(--bg);
-    transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
   }
   .play:hover .play-icon,
   .play:focus-visible .play-icon {
@@ -227,14 +227,14 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
     border-bottom: 8px solid transparent;
   }
   .note { font-size: 13px; margin-top: 10px; }
-  .info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--gap); margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--rule); }
+  .info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--gap); margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); }
   dl { margin: 0; display: grid; grid-template-columns: 120px 1fr; gap: 14px 16px; }
   dd { margin: 0; } .pre { white-space: pre-line; }
   .sum { font-size: 20px; line-height: 1.5; margin-bottom: 24px; }
   .acts { display: flex; gap: 24px; flex-wrap: wrap; }
-  .story { margin-top: clamp(64px, 8vw, 104px); padding-top: 26px; border-top: 1px solid var(--text); }
+  .story { margin-top: clamp(64px, 8vw, 104px); padding-top: 26px; border-top: 1px solid var(--border-strong); }
   .story-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 0 var(--gap); }
-  .story-block { padding: 22px 0 26px; border-bottom: 1px solid var(--rule); }
+  .story-block { padding: 22px 0 26px; border-bottom: 1px solid var(--border); }
   .story-num { color: var(--acc); font-size: 11px; font-weight: 700; letter-spacing: .12em; }
   .story-block h3 { margin-top: 10px; font-size: clamp(20px, 2vw, 28px); line-height: 1.05; letter-spacing: -.02em; }
   .story-block p { margin-top: 14px; color: var(--muted); font-size: 16px; line-height: 1.6; max-width: 52ch; white-space: pre-line; }
@@ -251,7 +251,7 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
   .rel a { display: flex; flex-direction: column; gap: 4px; }
   .rt { display: flex; align-items: center; justify-content: center; aspect-ratio: 16 / 10; margin-bottom: 8px; }
   .rt { overflow: hidden; }
-  .rt :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 280ms var(--ease); }
+  .rt :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-med) var(--ease); }
   .rel a:hover .rt :global(img) { transform: scale(1.025); }
   .rel a:hover b { color: var(--acc); }
   @media (max-width: 1023px) { .info { grid-template-columns: 1fr; } .rel ul { grid-template-columns: 1fr 1fr; } }
