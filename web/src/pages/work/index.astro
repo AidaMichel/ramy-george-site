@@ -8,7 +8,7 @@ const groups = [
   ...site.categories.map((c) => ({id: c.slug, title: c.title, items: onWork.filter((p) => p.kind === 'video' && p.category === c.slug)})),
   {id: 'motion-ai', title: 'Motion & AI', items: onWork.filter((p) => p.kind === 'motion')},
   {id: 'posts-carousels', title: 'Posts & Carousels', items: onWork.filter((p) => p.kind === 'post')},
-].filter((g) => g.items.length)
+]
 ---
 <Base title={`Work — ${site.settings.siteName}`} description={`Selected video editing, motion and design work by ${site.settings.siteName}.`}>
   <div class="wrap page">
