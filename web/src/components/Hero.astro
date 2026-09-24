@@ -7,7 +7,14 @@ const {hero, settings} = site
 const cta = hero.ctaTarget === 'work' || !hasWorkAnchor ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
-const fallbackHero = '/hero-rg-approved.webp?v=6'
+const storySkills = others.slice(0, 4).map((x) => x.toLowerCase())
+const storyList = storySkills.length > 1
+  ? `${storySkills.slice(0, -1).join(', ')} and ${storySkills.at(-1)}`
+  : storySkills[0] || ''
+const storyLine = lead && storyList
+  ? `${lead}-led visual storytelling across ${storyList}.`
+  : hero.shortLine
+const fallbackHero = '/hero-rg-approved.webp?v=7'
 const editorialSrc = hero.mode === 'none'
   ? (hero.useDashboardImage && hero.image?.src ? hero.image.src : fallbackHero)
   : (hero.image?.src || hero.showreelPoster?.src || fallbackHero)
@@ -22,6 +29,7 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
       <div>
         <p class="title">{settings.professionalTitle}</p>
         {lead && <p class="skills"><strong>{lead}</strong>{others.length > 0 && <span class="muted"> · {others.join(' · ')}</span>}</p>}
+        {storyLine && <p class="story muted">{storyLine}</p>}
         <div class="cta-row"><a class="cta" href={cta}>{hero.ctaLabel}</a></div>
       </div>
       {false && hero.shortLine && <p class="line muted">{hero.shortLine}</p>}
@@ -42,12 +50,20 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
       </div>
     ) : (
       <div class="editorial-frame">
-        <img src={editorialSrc} alt="" aria-hidden="true" />
+        <img src={editorialSrc} alt="" aria-hidden="true" fetchpriority="high" decoding="async" data-hero-img data-fallback={fallbackHero} />
       </div>
     )}
   </div>
 </section>
 <script>
+  const heroImg = document.querySelector<HTMLImageElement>('[data-hero-img]')
+  if (heroImg) {
+    heroImg.addEventListener('error', () => {
+      const fallback = heroImg.dataset.fallback
+      if (fallback && !heroImg.src.includes(fallback.split('?')[0])) heroImg.src = fallback
+    })
+  }
+
   const v = document.querySelector<HTMLVideoElement>('[data-reel]')
   const b = document.querySelector<HTMLButtonElement>('[data-reel-toggle]')
   if (v && b) {
@@ -87,8 +103,9 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
   .title { font-size: clamp(26px, 3vw, 44px); line-height: 1; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase; }
   .skills { margin-top: 18px; font-size: 15px; line-height: 1.7; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
   .skills strong { font-weight: 700; color: var(--text); }
+  .story { margin-top: 16px; max-width: 43ch; font-size: 16px; line-height: 1.48; letter-spacing: -.005em; text-wrap: pretty; }
   .line { width: min(432px, 40%); font-size: 18px; line-height: 1.55; margin-bottom: 6px; }
-  .cta-row { margin-top: 36px; }
+  .cta-row { margin-top: 30px; }
   .cta { display: inline-flex; align-items: center; height: 52px; padding: 0 22px; border: 1px solid var(--text); font-size: 16px; font-weight: 600; }
   .cta:hover { border-color: var(--acc); }
 
@@ -100,15 +117,31 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
     align-self: stretch;
     position: relative;
     z-index: 1;
-    filter: drop-shadow(0 20px 46px rgba(0,0,0,.16));
+    isolation: isolate;
+    filter:
+      drop-shadow(0 28px 64px rgba(0,0,0,.24))
+      drop-shadow(0 0 46px rgba(255,178,82,.035));
+  }
+  .visual::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    inset: 12% -4% 8% 8%;
+    pointer-events: none;
+    border-radius: 48%;
+    background:
+      radial-gradient(ellipse at 72% 48%, rgba(255,170,74,.13), rgba(255,193,98,.045) 36%, transparent 70%);
+    filter: blur(52px);
+    opacity: .78;
   }
   .editorial-portrait {
     align-self: stretch;
-    width: 118%;
+    width: 120%;
     height: 100%;
-    margin-left: -10%;
-    margin-right: -5%;
-    transform: none;
+    margin-left: -12%;
+    margin-right: -7%;
+    transform: translate3d(0,-2px,0);
+    will-change: transform;
   }
   .editorial-frame {
     position: relative;
@@ -118,39 +151,43 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
     aspect-ratio: auto;
     overflow: visible;
     background: transparent;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.58) 5%, #000 18%, #000 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.58) 5%, #000 18%, #000 100%);
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.12) 7%, rgba(0,0,0,.48) 17%, rgba(0,0,0,.84) 29%, #000 41%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.12) 7%, rgba(0,0,0,.48) 17%, rgba(0,0,0,.84) 29%, #000 41%, #000 100%);
   }
   .editorial-frame::before {
     content: '';
     position: absolute;
-    inset: 7% 2% 3% 10%;
-    z-index: -1;
+    inset: 6% 1% 2% 8%;
+    z-index: 0;
     pointer-events: none;
     border-radius: 50%;
     background:
-      radial-gradient(ellipse at 69% 50%, rgba(255,190,80,.13), rgba(255,210,28,.035) 42%, transparent 72%);
-    filter: blur(36px);
-    opacity: .9;
+      radial-gradient(ellipse at 71% 47%, rgba(255,183,92,.08), rgba(255,200,120,.02) 40%, transparent 72%);
+    filter: blur(30px);
+    opacity: .8;
   }
   .editorial-frame::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
+    z-index: 2;
     background:
-      linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.18) 6%, rgba(22,21,19,.035) 15%, rgba(22,21,19,0) 28%),
-      linear-gradient(180deg, rgba(22,21,19,0) 0%, rgba(22,21,19,0) 86%, rgba(22,21,19,.08) 100%),
-      radial-gradient(circle at 78% 18%, rgba(255,190,80,.045), transparent 27%),
-      radial-gradient(circle at 70% 66%, rgba(255,210,28,.025), transparent 32%);
+      linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.30) 7%, rgba(22,21,19,.07) 19%, rgba(22,21,19,0) 38%),
+      linear-gradient(180deg, rgba(22,21,19,.48) 0%, rgba(22,21,19,.10) 7%, rgba(22,21,19,0) 18%, rgba(22,21,19,0) 84%, rgba(22,21,19,.16) 100%),
+      radial-gradient(ellipse at 74% 45%, rgba(255,169,78,.105), rgba(255,188,100,.035) 35%, transparent 61%),
+      radial-gradient(ellipse at 63% 72%, rgba(255,205,128,.055), transparent 44%);
   }
   .editorial-frame img {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: cover;
+    position: relative;
+    z-index: 1;
     object-position: 61% center;
-    filter: brightness(1.48) contrast(.97) saturate(1.00);
+    filter: brightness(1.46) contrast(.98) saturate(1.02) sepia(.035);
   }
 
   .frames { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -162,7 +199,7 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
 
   @media (max-width: 1100px) {
     .hero { grid-template-columns: minmax(0, .96fr) minmax(390px, 1.04fr); min-height: auto; align-items: center; }
-    .editorial-portrait { width: 116%; margin-left: -9%; margin-right: -5%; }
+    .editorial-portrait { width: 117%; margin-left: -10%; margin-right: -6%; }
     h1 { font-size: clamp(74px, 10.4vw, 136px); }
   }
   @media (max-width: 899px) {
@@ -182,7 +219,7 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
     }
     .editorial-frame img {
       object-position: center;
-      filter: brightness(1.36) contrast(.98) saturate(1.00);
+      filter: brightness(1.34) contrast(.99) saturate(1.01) sepia(.025);
     }
   }
   @media (max-width: 719px) {
@@ -193,10 +230,18 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
     .meta > div { display: contents; }
     .title { order: 1; }
     .skills { order: 2; font-size: 12px; margin-top: 12px; }
-    .line { order: 3; width: auto; font-size: 16px; line-height: 1.5; margin: 22px 0 0; }
-    .cta-row { order: 4; margin-top: 28px; }
+    .story { order: 3; max-width: 34ch; margin-top: 14px; font-size: 15px; line-height: 1.45; }
+    .line { order: 4; width: auto; font-size: 16px; line-height: 1.5; margin: 22px 0 0; }
+    .cta-row { order: 5; margin-top: 24px; }
     .cta { height: 48px; padding: 0 20px; font-size: 15px; }
     .editorial-frame { aspect-ratio: 1.08 / 1; }
+  }
+  @media (prefers-reduced-motion: no-preference) and (min-width: 900px) {
+    .editorial-portrait { animation: hero-float 9s var(--ease) infinite alternate; }
+    @keyframes hero-float {
+      from { transform: translate3d(0,-2px,0) scale(1); }
+      to { transform: translate3d(0,-7px,0) scale(1.006); }
+    }
   }
   @media (max-width: 380px) {
     h1 { font-size: clamp(52px, 17vw, 64px); }
