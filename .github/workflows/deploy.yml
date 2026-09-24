@@ -54,17 +54,18 @@ jobs:
 
       - name: Production build + deploy
         if: env.CLOUDFLARE_API_TOKEN != '' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-        run: npm run build && npx wrangler deploy
+        run: npm run build && npm run check:flow && npx wrangler deploy
 
       - name: Draft preview build + deploy (password-protect with Cloudflare Access)
         if: env.CLOUDFLARE_API_TOKEN != '' && (github.event.action == 'sanity-draft')
         env: {SANITY_PREVIEW: '1', SITE_URL: ''}
-        run: npm run build && npx wrangler deploy --env preview
+        run: npm run build && npm run check:flow && npx wrangler deploy --env preview
 
       - name: Pull-request preview version
         if: env.CLOUDFLARE_API_TOKEN != '' && (github.event_name == 'pull_request')
         run: |
           npm run build
+          npm run check:flow
           npx wrangler versions upload --message "PR #${{ github.event.number }}"
 
   # Redeploys the dashboard (Sanity Studio) when studio/ changes. Skipped until the SANITY_DEPLOY_TOKEN secret is added.
