@@ -55,7 +55,7 @@ const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <header class="nav wrap">
+  <header class:list={['nav', 'wrap', {'home-nav': path === '/'}]}>
     <a href="/" class="brand" aria-label={`${site.settings.siteName}, home`}>
       {logo?.src ? <img src={logo.src} width={logo.w} height={logo.h} alt={site.settings.siteName} /> : <span>{site.settings.siteName}</span>}
     </a>
@@ -119,7 +119,9 @@ const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
     justify-self: center;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
   }
   .desk ul { list-style: none; margin: 0; padding: 0; display: flex; gap: clamp(26px, 3.2vw, 44px); }
   .desk a { font-size: 16px; padding: 12px 0; display: inline-block; }
@@ -140,6 +142,7 @@ const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
     white-space: nowrap;
   }
   .nav-cta:hover { color: var(--text); border-color: var(--text); }
+  .home-nav { border-bottom-color: transparent; }
   .menu-btn, .mobile { display: none; }
   .foot { padding-top: 48px; padding-bottom: 32px; border-top: 1px solid var(--rule); max-width: none; }
   .sig { display: inline-block; }
