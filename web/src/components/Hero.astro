@@ -43,10 +43,12 @@ const editorialSrc = hero.image?.src || heroFallback
 <style>
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1.02fr) minmax(420px, .98fr);
-    gap: clamp(24px, 3.5vw, 56px);
+    grid-template-columns: minmax(0, .98fr) minmax(420px, 1.02fr);
+    gap: 0;
     padding-top: clamp(44px, 6vw, 88px);
     align-items: end;
+    position: relative;
+    overflow: clip;
   }
   .text { min-width: 0; position: relative; z-index: 2; }
   h1 {
@@ -66,21 +68,29 @@ const editorialSrc = hero.image?.src || heroFallback
   .cta { display: inline-flex; align-items: center; height: 52px; padding: 0 22px; border: 1px solid var(--text); font-size: 16px; font-weight: 600; }
   .cta:hover { border-color: var(--acc); }
 
-  .visual { min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; }
-  .editorial-portrait { align-self: end; width: 100%; }
+  .visual { min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; position: relative; z-index: 1; }
+  .editorial-portrait {
+    align-self: end;
+    width: 116%;
+    margin-left: -16%;
+  }
   .editorial-frame {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    overflow: hidden;
-    background: var(--bg);
+    overflow: visible;
+    background: transparent;
+    -webkit-mask-image: radial-gradient(ellipse 88% 84% at 62% 46%, #000 0%, #000 54%, rgba(0,0,0,.92) 63%, transparent 100%);
+    mask-image: radial-gradient(ellipse 88% 84% at 62% 46%, #000 0%, #000 54%, rgba(0,0,0,.92) 63%, transparent 100%);
   }
   .editorial-frame::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(90deg, rgba(22,21,19,.22) 0%, rgba(22,21,19,0) 24%);
+    background:
+      linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.72) 8%, rgba(22,21,19,.20) 24%, rgba(22,21,19,0) 46%),
+      linear-gradient(180deg, rgba(22,21,19,.30) 0%, rgba(22,21,19,0) 18%, rgba(22,21,19,0) 70%, rgba(22,21,19,.72) 100%);
   }
   .editorial-frame img {
     width: 100%;
@@ -88,6 +98,7 @@ const editorialSrc = hero.image?.src || heroFallback
     display: block;
     object-fit: cover;
     object-position: center;
+    filter: brightness(1.10) contrast(1.03) saturate(.82);
   }
 
   .frame { display: block; aspect-ratio: 4 / 5; background: var(--s1); overflow: hidden; position: relative; }
@@ -97,13 +108,22 @@ const editorialSrc = hero.image?.src || heroFallback
   .reel-toggle { position: absolute; right: 10px; bottom: 10px; background: var(--bg); border: 1px solid var(--rule); padding: 6px 10px; font-size: 12px; cursor: pointer; }
 
   @media (max-width: 1100px) {
-    .hero { grid-template-columns: minmax(0, 1fr) minmax(360px, .86fr); }
+    .hero { grid-template-columns: minmax(0, 1fr) minmax(360px, .9fr); }
+    .editorial-portrait { width: 110%; margin-left: -10%; }
     h1 { font-size: clamp(74px, 10.4vw, 136px); }
   }
   @media (max-width: 899px) {
     .hero { grid-template-columns: 1fr; align-items: start; }
-    .visual { width: 100%; max-width: none; margin-top: 12px; }
-    .editorial-frame::after { background: linear-gradient(180deg, var(--bg) 0%, rgba(22,21,19,0) 18%); }
+    .visual { width: 100%; max-width: none; margin-top: 2px; }
+    .editorial-portrait { width: 106%; margin-left: -3%; }
+    .editorial-frame {
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 78%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 78%, transparent 100%);
+    }
+    .editorial-frame::after {
+      background:
+        linear-gradient(180deg, var(--bg) 0%, rgba(22,21,19,.18) 15%, rgba(22,21,19,0) 38%, rgba(22,21,19,.62) 100%);
+    }
   }
   @media (max-width: 719px) {
     .meta { flex-direction: column; align-items: flex-start; gap: 0; margin-top: 28px; }
