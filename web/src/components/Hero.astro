@@ -9,6 +9,7 @@ const cta = hero.ctaTarget === 'work' ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
 const useEditorialPortrait = hero.mode === 'none'
+const editorialSrc = hero.image?.src || editorialHeroPortrait
 ---
 <section class:list={['hero wrap', {'has-visual': hero.mode !== 'none' || useEditorialPortrait, 'editorial': useEditorialPortrait}]} aria-labelledby="hero-name">
   <div class="text">
@@ -26,7 +27,7 @@ const useEditorialPortrait = hero.mode === 'none'
     <div class:list={['visual', useEditorialPortrait ? 'editorial-portrait' : hero.mode]}>
       {useEditorialPortrait && (
         <div class="editorial-frame" aria-hidden="true">
-          <img src={editorialHeroPortrait} alt="" />
+          <img src={editorialSrc} alt="" />
         </div>
       )}
       {(hero.mode === 'portrait' || hero.mode === 'still') && hero.image?.src && (
