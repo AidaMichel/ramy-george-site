@@ -16,8 +16,10 @@
   "observability": {
     "enabled": true
   },
-  // Custom domain: uncomment after the domain is on Cloudflare (DNS + HTTPS certificate are automatic).
-  // "routes": [{ "pattern": "ramygeorge.com", "custom_domain": true }, { "pattern": "www.ramygeorge.com", "custom_domain": true }],
+  "routes": [
+    { "pattern": "ramygeorge.com", "custom_domain": true },
+    { "pattern": "www.ramygeorge.com", "custom_domain": true }
+  ],
   "env": {
     // Draft preview can still use its own worker later if needed.
     "preview": {
