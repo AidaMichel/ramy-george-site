@@ -47,7 +47,7 @@ const QUERY = `{
   "navigation": *[_id=="navigation"][0].items[]{label, target, url, highlight, visible},
   "contact": *[_id=="contact"][0]{email, whatsapp, linkedin, kicker, heading, buttonLabel, buttonTarget, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
   "hero": *[_id=="hero"][0]{mode, shortLine, ctaLabel, ctaTarget,
-     "image": select(mode=="portrait" => portrait${IMG}, mode=="still" => still${IMG}),
+     "image": select(mode=="none" => editorialPortrait${IMG}, mode=="portrait" => portrait${IMG}, mode=="still" => still${IMG}),
      "stillProjectSlug": still.project->slug.current,
      "frames": frames[]{"img": @${IMG}, "projectSlug": project->slug.current},
      "showreel": showreel.asset->url, "showreelPoster": showreelPoster${IMG}},
