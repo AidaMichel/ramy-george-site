@@ -164,7 +164,7 @@ export const hero = defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Text only (current default)', value: 'none'},
+          {title: 'Editorial portrait (current default)', value: 'none'},
           {title: 'Portrait / behind the scenes', value: 'portrait'},
           {title: 'Single showcase', value: 'still'},
           {title: 'Multi-frame showcase', value: 'multiframe'},
@@ -173,6 +173,15 @@ export const hero = defineType({
         layout: 'radio',
       },
       initialValue: 'none',
+    }),
+    defineField({
+      name: 'editorialPortrait',
+      title: 'Editorial hero portrait',
+      type: 'image',
+      options: {hotspot: true},
+      hidden: ({document}) => document?.mode !== 'none',
+      description: 'Optional. Leave empty to use the current behind-the-scenes portrait built into the site.',
+      fields: [defineField({name: 'alt', type: 'string', initialValue: 'Ramy George editing'})],
     }),
     defineField({
       name: 'portrait',
@@ -199,8 +208,9 @@ export const hero = defineType({
     defineField({name: 'showreelPoster', type: 'image', hidden: ({document}) => document?.mode !== 'showreel'}),
     defineField({
       name: 'shortLine',
-      title: 'Short intro line (right side)',
+      title: 'Short intro line',
       type: 'text',
+      hidden: ({document}) => document?.mode === 'none',
       rows: 2,
       description: 'One factual sentence. Not the About text, no slogans.',
       validation: (r) => r.max(160).warning('Keep it to one sentence'),
@@ -223,7 +233,15 @@ export const about = defineType({
   icon: UserIcon,
   fields: [
     defineField({name: 'heading', type: 'string', initialValue: 'About'}),
-    defineField({name: 'paragraph', type: 'text', rows: 6, validation: (r) => r.required()}),
+    defineField({name: 'paragraph', title: 'Full bio (used on Info)', type: 'text', rows: 6, validation: (r) => r.required()}),
+    defineField({
+      name: 'homepageParagraph',
+      title: 'Short homepage intro',
+      type: 'text',
+      rows: 4,
+      description: 'Keep this natural and short. The full biography belongs on the Info page.',
+      initialValue: 'I’m Ramy, a video generalist based in Dubai. Editing is where I spend most of my time, but I also work across motion, design, sound and camera. I’ve worked on everything from news and documentaries to podcasts, social content and branded work.',
+    }),
     defineField({name: 'portrait', type: 'image', options: {hotspot: true}, fields: [defineField({name: 'alt', type: 'string', initialValue: 'Ramy George'})]}),
     defineField({name: 'links', type: 'array', of: [{type: 'linkItem'}]}),
     defineField({name: 'seo', title: 'SEO (About page)', type: 'seo'}),

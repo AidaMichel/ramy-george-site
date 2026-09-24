@@ -12,7 +12,7 @@ const chosen = site.home.posts?.length ? site.home.posts.map((s) => all.find((p)
   <div class="wrap">
     <div class="sec-head">
       <div><div class="sec-num">{Astro.props.num}</div><h2 class="h2" id="posts-h">{sec.heading || 'Posts & Carousels'}</h2></div>
-      {sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
+      {chosen.length > 0 && sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
     </div>
 
     {chosen.length > 0 ? chosen.map((p) => (
@@ -37,7 +37,7 @@ const chosen = site.home.posts?.length ? site.home.posts.map((s) => all.find((p)
         <div>
           <p class="empty-status">NEXT IN THE EDIT</p>
           <p class="empty-title">Coming soon</p>
-          <p class="muted empty-desc">Selected posts and carousel work will appear here.</p>
+          <p class="muted empty-desc">I’m adding selected posts and carousel work here next.</p>
         </div>
         <div class="sequence" aria-hidden="true"><span>01</span><i></i><span>02</span><i></i><span>03</span></div>
       </div>

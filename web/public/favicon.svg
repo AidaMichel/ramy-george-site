@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#161513"/><circle cx="32" cy="32" r="9" fill="#FFD21C"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ramy George">
+  <rect width="64" height="64" rx="14" fill="#161513"/>
+  <text x="32" y="40" text-anchor="middle" fill="#EFEAE2" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="-3">rg</text>
+  <rect x="19" y="49" width="26" height="3" rx="1.5" fill="#FFD21C"/>
+</svg>

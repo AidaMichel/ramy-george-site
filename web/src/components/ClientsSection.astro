@@ -32,8 +32,12 @@ const parts = heading.split('&')
           <ul class="logos" style={`--pl:${PAD[gi % 3][0]}px;--pr:${PAD[gi % 3][1]}px`}>
             {logos.map((l, li) => {
               const up = (li + gi) % 2 === 0
+              const ar = (l.logo!.w || 1) / (l.logo!.h || 1)
+              const optical = ar > 3 ? 1.16 : ar > 2 ? 1.08 : ar < .75 ? .86 : ar < 1 ? .94 : 1
+              const opticalHeight = Math.round(l.size * optical)
+              const shape = ar > 3 ? 'ultrawide' : ar > 1.8 ? 'wide' : ar < .75 ? 'tall' : 'balanced'
               const tick = <span class="tick" aria-hidden="true" style={`--th:${TICK[li % 3]}px`}><i></i><b></b></span>
-              const img = <img src={l.logo!.src} width={l.logo!.w} height={l.logo!.h} alt={l.name} loading="lazy" style={`--h:${l.size}px`} />
+              const img = <span class:list={['mark', shape]}><img src={l.logo!.src} width={l.logo!.w} height={l.logo!.h} alt={l.name} loading="lazy" style={`--oh:${opticalHeight}px`} /></span>
               return <li class:list={[up ? 'up' : 'down']}>{up ? <>{img}{tick}</> : <>{tick}{img}</>}</li>
             })}
           </ul>
@@ -58,7 +62,10 @@ const parts = heading.split('&')
   .logos li.up { justify-content: flex-end; height: 120px; }
   .logos li.down { justify-content: flex-start; height: 120px; margin-top: 120px; }
   .logos { --k: 1; }
-  .logos img { height: calc(var(--h) * var(--k)); width: auto; max-width: calc(200px * var(--k)); object-fit: contain; margin: 0 auto; }
+  .mark { width: calc(200px * var(--k)); height: calc(86px * var(--k)); display: flex; align-items: center; justify-content: center; margin-inline: auto; }
+  .mark img { height: min(calc(var(--oh) * var(--k)), calc(78px * var(--k))); width: auto; max-width: 100%; object-fit: contain; margin: 0 auto; }
+  .mark.ultrawide img { max-width: 100%; }
+  .mark.tall img { max-height: calc(72px * var(--k)); }
   .tick { display: flex; flex-direction: column; align-items: center; }
   .up .tick { flex-direction: column; }
   .down .tick { flex-direction: column-reverse; }
@@ -77,7 +84,13 @@ const parts = heading.split('&')
     .logos { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 18px; row-gap: 22px; padding: 0; margin-top: 22px; }
     .logos li, .logos li.up, .logos li.down { height: auto; min-height: 72px; margin: 0; justify-content: center; align-items: center; }
     .tick { display: none; }
-    .logos img { height: max(30px, calc(var(--h) * .66)); max-width: 108px; }
+    .mark { width: 108px; height: 72px; }
+    .mark img { height: min(calc(var(--oh) * .66), 58px); max-width: 108px; }
+    .mark.tall img { max-height: 54px; }
   }
-  @media (min-width: 720px) and (max-width: 1199px) { .logos { grid-template-columns: repeat(4, 1fr); } .logos img { max-width: 140px; } }
+  @media (min-width: 720px) and (max-width: 1199px) {
+    .logos { grid-template-columns: repeat(4, 1fr); }
+    .mark { width: 140px; height: 82px; }
+    .mark img { max-width: 140px; }
+  }
 </style>
