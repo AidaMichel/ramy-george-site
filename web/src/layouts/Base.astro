@@ -21,11 +21,14 @@ const quick = [
   c.whatsapp && {label: 'WhatsApp', href: c.whatsapp, ext: true},
   c.linkedin && {label: 'LinkedIn', href: c.linkedin, ext: true},
 ].filter(Boolean) as {label: string; href: string; ext: boolean}[]
-const navItems = site.navigation.map((n) => {
-  const href = navHref(n.target, n.url)
-  const ext = isExternal(href)
-  return {...n, href, ext, current: !ext && href !== '/' && path.startsWith(href)}
-})
+const navItems = site.navigation
+  .filter((n) => n.visible !== false)
+  .map((n) => {
+    const href = navHref(n.target, n.url)
+    const ext = isExternal(href)
+    const current = !ext && (href === '/' ? path === '/' : path.startsWith(href))
+    return {...n, href, ext, current}
+  })
 const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
 ---
 <!doctype html>
