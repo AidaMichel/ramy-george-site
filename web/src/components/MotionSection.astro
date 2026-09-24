@@ -15,16 +15,14 @@ const filters = site.home.motionFilters
   <div class="wrap">
     <div class="sec-head">
       <div><div class="sec-num">{Astro.props.num}</div><h2 class="h2" id="motion-h">{sec.heading || 'Motion & AI'}</h2></div>
-      {items.length > 0 && (
-        <div class="side">
-          {filters.length > 0 && (
-            <div class="filters" role="group" aria-label="Filter motion work">
-              {filters.map((f, i) => <button type="button" class="pill" aria-pressed={String(i === 0)} data-filter={f.key}>{f.label}<span class="c">{String(f.n).padStart(2, '0')}</span></button>)}
-            </div>
-          )}
-          {sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
-        </div>
-      )}
+      <div class="side">
+        {filters.length > 0 && (
+          <div class="filters" role="group" aria-label="Filter motion work">
+            {filters.map((f, i) => <button type="button" class="pill" aria-pressed={String(i === 0)} data-filter={f.key}>{f.label}<span class="c">{String(f.n).padStart(2, '0')}</span></button>)}
+          </div>
+        )}
+        {sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
+      </div>
     </div>
   </div>
 
