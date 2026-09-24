@@ -6,7 +6,8 @@ interface Props { num: string }
 const site = await getSite()
 const sec = section(site, 'posts')!
 const all = site.projects.filter((p) => p.kind === 'post' && p.showOnHome && p.slides?.length)
-const chosen = site.home.posts?.length ? site.home.posts.map((s) => all.find((p) => p.slug === s)).filter(Boolean) as typeof all : all
+const curated = site.home.posts?.length ? site.home.posts.map((s) => all.find((p) => p.slug === s)).filter(Boolean) as typeof all : []
+const chosen = curated.length ? curated : all
 ---
 <section class:list={['posts', {empty: chosen.length === 0}]} aria-labelledby="posts-h" data-posts>
   <div class="wrap">
