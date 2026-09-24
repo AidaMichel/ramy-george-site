@@ -12,6 +12,8 @@ const work = read('src/pages/work/index.astro')
 const project = read('src/pages/work/[slug].astro')
 const info = read('src/pages/info.astro')
 const content = read('src/lib/content.ts')
+const homeAlias = read('src/pages/Home.astro')
+const homeAliasLower = read('src/pages/home.astro')
 
 const checks = [
   ['desktop nav is locked to viewport center', base.includes("left: 50%;") && base.includes("transform: translate(-50%, -50%);")],
@@ -50,6 +52,7 @@ const checks = [
   ['hero image has a runtime photo fallback', hero.includes('data-fallback={fallbackHero}') && hero.includes("heroImg.addEventListener('error'")],
   ['hero includes a concise storytelling line', hero.includes('const storyLine') && hero.includes('class="story muted"')],
   ['hero blend includes warm atmospheric depth', hero.includes('hero-float') && hero.includes('sepia(.035)') && hero.includes('rgba(255,169,78,.105)')],
+  ['Home alias redirects to canonical root', homeAlias.includes("Astro.redirect('/', 308)") && homeAliasLower.includes("Astro.redirect('/', 308)")],
 
 ]
 
