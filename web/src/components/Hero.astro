@@ -5,11 +5,15 @@ const {hero, settings} = site
 const cta = hero.ctaTarget === 'work' ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
-const useEditorialPortrait = hero.mode === 'none'
 const fallbackHero = '/hero-rg-approved.webp?v=4'
-const editorialSrc = hero.useDashboardImage && hero.image?.src ? hero.image.src : fallbackHero
+const editorialSrc = hero.mode === 'none'
+  ? (hero.useDashboardImage && hero.image?.src ? hero.image.src : fallbackHero)
+  : (hero.image?.src || hero.showreelPoster?.src || fallbackHero)
+const frameItems = (hero.frames || []).filter((f) => f.img?.src)
+const showReel = hero.mode === 'showreel' && !!hero.showreel
+const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
 ---
-<section class:list={['hero wrap', {'has-visual': useEditorialPortrait, editorial: useEditorialPortrait}]} aria-labelledby="hero-name">
+<section class="hero wrap has-visual editorial" aria-labelledby="hero-name">
   <div class="text">
     <h1 id="hero-name">{first}{rest.length > 0 && <><br />{rest.join(' ')}</>}</h1>
     <div class="meta">
@@ -22,13 +26,24 @@ const editorialSrc = hero.useDashboardImage && hero.image?.src ? hero.image.src 
     </div>
   </div>
 
-  {useEditorialPortrait && (
-    <div class="visual editorial-portrait">
+  <div class="visual editorial-portrait">
+    {showReel ? (
+      <div class="editorial-frame reel">
+        <video src={hero.showreel} poster={hero.showreelPoster?.src || editorialSrc} muted loop playsinline autoplay preload="metadata" data-reel aria-label="Ramy George showreel preview"></video>
+        <button type="button" class="reel-toggle" data-reel-toggle aria-pressed="false">Pause</button>
+      </div>
+    ) : showFrames ? (
+      <div class:list={['editorial-frame', 'frames', {'one-frame': frameItems.length === 1}]}>
+        {frameItems.slice(0, 4).map((f) => (
+          <span class="frame-item"><img src={f.img!.src} alt="" aria-hidden="true" /></span>
+        ))}
+      </div>
+    ) : (
       <div class="editorial-frame">
         <img src={editorialSrc} alt="" aria-hidden="true" />
       </div>
-    </div>
-  )}
+    )}
+  </div>
 </section>
 <script>
   const v = document.querySelector<HTMLVideoElement>('[data-reel]')
@@ -136,11 +151,12 @@ const editorialSrc = hero.useDashboardImage && hero.image?.src ? hero.image.src 
     filter: brightness(1.32) contrast(1.01) saturate(1.04);
   }
 
-  .frame { display: block; aspect-ratio: 4 / 5; background: var(--s1); overflow: hidden; position: relative; }
-  .frames { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .reel { aspect-ratio: 16 / 9; }
+  .frames { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .frames.one-frame { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+  .frame-item { min-width: 0; min-height: 0; overflow: hidden; background: var(--media); }
+  .frames .frame-item img { width: 100%; height: 100%; object-fit: cover; }
   .reel video { width: 100%; height: 100%; object-fit: cover; }
-  .reel-toggle { position: absolute; right: 10px; bottom: 10px; background: var(--bg); border: 1px solid var(--rule); padding: 6px 10px; font-size: 12px; cursor: pointer; }
+  .reel-toggle { position: absolute; right: 12px; bottom: 12px; z-index: 2; background: rgba(22,21,19,.88); border: 1px solid var(--rule); border-radius: 999px; padding: 7px 12px; font-size: 12px; cursor: pointer; }
 
   @media (max-width: 1100px) {
     .hero { grid-template-columns: minmax(0, .96fr) minmax(390px, 1.04fr); min-height: auto; align-items: center; }
