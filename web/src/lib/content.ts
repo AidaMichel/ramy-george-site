@@ -22,7 +22,7 @@ export type Site = {
   navigation: {label: string; target: string; url?: string; highlight: boolean; visible?: boolean}[]
   contact: {email: string; whatsapp: string; linkedin: string; kicker: string; heading: string; buttonLabel: string; buttonTarget: 'email' | 'whatsapp'; seo?: Seo}
   hero: {mode: 'portrait' | 'still' | 'multiframe' | 'showreel' | 'none'; image?: Img; frames?: {img: Img; projectSlug?: string}[]; showreel?: string; showreelPoster?: Img; stillProjectSlug?: string; shortLine: string; ctaLabel: string; ctaTarget: 'section' | 'work'}
-  about: {heading: string; paragraph: string; portrait: Img; links: {label: string; kind: string; url?: string}[]; seo?: Seo}
+  about: {heading: string; paragraph: string; homepageParagraph?: string; portrait: Img; links: {label: string; kind: string; url?: string}[]; seo?: Seo}
   info: {heading: string; useAboutParagraph: boolean; intro?: string; showPortrait: boolean; experience: {role: string; organisation: string; location?: string; years?: string}[]; training: {course: string; institution: string; year?: string}[]; showCv: boolean; cvLabel: string; seo?: Seo}
   home: {sections: {key: string; visible: boolean; heading: string; microcopy: string; variant?: string}[]; defaultCategory: string; defaultProject: string; motionFilters: {key: string; label: string}[]; logoGroupHeadings: Record<string, string>; logoGroupVisibility: Record<string, boolean>; posts?: string[]; seo?: Seo}
   categories: {id: string; title: string; slug: string}[]
@@ -51,7 +51,7 @@ const QUERY = `{
      "stillProjectSlug": still.project->slug.current,
      "frames": frames[]{"img": @${IMG}, "projectSlug": project->slug.current},
      "showreel": showreel.asset->url, "showreelPoster": showreelPoster${IMG}},
-  "about": *[_id=="about"][0]{heading, paragraph, "portrait": portrait${IMG}, "links": links[visible != false]{label, kind, url}, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
+  "about": *[_id=="about"][0]{heading, paragraph, homepageParagraph, "portrait": portrait${IMG}, "links": links[visible != false]{label, kind, url}, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
   "info": *[_id=="info"][0]{heading, useAboutParagraph, intro, showPortrait, experience[]{role, organisation, location, years}, training[]{course, institution, year}, showCv, cvLabel, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
   "home": *[_id=="homepage"][0]{"sections": sections[]{key, visible, heading, microcopy, variant}, "defaultCategory": defaultCategory->slug.current, "defaultProject": defaultProject->slug.current,
      "motionFilters": motionFilters[visible != false]{key, label}, logoGroupHeadings, logoGroupVisibility, "posts": posts[]->slug.current, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
