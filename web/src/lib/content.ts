@@ -21,7 +21,7 @@ export type Site = {
     footer: {showEmail: boolean; creditLine: string; locationLine: string; copyrightName: string; backToTopLabel: string}}
   navigation: {label: string; target: string; url?: string; highlight: boolean; visible?: boolean}[]
   contact: {email: string; whatsapp: string; linkedin: string; kicker: string; heading: string; buttonLabel: string; buttonTarget: 'email' | 'whatsapp'; seo?: Seo}
-  hero: {mode: 'portrait' | 'still' | 'multiframe' | 'showreel' | 'none'; image?: Img; frames?: {img: Img; projectSlug?: string}[]; showreel?: string; showreelPoster?: Img; stillProjectSlug?: string; shortLine: string; ctaLabel: string; ctaTarget: 'section' | 'work'}
+  hero: {mode: 'portrait' | 'still' | 'multiframe' | 'showreel' | 'none'; useDashboardImage?: boolean; image?: Img; frames?: {img: Img; projectSlug?: string}[]; showreel?: string; showreelPoster?: Img; stillProjectSlug?: string; shortLine: string; ctaLabel: string; ctaTarget: 'section' | 'work'}
   about: {heading: string; paragraph: string; homepageParagraph?: string; portrait: Img; links: {label: string; kind: string; url?: string}[]; seo?: Seo}
   info: {heading: string; useAboutParagraph: boolean; intro?: string; showPortrait: boolean; experience: {role: string; organisation: string; location?: string; years?: string}[]; training: {course: string; institution: string; year?: string}[]; showCv: boolean; cvLabel: string; seo?: Seo}
   home: {sections: {key: string; visible: boolean; heading: string; microcopy: string; variant?: string}[]; defaultCategory: string; defaultProject: string; motionFilters: {key: string; label: string}[]; logoGroupHeadings: Record<string, string>; logoGroupVisibility: Record<string, boolean>; posts?: string[]; seo?: Seo}
@@ -46,7 +46,7 @@ const QUERY = `{
   "settings": *[_id=="siteSettings"][0]{siteName, professionalTitle, supportingSkills, location, "logo": logo${IMG}, "footerLogo": footerLogo${IMG}, showFooterSignature, footer, "cv": cv.asset->url, siteUrl, "favicon": favicon.asset->url, "seo": defaultSeo{title, description, noIndex, "ogImage": ogImage.asset->url}},
   "navigation": *[_id=="navigation"][0].items[]{label, target, url, highlight, visible},
   "contact": *[_id=="contact"][0]{email, whatsapp, linkedin, kicker, heading, buttonLabel, buttonTarget, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
-  "hero": *[_id=="hero"][0]{mode, shortLine, ctaLabel, ctaTarget,
+  "hero": *[_id=="hero"][0]{mode, useDashboardImage, shortLine, ctaLabel, ctaTarget,
      "image": select(mode=="none" => editorialPortrait${IMG}, mode=="portrait" => portrait${IMG}, mode=="still" => still${IMG}),
      "stillProjectSlug": still.project->slug.current,
      "frames": frames[]{"img": @${IMG}, "projectSlug": project->slug.current},
