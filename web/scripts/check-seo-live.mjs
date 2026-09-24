@@ -19,16 +19,23 @@ const assert = (ok, msg) => {
   if (!ok) throw new Error(msg)
   console.log('✓', msg)
 }
+const attrs = (tag) => Object.fromEntries(
+  [...tag.matchAll(/([:\\w.-]+)=["']([^"']*)["']/g)].map((m) => [m[1].toLowerCase(), m[2]])
+)
 const meta = (html, name, property = false) => {
   const key = property ? 'property' : 'name'
-  const a = new RegExp(`<meta[^>]+${key}=["']${name.replace(/[.*+?^$\{\}()|[\\]\\]/g, '\\$&')}["'][^>]+content=["']([^"']*)["'][^>]*>`, 'i').exec(html)
-  const b = new RegExp(`<meta[^>]+content=["']([^"']*)["'][^>]+${key}=["']${name.replace(/[.*+?^$\{\}()|[\\]\\]/g, '\\$&')}["'][^>]*>`, 'i').exec(html)
-  return (a || b)?.[1] || ''
+  for (const m of html.matchAll(/<meta\\b[^>]*>/gi)) {
+    const a = attrs(m[0])
+    if ((a[key] || '').toLowerCase() === name.toLowerCase()) return a.content || ''
+  }
+  return ''
 }
 const link = (html, rel) => {
-  const a = new RegExp(`<link[^>]+rel=["']${rel}["'][^>]+href=["']([^"']+)["'][^>]*>`, 'i').exec(html)
-  const b = new RegExp(`<link[^>]+href=["']([^"']+)["'][^>]+rel=["']${rel}["'][^>]*>`, 'i').exec(html)
-  return (a || b)?.[1] || ''
+  for (const m of html.matchAll(/<link\\b[^>]*>/gi)) {
+    const a = attrs(m[0])
+    if ((a.rel || '').toLowerCase() === rel.toLowerCase()) return a.href || ''
+  }
+  return ''
 }
 const titleOf = (html) => (/<title>([^<]+)<\/title>/i.exec(html)?.[1] || '').trim()
 const jsonLd = (html) => [...html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)]
