@@ -9,9 +9,11 @@ const d = site.settings.seo
 const pageTitle = seo.title || title || d.title || site.settings.siteName
 const desc = seo.description || description || d.description || ''
 const og = seo.ogImage || image || d.ogImage
-const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined
+const canonicalPath = Astro.url.pathname === '/' ? '/' : Astro.url.pathname.replace(/\/+$/, '') + '/'
+const canonical = Astro.site ? new URL(canonicalPath, Astro.site).href : undefined
 const ogAbs = og && Astro.site && og.startsWith('/') ? new URL(og, Astro.site).href : og
-const path = Astro.url.pathname
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/'
+const homeHasContact = site.home.sections.some((s) => s.key === 'contact' && s.visible !== false)
 const logo = site.settings.logo
 const faviconHref = site.settings.favicon || '/favicon.svg?v=10'
 const flogo = site.settings.footerLogo?.src ? site.settings.footerLogo : logo
@@ -26,9 +28,12 @@ const navItems = site.navigation
   .filter((n) => n.visible !== false)
   .map((n) => {
     const defaultHref = navHref(n.target, n.url)
-    const href = n.target === 'contact' && (path === '/' || path === '/info/' || path === '/info') ? '#contact' : defaultHref
+    const href = n.target === 'contact'
+      ? (path === '/info' ? '#contact' : path === '/' && homeHasContact ? '#contact' : homeHasContact ? '/#contact' : '/info/#contact')
+      : defaultHref
     const ext = isExternal(href)
-    const current = !ext && (href === '/' ? path === '/' : href.startsWith('#') ? false : path.startsWith(href))
+    const hrefPath = href.startsWith('#') || ext ? '' : (href.split('#')[0].replace(/\/+$/, '') || '/')
+    const current = !ext && !href.startsWith('#') && (hrefPath === '/' ? path === '/' : path === hrefPath || path.startsWith(hrefPath + '/'))
     return {...n, href, ext, current}
   })
 const primaryNav = navItems.filter((n) => !n.highlight)
