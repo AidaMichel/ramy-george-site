@@ -83,7 +83,8 @@ Every clickable element, where it goes, and its status. `npm run build` also fai
 | Contact · Email | mailto | Ramy903@gmail.com | Confirmed |
 | Contact · WhatsApp ↗ | Opens chat | https://wa.me/message/MX6HDX77H4RWG1 | Confirmed |
 | Contact · LinkedIn ↗ | Opens profile | https://www.linkedin.com/in/ramy-george/ | Confirmed |
-| Nav · Work / Info / Let’s talk (desktop + mobile MENU) | Internal | `/work/` `/info/` `/contact/` (old `/about/` → `/info/`) | OK |
+| Nav · Home / Work / Info / Let’s talk (desktop + mobile MENU) | Internal | `/` · `/work/` · `/info/` · `/#contact` | OK |
 | Footer · wordmark / Back to top ↑ | Scroll to top | `#main` | OK (no email in footer) |
-| Motion & AI items | Tile → project + Watch | — | **FILES + LINKS NEEDED** (section hidden until content exists) |
-| Posts & Carousels | Slides | — | **ARTWORK NEEDED** (section hidden until content exists) |
+| Motion & AI items | Tile → project + Watch | — | Empty state shown until real content is published; filters adapt to populated types |
+| Posts & Carousels | Slides | — | Empty state shown until real artwork is published; no unnecessary category tabs |
+| Legacy `/contact/` | Redirect | `/#contact` | Intentional — separate contact page removed from the visitor journey |
