@@ -65,19 +65,19 @@ const total = groups.reduce((n, g) => n + g.items.length, 0)
   .jump .pill { display: inline-flex; align-items: center; }
   .jump .pill:hover { border-color: var(--acc); color: var(--text); }
   .grp { padding-top: clamp(72px, 8vw, 104px); scroll-margin-top: 24px; }
-  .gh { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--text); margin-bottom: 24px; }
+  .gh { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border-strong); margin-bottom: 24px; }
   .gh h2 { font-size: 14px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
   .gh .num { font-size: 12px; }
   .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 40px var(--gap); }
   .card { display: block; min-width: 0; }
   .thumb { display: flex; align-items: center; justify-content: center; aspect-ratio: 16 / 10; }
   .thumb { overflow: hidden; }
-  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 320ms var(--ease); }
+  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-med) var(--ease); }
   .card:hover .thumb :global(img) { transform: scale(1.025); }
   .ct { display: block; margin-top: 12px; font-size: 18px; font-weight: 600; line-height: 1.25; }
   .co { display: block; font-size: 14px; margin-top: 3px; }
   .card:hover .ct { color: var(--acc); }
-  .empty { margin-top: 64px; padding: clamp(42px, 6vw, 72px) 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .empty { margin-top: 64px; padding: clamp(42px, 6vw, 72px) 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
   .empty h2 { margin-top: 14px; font-size: clamp(34px, 4vw, 54px); line-height: 1; letter-spacing: -.03em; }
   .empty .muted { margin-top: 12px; max-width: 520px; }
   .empty .ext { display: inline-block; margin-top: 30px; }
