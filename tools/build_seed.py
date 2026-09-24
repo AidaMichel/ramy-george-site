@@ -146,7 +146,7 @@ pdst = os.path.join(MEDIA, 'portrait.jpg'); shutil.copy(os.path.join(PROTO, 'vm'
 pw, ph = Image.open(pdst).size
 PORTRAIT = {'src': '/media/portrait.jpg', 'w': pw, 'h': ph, 'alt': 'Ramy George at the edit suite', 'file': pdst}
 site = {
- 'settings': {'siteName': 'Ramy George', 'professionalTitle': 'Video Generalist', 'supportingSkills': ['Editing', 'Motion', 'Design', 'Sound', 'Camera', 'AI Gen'],
+ 'settings': {'siteName': 'Ramy George', 'professionalTitle': 'Video Generalist', 'supportingSkills': ['Editing', 'Motion', 'Design', 'Sound Design', 'Camera', 'AI Gen'],
               'location': 'Based in Dubai', 'logo': {'src': '/media/wordmark.png', 'w': ww, 'h': wh}, 'showFooterSignature': True,
               'footer': {'showEmail': False, 'locationLine': 'Dubai, UAE', 'copyrightName': '', 'backToTopLabel': 'Back to top ↑'},
               'cv': '/files/Ramy_George_CV.pdf', 'siteUrl': '',
@@ -155,7 +155,7 @@ site = {
  # Contact details come from the portfolio/CV and are still to be CONFIRMED by the owner before launch.
  'contact': {'email': 'Ramy903@gmail.com', 'whatsapp': 'https://wa.me/message/MX6HDX77H4RWG1', 'linkedin': 'https://www.linkedin.com/in/ramy-george/',
              'kicker': 'Have a project in mind?', 'heading': 'Let’s talk.', 'buttonLabel': 'LET’S TALK', 'buttonTarget': 'whatsapp'},
- 'hero': {'mode': 'none', 'useDashboardImage': False, 'shortLine': 'Based in Dubai. I spend most of my time editing news, documentaries, podcasts, social and branded work, with motion, design and sound often part of the same job.', 'ctaLabel': 'See the work ↓', 'ctaTarget': 'section'},
+ 'hero': {'mode': 'none', 'useDashboardImage': False, 'positioningLine': 'The edit is the spine — motion, design and sound design make every beat land.', 'shortLine': 'Based in Dubai. I spend most of my time editing news, documentaries, podcasts, social and branded work, with motion, design and sound often part of the same job.', 'ctaLabel': 'See the work ↓', 'ctaTarget': 'section'},
  'about': {'heading': 'About', 'paragraph': ABOUT, 'portrait': PORTRAIT,
            'links': [{'label': 'More on the Info page →', 'kind': 'info'}, {'label': 'LinkedIn', 'kind': 'linkedin'}, {'label': 'Email', 'kind': 'email'}]},
  'info': {'heading': 'Info', 'useAboutParagraph': True, 'intro': '', 'showPortrait': True,
