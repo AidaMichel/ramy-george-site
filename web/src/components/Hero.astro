@@ -1,8 +1,10 @@
 ---
 import {getSite} from '../lib/content'
+interface Props { hasWorkAnchor?: boolean }
+const {hasWorkAnchor = true} = Astro.props
 const site = await getSite()
 const {hero, settings} = site
-const cta = hero.ctaTarget === 'work' ? '/work/' : '#work'
+const cta = hero.ctaTarget === 'work' || !hasWorkAnchor ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
 const fallbackHero = '/hero-rg-approved.webp?v=4'
