@@ -11,7 +11,7 @@ on:
   repository_dispatch: {types: [sanity-draft]}
   workflow_dispatch:
 concurrency:
-  group: deploy-${{ github.event_name == 'pull_request' && github.ref || github.event.action || 'main' }}
+  group: deploy-v2-${{ github.event_name == 'pull_request' && github.ref || github.event.action || 'main' }}
   cancel-in-progress: true
 permissions: {contents: read, pull-requests: write}
 jobs:
