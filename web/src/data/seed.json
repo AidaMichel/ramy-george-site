@@ -6,7 +6,7 @@
    "Editing",
    "Motion",
    "Design",
-   "Sound",
+   "Sound Design",
    "Camera",
    "AI Gen"
   ],
@@ -68,7 +68,8 @@
   "shortLine": "Based in Dubai. I spend most of my time editing news, documentaries, podcasts, social and branded work, with motion, design and sound often part of the same job.",
   "ctaLabel": "See the work ↓",
   "ctaTarget": "section",
-  "useDashboardImage": false
+  "useDashboardImage": false,
+  "positioningLine": "The edit is the spine — motion, design and sound design make every beat land."
  },
  "about": {
   "heading": "About",
