@@ -25,9 +25,10 @@ const quick = [
 const navItems = site.navigation
   .filter((n) => n.visible !== false)
   .map((n) => {
-    const href = navHref(n.target, n.url)
+    const defaultHref = navHref(n.target, n.url)
+    const href = n.target === 'contact' && (path === '/' || path === '/info/' || path === '/info') ? '#contact' : defaultHref
     const ext = isExternal(href)
-    const current = !ext && (href === '/' ? path === '/' : path.startsWith(href))
+    const current = !ext && (href === '/' ? path === '/' : href.startsWith('#') ? false : path.startsWith(href))
     return {...n, href, ext, current}
   })
 const primaryNav = navItems.filter((n) => !n.highlight)
