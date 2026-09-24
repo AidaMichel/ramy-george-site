@@ -12,7 +12,8 @@ export type Project = {
   org: string; role: string; poster: Img; mobilePoster?: Img; homepagePreview?: Img; cover?: Img; previewLoop?: string; hoverPreview?: string
   watchUrl: string; platform: string; watchLabel?: string; aspect: string; featured: boolean; showOnHome: boolean; showOnWork: boolean
   secondScreen?: {label: string; aspect: string; poster: Img; url: string; watchLabel: string} | null
-  slides?: Img[]; slideAspect?: string; summary?: string; credits?: string; seo?: Seo
+  slides?: Img[]; slideAspect?: string; summary?: string; credits?: string
+  storyBlocks?: {label: string; text: string}[]; relatedProjects?: string[]; seo?: Seo
 }
 export type Seo = {title?: string; description?: string; ogImage?: string; noIndex?: boolean}
 export type Logo = {id: string; name: string; group: 'clients' | 'media' | 'events'; logo: Img; size: number}
@@ -21,7 +22,7 @@ export type Site = {
     footer: {showEmail: boolean; creditLine: string; locationLine: string; copyrightName: string; backToTopLabel: string}}
   navigation: {label: string; target: string; url?: string; highlight: boolean; visible?: boolean}[]
   contact: {email: string; whatsapp: string; linkedin: string; kicker: string; heading: string; buttonLabel: string; buttonTarget: 'email' | 'whatsapp'; seo?: Seo}
-  hero: {mode: 'portrait' | 'still' | 'multiframe' | 'showreel' | 'none'; useDashboardImage?: boolean; image?: Img; frames?: {img: Img; projectSlug?: string}[]; showreel?: string; showreelPoster?: Img; stillProjectSlug?: string; shortLine: string; ctaLabel: string; ctaTarget: 'section' | 'work'}
+  hero: {mode: 'portrait' | 'still' | 'multiframe' | 'showreel' | 'none'; useDashboardImage?: boolean; image?: Img; frames?: {img: Img; projectSlug?: string}[]; showreel?: string; showreelPoster?: Img; stillProjectSlug?: string; shortLine: string; positioningLine?: string; ctaLabel: string; ctaTarget: 'section' | 'work'}
   about: {heading: string; paragraph: string; homepageParagraph?: string; portrait: Img; links: {label: string; kind: string; url?: string}[]; seo?: Seo}
   info: {heading: string; useAboutParagraph: boolean; intro?: string; showPortrait: boolean; experience: {role: string; organisation: string; location?: string; years?: string}[]; training: {course: string; institution: string; year?: string}[]; showCv: boolean; cvLabel: string; seo?: Seo}
   home: {sections: {key: string; visible: boolean; heading: string; microcopy: string; variant?: string}[]; defaultCategory: string; defaultProject: string; motionFilters: {key: string; label: string}[]; logoGroupHeadings: Record<string, string>; logoGroupVisibility: Record<string, boolean>; posts?: string[]; seo?: Seo}
@@ -46,7 +47,7 @@ const QUERY = `{
   "settings": *[_id=="siteSettings"][0]{siteName, professionalTitle, supportingSkills, location, "logo": logo${IMG}, "footerLogo": footerLogo${IMG}, showFooterSignature, footer, "cv": cv.asset->url, siteUrl, "favicon": favicon.asset->url, "seo": defaultSeo{title, description, noIndex, "ogImage": ogImage.asset->url}},
   "navigation": *[_id=="navigation"][0].items[]{label, target, url, highlight, visible},
   "contact": *[_id=="contact"][0]{email, whatsapp, linkedin, kicker, heading, buttonLabel, buttonTarget, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
-  "hero": *[_id=="hero"][0]{mode, useDashboardImage, shortLine, ctaLabel, ctaTarget,
+  "hero": *[_id=="hero"][0]{mode, useDashboardImage, shortLine, positioningLine, ctaLabel, ctaTarget,
      "image": select(mode=="none" => editorialPortrait${IMG}, mode=="portrait" => portrait${IMG}, mode=="still" => still${IMG}),
      "stillProjectSlug": still.project->slug.current,
      "frames": frames[]{"img": @${IMG}, "projectSlug": project->slug.current},
@@ -62,7 +63,10 @@ const QUERY = `{
      "previewLoop": previewLoop.asset->url, "hoverPreview": hoverPreview.asset->url, "watchUrl": coalesce(watchUrl, ""), watchLabel, "aspect": coalesce(aspect, "16:9"),
      "featured": coalesce(featured, false), "showOnHome": coalesce(showOnHome, true), "showOnWork": coalesce(showOnWork, true),
      "secondScreen": select(secondScreen.enabled == true => secondScreen{label, aspect, "poster": poster${IMG}, url, watchLabel}, null),
-     "slides": slides[]${IMG}, slideAspect, summary, credits, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
+     "slides": slides[]${IMG}, slideAspect, summary, credits,
+     "storyBlocks": storyBlocks[]{label, text},
+     "relatedProjects": relatedProjects[]->slug.current,
+     "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
   "logos": *[_type=="credibilityLogo" && visible != false]|order(orderRank){"id": _id, name, group, "logo": select(displayVersion=="official" && defined(officialLogo) => officialLogo${IMG}, displayVersion=="dark" && defined(darkLogo) => darkLogo${IMG}, logo${IMG}), "size": coalesce(size, 48)}
 }`
 
