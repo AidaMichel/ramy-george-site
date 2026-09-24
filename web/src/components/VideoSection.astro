@@ -151,7 +151,7 @@ const sectionHeading = !sec.heading || sec.heading.trim().toLowerCase() === 'vid
         $('[data-two-label]').textContent = d.two.label
       }
 
-      if (d.loop && !reduce) {
+      if (d.loop && !d.two && !reduce) {
         loop.src = d.loop
         loop.hidden = false
         loop.play().catch(() => {})
