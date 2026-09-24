@@ -56,6 +56,12 @@ jobs:
         if: env.CLOUDFLARE_API_TOKEN != '' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         run: npm run build && npm run check:flow && npx wrangler deploy
 
+      - name: Live production smoke audit
+        if: env.CLOUDFLARE_API_TOKEN != '' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        env:
+          SITE_URL: ${{ env.SITE_URL != '' && env.SITE_URL || 'https://ramygeorge.com' }}
+        run: npm run check:live
+
       - name: Draft preview build + deploy (password-protect with Cloudflare Access)
         if: env.CLOUDFLARE_API_TOKEN != '' && (github.event.action == 'sanity-draft')
         env: {SANITY_PREVIEW: '1', SITE_URL: ''}
