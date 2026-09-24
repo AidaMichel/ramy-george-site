@@ -7,7 +7,7 @@ const cta = hero.ctaTarget === 'work' ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
 const useEditorialPortrait = hero.mode === 'none'
-const editorialSrc = '/hero-rg-approved.webp'
+const editorialSrc = '/hero-rg-approved.webp?v=3'
 ---
 <section class:list={['hero wrap', {'has-visual': useEditorialPortrait, editorial: useEditorialPortrait}]} aria-labelledby="hero-name">
   <div class="text">
@@ -25,7 +25,7 @@ const editorialSrc = '/hero-rg-approved.webp'
   {useEditorialPortrait && (
     <div class="visual editorial-portrait">
       <div class="editorial-frame">
-        <img src={editorialSrc} alt="Ramy George editing at his workstation" />
+        <img src={editorialSrc} alt="" aria-hidden="true" />
       </div>
     </div>
   )}
