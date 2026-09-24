@@ -22,7 +22,10 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
 ---
 <Base seo={p.seo} title={`${p.title}${p.org ? ' — ' + p.org : ''} · ${site.settings.siteName}`} description={desc} image={(p.cover || p.poster)?.src}>
   <article class="wrap proj">
-    <a class="back muted" href={p.kind === 'video' && cat ? `/work/#${cat.slug}` : '/work/'}>← All work</a>
+    <a class="back" href={p.kind === 'video' && cat ? `/work/#${cat.slug}` : '/work/'} aria-label="Back to all work">
+      <span class="back-arrow" aria-hidden="true">←</span>
+      <span>All work</span>
+    </a>
     <header class="hd">
       <p class="lbl">{kindLabel}</p>
       <h1>{p.title}</h1>
@@ -37,8 +40,9 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
             ? <Img img={p.slides[0]} alt={p.slides[0]?.alt || p.title} class="contain" eager />
             : <Img img={p.poster} alt={p.poster?.alt || p.title} class="contain" eager sizes="(max-width: 1023px) 100vw, 80vw" />}
         {embed && (
-          <button type="button" class="play" data-embed={embed} aria-label={`Play ${p.title} here`}>
-            <span class="tri" aria-hidden="true"></span><span>Play here</span>
+          <button type="button" class="play" data-embed={embed} aria-label={`Play ${p.title}`}>
+            <span class="play-icon" aria-hidden="true"><span class="tri"></span></span>
+            <span class="play-label">Play video</span>
           </button>
         )}
       </div>
@@ -103,8 +107,44 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
 </script>
 <style>
   .proj { padding-top: 32px; padding-bottom: 120px; }
-  .back { display: inline-block; font-size: 14px; padding: 8px 0; }
-  .hd { margin-top: 40px; }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 40px;
+    padding: 7px 14px 7px 9px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+  .back-arrow {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--acc);
+    color: var(--bg);
+    font-size: 17px;
+    line-height: 1;
+    transition: transform 160ms ease;
+  }
+  .back:hover,
+  .back:focus-visible {
+    background: var(--acc);
+    border-color: var(--acc);
+    color: var(--bg);
+  }
+  .back:hover .back-arrow,
+  .back:focus-visible .back-arrow {
+    background: var(--bg);
+    color: var(--acc);
+    transform: translateX(-2px);
+  }
+  .hd { margin-top: 34px; }
   h1 { margin-top: 12px; font-size: clamp(40px, 6vw, 88px); line-height: .95; font-weight: 600; letter-spacing: -0.035em; max-width: 18ch; }
   .org { margin-top: 12px; font-size: 20px; color: var(--muted); }
   .player { margin-top: 48px; }
@@ -114,9 +154,59 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
   .player.square .frame { width: min(820px, 100%); margin-inline: auto; }
   .frame :global(img), .motion-loop { max-height: 100%; max-width: 100%; width: 100%; height: 100%; object-fit: contain; }
   .frame :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .play { position: absolute; inset: auto auto 20px 20px; display: inline-flex; align-items: center; gap: 12px; height: 56px; padding: 0 22px 0 18px; background: var(--text); color: var(--bg); border: 0; font-size: 16px; font-weight: 700; cursor: pointer; }
-  .play:hover { background: var(--acc); }
-  .tri { width: 0; height: 0; border-left: 14px solid currentColor; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+  .play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 64px;
+    padding: 8px 22px 8px 8px;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: 0 14px 34px rgba(0,0,0,.28);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+  }
+  .play:hover,
+  .play:focus-visible {
+    background: var(--acc);
+    border-color: var(--acc);
+    transform: translate(-50%, -50%) scale(1.035);
+  }
+  .play-icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--acc);
+    color: var(--bg);
+    transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+  .play:hover .play-icon,
+  .play:focus-visible .play-icon {
+    background: var(--bg);
+    color: var(--acc);
+    transform: scale(.96);
+  }
+  .play-label { white-space: nowrap; }
+  .tri {
+    width: 0;
+    height: 0;
+    margin-left: 3px;
+    border-left: 13px solid currentColor;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+  }
   .note { font-size: 13px; margin-top: 10px; }
   .info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--gap); margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--rule); }
   dl { margin: 0; display: grid; grid-template-columns: 120px 1fr; gap: 14px 16px; }
@@ -138,5 +228,12 @@ const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p
   .rt :global(img) { max-height: 100%; }
   .rel a:hover b { color: var(--acc); }
   @media (max-width: 1023px) { .info { grid-template-columns: 1fr; } .rel ul { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 599px) { .rel ul { grid-template-columns: 1fr; } dl { grid-template-columns: 90px 1fr; } }
+  @media (max-width: 599px) {
+    .back { min-height: 38px; padding: 6px 12px 6px 7px; }
+    .back-arrow { width: 25px; height: 25px; }
+    .play { min-height: 56px; padding: 7px 18px 7px 7px; font-size: 15px; }
+    .play-icon { width: 42px; height: 42px; }
+    .rel ul { grid-template-columns: 1fr; }
+    dl { grid-template-columns: 90px 1fr; }
+  }
 </style>
