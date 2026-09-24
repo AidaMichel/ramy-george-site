@@ -13,6 +13,8 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
 const ogAbs = og && Astro.site && og.startsWith('/') ? new URL(og, Astro.site).href : og
 const path = Astro.url.pathname
 const logo = site.settings.logo
+const faviconBase = site.settings.favicon || logo?.src || '/favicon.svg'
+const faviconHref = faviconBase.includes('?') ? `${faviconBase}&v=4` : `${faviconBase}?v=4`
 const flogo = site.settings.footerLogo?.src ? site.settings.footerLogo : logo
 const f = site.settings.footer
 const c = site.contact
@@ -47,7 +49,7 @@ const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
   {canonical && <meta property="og:url" content={canonical} />}
   <meta name="twitter:card" content={ogAbs ? 'summary_large_image' : 'summary'} />
   <meta name="theme-color" content="#161513" />
-  {site.settings.favicon ? <link rel="icon" href={site.settings.favicon} /> : <link rel="icon" href="/favicon.svg" type="image/svg+xml" />}
+  <link rel="icon" href={faviconHref} />
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
