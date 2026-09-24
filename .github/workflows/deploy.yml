@@ -1,14 +1,14 @@
-# Builds the static site and deploys it to Cloudflare Workers (Static Assets, free plan).
-#  - push to main ............ production deploy
+# Builds the Astro worker and deploys it to Cloudflare.
+# Published Sanity content is fetched on demand, so normal dashboard Publish actions need no rebuild.
+#  - push to main ............ deploy code/design changes
 #  - pull request ............ preview version with its own URL (not live)
-#  - Sanity "Publish" ........ production rebuild (Sanity webhook -> repository_dispatch "sanity-publish")
-#  - Sanity draft change ..... draft-preview site rebuild (repository_dispatch "sanity-draft")
+#  - Sanity draft change ..... optional draft-preview rebuild (repository_dispatch "sanity-draft")
 # Secrets live in GitHub (Settings -> Secrets and variables -> Actions), never in the code.
 name: Deploy
 on:
   push: {branches: [main]}
   pull_request:
-  repository_dispatch: {types: [sanity-publish, sanity-draft]}
+  repository_dispatch: {types: [sanity-draft]}
   workflow_dispatch:
 concurrency:
   group: deploy-${{ github.event_name == 'pull_request' && github.ref || github.event.action || 'main' }}
@@ -53,7 +53,7 @@ jobs:
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
 
       - name: Production build + deploy
-        if: env.CLOUDFLARE_API_TOKEN != '' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.action == 'sanity-publish')
+        if: env.CLOUDFLARE_API_TOKEN != '' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         run: npm run build && npx wrangler deploy
 
       - name: Draft preview build + deploy (password-protect with Cloudflare Access)
