@@ -69,7 +69,7 @@ const cue = sec.microcopy || 'BROWSE DIFFERENT FORMATS'
             <ol class="rows" role={cats.length > 1 ? 'tabpanel' : undefined} id={cats.length > 1 ? `vp-${c.slug}` : undefined} aria-labelledby={cats.length > 1 ? `vt-${c.slug}` : undefined} hidden={cats.length > 1 && i !== activeCat} data-panel={i}>
               {c.items.map((p, k) => (
                 <li>
-                  <a class:list={['row', {on: p.slug === first.slug}]} href={`/work/${p.slug}/`} data-pv={JSON.stringify(pv(p))}>
+                  <a class:list={['row', {on: p.slug === f.slug}]} href={`/work/${p.slug}/`} data-pv={JSON.stringify(pv(p))}>
                     <span class="n num">{String(k + 1).padStart(2, '0')}</span>
                     <span class="t">{p.title}</span>
                     <span class="o">{p.org}</span>
