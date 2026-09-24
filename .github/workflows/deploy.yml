@@ -49,7 +49,7 @@ jobs:
       - uses: actions/setup-node@v4
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         with: {node-version: 22, cache: npm, cache-dependency-path: web/package-lock.json}
-      - run: npm ci
+      - run: npm install
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
 
       - name: Production build + deploy
