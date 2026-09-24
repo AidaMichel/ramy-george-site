@@ -62,9 +62,12 @@ assert(loc.includes('#contact') || loc.endsWith('/'), 'Contact redirect has a us
 const missing = await request('/__ramy_smoke_missing__')
 assert(missing.status === 404, 'Unknown route returns a real 404')
 
-const heroAsset = await request('/hero-rg-master.webp?v=1')
+const heroAsset = await request('/hero-rg-master.webp?v=2')
 assert(heroAsset.status === 200, 'Hero master asset returns 200')
 assert((heroAsset.headers.get('content-type') || '').includes('image'), 'Hero master asset has an image content type')
+const heroBytes = new Uint8Array(await heroAsset.arrayBuffer())
+assert(heroBytes.byteLength > 30000, 'Hero master is the full-quality photo asset')
+assert(String.fromCharCode(...heroBytes.slice(0, 4)) === 'RIFF' && String.fromCharCode(...heroBytes.slice(8, 12)) === 'WEBP', 'Hero master is a valid WebP file')
 
 const cssMatch = homeHtml.match(/<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/) || homeHtml.match(/<link[^>]+href="([^"]+)"[^>]+rel="stylesheet"/)
 if (cssMatch) {
