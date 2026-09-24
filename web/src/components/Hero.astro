@@ -11,8 +11,8 @@ const storySkills = others.slice(0, 4).map((x) => x.toLowerCase())
 const storyList = storySkills.length > 1
   ? `${storySkills.slice(0, -1).join(', ')} and ${storySkills.at(-1)}`
   : storySkills[0] || ''
-const storyLine = lead && storyList
-  ? `${lead}-led visual storytelling across ${storyList}.`
+const storyLine = lead
+  ? 'Editing-led visual storytelling across motion, design, sound design, camera and AI.'
   : hero.shortLine
 const fallbackHero = '/hero-rg-approved.webp?v=7'
 const editorialSrc = hero.mode === 'none'
@@ -103,7 +103,7 @@ const showFrames = hero.mode === 'multiframe' && frameItems.length > 0
   .title { font-size: clamp(26px, 3vw, 44px); line-height: 1; font-weight: 600; letter-spacing: -0.02em; text-transform: uppercase; }
   .skills { margin-top: 18px; font-size: 15px; line-height: 1.7; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
   .skills strong { font-weight: 700; color: var(--text); }
-  .story { margin-top: 16px; max-width: 43ch; font-size: 16px; line-height: 1.48; letter-spacing: -.005em; text-wrap: pretty; }
+  .story { margin-top: 16px; max-width: 52ch; font-size: 16px; line-height: 1.48; letter-spacing: -.005em; text-wrap: balance; }
   .line { width: min(432px, 40%); font-size: 18px; line-height: 1.55; margin-bottom: 6px; }
   .cta-row { margin-top: 30px; }
   .cta { display: inline-flex; align-items: center; height: 52px; padding: 0 22px; border: 1px solid var(--text); font-size: 16px; font-weight: 600; }
