@@ -1,15 +1,16 @@
 ---
 import {getSite} from '../lib/content'
 import Img from './Img.astro'
+import {heroFallback} from '../data/heroFallback'
 const site = await getSite()
 const {hero, settings} = site
 const cta = hero.ctaTarget === 'work' ? '/work/' : '#work'
 const [first, ...rest] = settings.siteName.split(' ')
 const [lead, ...others] = settings.supportingSkills
-const useEditorialPortrait = true
-const editorialSrc = '/hero-ramy-final.webp'
+const useEditorialPortrait = hero.mode === 'none'
+const editorialSrc = hero.image?.src || heroFallback
 ---
-<section class:list={['hero wrap', {'has-visual': hero.mode !== 'none' || useEditorialPortrait, editorial: useEditorialPortrait}]} aria-labelledby="hero-name">
+<section class:list={['hero wrap', {'has-visual': useEditorialPortrait, editorial: useEditorialPortrait}]} aria-labelledby="hero-name">
   <div class="text">
     <h1 id="hero-name">{first}{rest.length > 0 && <><br />{rest.join(' ')}</>}</h1>
     <div class="meta">
@@ -23,13 +24,10 @@ const editorialSrc = '/hero-ramy-final.webp'
   </div>
 
   {useEditorialPortrait && (
-    <div class:list={['visual', useEditorialPortrait ? 'editorial-portrait' : hero.mode]}>
-      {useEditorialPortrait && (
-        <div class="editorial-frame">
-          <img src={editorialSrc} alt="Ramy George editing at his workstation" />
-        </div>
-      )}
-
+    <div class="visual editorial-portrait">
+      <div class="editorial-frame">
+        <img src={editorialSrc} alt="Ramy George editing at his workstation" />
+      </div>
     </div>
   )}
 </section>
@@ -82,7 +80,7 @@ const editorialSrc = '/hero-ramy-final.webp'
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.52) 7%, rgba(22,21,19,0) 26%);
+    background: linear-gradient(90deg, rgba(22,21,19,.22) 0%, rgba(22,21,19,0) 24%);
   }
   .editorial-frame img {
     width: 100%;

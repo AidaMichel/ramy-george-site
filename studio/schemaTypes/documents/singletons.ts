@@ -176,11 +176,10 @@ export const hero = defineType({
     }),
     defineField({
       name: 'editorialPortrait',
-      title: 'Editorial hero portrait',
+      title: 'Homepage hero image',
       type: 'image',
       options: {hotspot: true},
-      hidden: ({document}) => document?.mode !== 'none',
-      description: 'Optional. Leave empty to use the current behind-the-scenes portrait built into the site.',
+      description: 'Upload or replace the homepage hero image here. Publish it and the live website updates within a few seconds — no new build needed.',
       fields: [defineField({name: 'alt', type: 'string', initialValue: 'Ramy George editing'})],
     }),
     defineField({
