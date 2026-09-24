@@ -6,7 +6,7 @@ const site = await getSite()
 const sec = section(site, 'about')
 const a = site.about
 const links = a.links.map((l) => ({...l, href: linkHref(site, l.kind, l.url)})).filter((l) => l.href)
-const homepageCopy = a.homepageParagraph || "I’m Ramy, a video generalist based in Dubai. Editing is where I spend most of my time, but I also work across motion, design, sound and camera. I’ve worked on everything from news and documentaries to podcasts, social content and branded work."
+const homepageCopy = a.homepageParagraph || "I’m Ramy, a video generalist based in Dubai. Editing is where I spend most of my time, but I also work across motion, design, sound design and camera. I’ve worked on everything from news and documentaries to podcasts, social content and branded work."
 ---
 <section id="about" class:list={['sec wrap about', {solo: !a.portrait?.src}]} aria-labelledby="about-h">
   {a.portrait?.src && (
