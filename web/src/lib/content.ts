@@ -18,7 +18,7 @@ export type Seo = {title?: string; description?: string; ogImage?: string; noInd
 export type Logo = {id: string; name: string; group: 'clients' | 'media' | 'events'; logo: Img; size: number}
 export type Site = {
   settings: {siteName: string; professionalTitle: string; supportingSkills: string[]; location: string; logo: Img; footerLogo?: Img; showFooterSignature: boolean; cv: string; siteUrl: string; favicon?: string; seo: Seo
-    footer: {showEmail: boolean; locationLine: string; copyrightName: string; backToTopLabel: string}}
+    footer: {showEmail: boolean; creditLine: string; locationLine: string; copyrightName: string; backToTopLabel: string}}
   navigation: {label: string; target: string; url?: string; highlight: boolean}[]
   contact: {email: string; whatsapp: string; linkedin: string; kicker: string; heading: string; buttonLabel: string; buttonTarget: 'email' | 'whatsapp'; seo?: Seo}
   hero: {mode: 'portrait' | 'still' | 'multiframe' | 'showreel' | 'none'; image?: Img; frames?: {img: Img; projectSlug?: string}[]; showreel?: string; showreelPoster?: Img; stillProjectSlug?: string; shortLine: string; ctaLabel: string; ctaTarget: 'section' | 'work'}
