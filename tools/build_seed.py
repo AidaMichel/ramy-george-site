@@ -150,7 +150,9 @@ site = {
               'location': 'Based in Dubai', 'logo': {'src': '/media/wordmark.png', 'w': ww, 'h': wh}, 'showFooterSignature': True,
               'footer': {'showEmail': False, 'locationLine': 'Dubai, UAE', 'copyrightName': '', 'backToTopLabel': 'Back to top ↑'},
               'cv': '/files/Ramy_George_CV.pdf', 'siteUrl': '',
-              'seo': {'title': 'Ramy George — Video Editor & Video Generalist in Dubai', 'description': 'Ramy George is a video editor based in Dubai, working across news, podcasts, documentary, events and branded content, with motion design, graphic design and sound.'}},
+              'seo': {'title': 'Ramy George — Video Editor & Motion Designer in Dubai', 'description': 'Dubai-based video editor and video generalist working across editing, motion design, sound design, camera, documentaries, podcasts, events and branded content.'},
+               'workIntro': 'Selected video editing, motion design, sound design and visual storytelling work from Dubai.',
+               'workSeo': {'title': 'Video Editing & Motion Design Work — Ramy George', 'description': 'Selected video editing, motion design, sound design and visual storytelling work by Ramy George in Dubai.'}},
  'navigation': [{'label': 'Home', 'target': 'home', 'highlight': False, 'visible': True}, {'label': 'Work', 'target': 'work', 'highlight': False}, {'label': 'Info', 'target': 'about', 'highlight': False}, {'label': 'Let’s talk', 'target': 'contact', 'highlight': True}],
  # Contact details come from the portfolio/CV and are still to be CONFIRMED by the owner before launch.
  'contact': {'email': 'Ramy903@gmail.com', 'whatsapp': 'https://wa.me/message/MX6HDX77H4RWG1', 'linkedin': 'https://www.linkedin.com/in/ramy-george/',
