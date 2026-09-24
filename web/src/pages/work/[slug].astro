@@ -23,8 +23,34 @@ const automaticRelated = siblings.filter((x) => x.slug !== p.slug && x.slug !== 
 const related = (curatedRelated.length ? curatedRelated : automaticRelated).slice(0, 3)
 const discipline = p.kind === 'video' ? 'video editing' : p.kind === 'motion' ? 'motion and AI work' : 'design and carousel work'
 const desc = p.seo?.description || p.summary || `${p.title}${p.org ? ' for ' + p.org : ''} — ${discipline} by ${site.settings.siteName} in Dubai.`
+const siteBase = Astro.site || new URL(site.settings.siteUrl || Astro.url.origin)
+const projectUrl = new URL(`/work/${p.slug}/`, siteBase).href
+const personId = `${siteBase.origin}/#person`
+const projectImage = (p.cover || p.poster)?.src
+const absoluteImage = projectImage ? (projectImage.startsWith('/') ? new URL(projectImage, siteBase).href : projectImage) : undefined
+const projectSchema = {
+  '@type': 'CreativeWork',
+  '@id': `${projectUrl}#creativework`,
+  name: p.title,
+  description: desc,
+  url: projectUrl,
+  creator: {'@id': personId},
+  ...(absoluteImage ? {image: absoluteImage} : {}),
+  ...(p.watchUrl ? {sameAs: p.watchUrl} : {}),
+  ...(p.role ? {creditText: p.role} : {}),
+  genre: kindLabel,
+  inLanguage: 'en',
+}
+const breadcrumbSchema = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {'@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', siteBase).href},
+    {'@type': 'ListItem', position: 2, name: 'Work', item: new URL('/work/', siteBase).href},
+    {'@type': 'ListItem', position: 3, name: p.title, item: projectUrl},
+  ],
+}
 ---
-<Base seo={p.seo} title={`${p.title}${p.org ? ' — ' + p.org : ''} · ${site.settings.siteName}`} description={desc} image={(p.cover || p.poster)?.src}>
+<Base seo={p.seo} title={`${p.title}${p.org ? ' — ' + p.org : ''} · ${site.settings.siteName}`} description={desc} image={(p.cover || p.poster)?.src} schema={[projectSchema, breadcrumbSchema]}>
   <article class="wrap proj">
     <a class="back" href={p.showOnWork && p.kind === 'video' && cat ? `/work/#${cat.slug}` : '/work/'} aria-label="Back to Work">
       <span class="back-arrow" aria-hidden="true">←</span>
