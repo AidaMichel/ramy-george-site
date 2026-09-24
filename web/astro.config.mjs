@@ -3,7 +3,7 @@ import cloudflare from '@astrojs/cloudflare'
 import sitemap from '@astrojs/sitemap'
 
 // SITE_URL is set once a custom domain is connected. Until then the workers.dev URL is used directly.
-const site = process.env.SITE_URL || undefined
+const site = process.env.SITE_URL || 'https://ramygeorge.com'
 
 export default defineConfig({
   site,
