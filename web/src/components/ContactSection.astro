@@ -27,13 +27,13 @@ const id = Astro.props.id || 'contact'
 </section>
 <style>
   .contact { display: grid; grid-template-columns: 1fr auto; grid-template-areas: 'txt btn' 'links btn'; column-gap: 48px; align-items: end;
-    padding-top: clamp(130px, 16vw, 240px); padding-bottom: clamp(96px, 10vw, 150px); }
+    padding-top: clamp(112px, 13vw, 190px); padding-bottom: clamp(88px, 9vw, 136px); }
   .txt { grid-area: txt; }
   .links { grid-area: links; list-style: none; margin: 48px 0 0; padding: 0; display: flex; gap: 36px; flex-wrap: wrap; }
   .links .ext { font-size: 18px; }
   .kicker { font-size: clamp(18px, 1.8vw, 24px); }
-  .big { margin-top: 14px; font-size: clamp(64px, 9vw, 128px); line-height: .92; font-weight: 600; letter-spacing: -0.045em; }
-  .btn { grid-area: btn; display: flex; align-items: center; justify-content: center; width: 380px; height: 128px; background: var(--acc); color: var(--bg); font-size: 32px; font-weight: 600; letter-spacing: -0.01em; transition: background 150ms; }
+  .big { margin-top: 14px; font-size: clamp(60px, 8.2vw, 116px); line-height: .92; font-weight: 600; letter-spacing: -0.045em; }
+  .btn { grid-area: btn; display: flex; align-items: center; justify-content: center; width: 350px; height: 116px; background: var(--acc); color: var(--bg); font-size: 30px; font-weight: 600; letter-spacing: -0.01em; transition: background 150ms; }
   .btn:hover { background: var(--text); color: var(--bg); }
   @media (max-width: 899px) {
     .contact { grid-template-columns: 1fr; grid-template-areas: 'txt' 'btn' 'links'; }
