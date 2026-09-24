@@ -9,14 +9,13 @@ const items = site.projects.filter((p) => p.kind === 'motion' && p.showOnHome)
 const TAG: Record<string, string> = {motion: 'Motion', ai: 'AI-assisted', logo: 'Logo animation'}
 const filters = site.home.motionFilters
   .map((f) => ({...f, n: f.key === 'all' ? items.length : items.filter((p) => (p.motionType || 'motion') === f.key).length}))
-  .filter((f) => f.n > 0)
 ---
 <section class="sec motion" aria-labelledby="motion-h" data-motion>
   <div class="wrap">
     <div class="sec-head">
       <div><div class="sec-num">{Astro.props.num}</div><h2 class="h2" id="motion-h">{sec.heading || 'Motion & AI'}</h2></div>
       <div class="side">
-        {filters.length > 2 && (
+        {filters.length > 0 && (
           <div class="filters" role="group" aria-label="Filter motion work">
             {filters.map((f, i) => <button type="button" class="pill" aria-pressed={String(i === 0)} data-filter={f.key}>{f.label}<span class="c">{String(f.n).padStart(2, '0')}</span></button>)}
           </div>
