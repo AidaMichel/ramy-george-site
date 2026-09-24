@@ -87,7 +87,7 @@ export const homepage = defineType({
   icon: HomeIcon,
   groups: [
     {name: 'layout', title: 'Order & visibility', default: true},
-    {name: 'video', title: 'Video'},
+    {name: 'video', title: 'Editing'},
     {name: 'motion', title: 'Motion & AI'},
     {name: 'posts', title: 'Posts & Carousels'},
     {name: 'clients', title: 'Clients & Coverage'},
@@ -106,8 +106,8 @@ export const homepage = defineType({
           return new Set(keys).size === keys.length ? true : 'Each section can appear once'
         }),
     }),
-    defineField({name: 'defaultCategory', title: 'Default active category', type: 'reference', to: [{type: 'videoCategory'}], group: 'video'}),
-    defineField({name: 'defaultProject', title: 'Default active project', type: 'reference', to: [{type: 'project'}], group: 'video', options: {filter: 'kind == "video"'}}),
+    defineField({name: 'defaultCategory', title: 'Default active editing category', type: 'reference', to: [{type: 'videoCategory'}], group: 'video'}),
+    defineField({name: 'defaultProject', title: 'Default active editing project', type: 'reference', to: [{type: 'project'}], group: 'video', options: {filter: 'kind == "video"'}}),
     defineField({
       name: 'motionFilters',
       title: 'Motion & AI filters (order + visibility)',
@@ -218,7 +218,7 @@ export const hero = defineType({
     defineField({
       name: 'ctaTarget',
       type: 'string',
-      options: {list: [{title: 'Video section on the homepage', value: 'section'}, {title: 'Work page', value: 'work'}]},
+      options: {list: [{title: 'Editing section on the homepage', value: 'section'}, {title: 'Work page', value: 'work'}]},
       initialValue: 'section',
     }),
   ],
