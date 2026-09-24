@@ -19,7 +19,7 @@ export const siteSettings = defineType({
       name: 'supportingSkills',
       type: 'array',
       of: [{type: 'string'}],
-      initialValue: ['Editing', 'Motion', 'Design', 'Sound', 'Camera', 'AI Gen'],
+      initialValue: ['Editing', 'Motion', 'Design', 'Sound Design', 'Camera', 'AI Gen'],
       description: 'The first skill is shown stronger — keep your main discipline first',
     }),
     defineField({name: 'location', type: 'string', initialValue: 'Based in Dubai'}),
@@ -173,6 +173,14 @@ export const hero = defineType({
         layout: 'radio',
       },
       initialValue: 'none',
+    }),
+    defineField({
+      name: 'positioningLine',
+      title: 'Hero positioning / Aha line',
+      type: 'string',
+      initialValue: 'The edit is the spine — motion, design and sound design make every beat land.',
+      description: 'One short idea that reveals how you think — not another skills list. Publish and it updates live without a site build.',
+      validation: (r) => r.max(120).warning('Keep this sharp. Around 60–100 characters works best.'),
     }),
     defineField({
       name: 'useDashboardImage',
