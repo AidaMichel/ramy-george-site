@@ -37,6 +37,16 @@ const checks = [
   ['Work overview uses consistent editorial thumbnail crops', work.includes('class="cover"') && work.includes('object-fit: cover')],
   ['mobile hero type has a narrow-screen clamp', hero.includes('@media (max-width: 380px)') && hero.includes('17vw')],
   ['empty Motion and Posts states stay compact', motion.includes('min-height: clamp(176px, 18vw, 240px)') && posts.includes('min-height: clamp(176px, 18vw, 230px)')],
+  ['dashboard favicon is used with a static fallback', base.includes("site.settings.favicon || '/favicon.svg?v=10'")],
+  ['nav active state is trailing-slash safe', base.includes("Astro.url.pathname.replace(/\\/+$/, '') || '/'") && base.includes("path === hrefPath || path.startsWith(hrefPath + '/')")],
+  ['contact CTA always has a valid destination', base.includes("homeHasContact") && base.includes("'/info/#contact'")],
+  ['canonical URLs normalize directory slashes', base.includes("canonicalPath") && base.includes("replace(/\\/+$/, '') + '/'")],
+  ['all hero CMS modes keep a visual fallback', hero.includes("showReel") && hero.includes("showFrames") && hero.includes("hero.showreelPoster?.src || fallbackHero")],
+  ['hero CTA falls back to Work when homepage work is hidden', hero.includes("!hasWorkAnchor ? '/work/' : '#work'") || hero.includes("hero.ctaTarget === 'work' || !hasWorkAnchor")],
+  ['Motion initial filter matches its pressed state', motion.includes("const initialFilter") && motion.includes("f.key === initialFilter") && motion.includes("hidden={initialFilter !== 'all'")],
+  ['stale curated Posts refs fall back to published posts', posts.includes("const curated") && posts.includes("const chosen = curated.length ? curated : all")],
+  ['hidden two-screen previews do not play background loops', editing.includes("d.loop && !d.two && !reduce")],
+  ['missing projects use the real 404 route', project.includes("Astro.rewrite('/404')")],
 ]
 
 const failed = checks.filter(([, ok]) => !ok)
