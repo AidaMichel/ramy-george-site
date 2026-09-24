@@ -6,6 +6,7 @@ const site = await getSite()
 const sec = section(site, 'about')
 const a = site.about
 const links = a.links.map((l) => ({...l, href: linkHref(site, l.kind, l.url)})).filter((l) => l.href)
+const homepageCopy = a.homepageParagraph || "I’m Ramy, a video generalist based in Dubai. Editing is where I spend most of my time, but I also work across motion, design, sound and camera. I’ve worked on everything from news and documentaries to podcasts, social content and branded work."
 ---
 <section id="about" class:list={['sec wrap about', {solo: !a.portrait?.src}]} aria-labelledby="about-h">
   {a.portrait?.src && (
@@ -13,7 +14,7 @@ const links = a.links.map((l) => ({...l, href: linkHref(site, l.kind, l.url)})).
   )}
   <div class="copy">
     <h2 class="sec-num" id="about-h">{Astro.props.num ? `${Astro.props.num} · ` : ''}{sec?.heading || a.heading}</h2>
-    <p class="para">{a.paragraph}</p>
+    <p class="para">{homepageCopy}</p>
     {links.length > 0 && (
       <ul class="links">{links.map((l) => {
         const ext = isExternal(l.href) || l.kind === 'cv'
@@ -30,7 +31,7 @@ const links = a.links.map((l) => ({...l, href: linkHref(site, l.kind, l.url)})).
   .copy { min-width: 0; max-width: 620px; }
   .solo { grid-template-columns: minmax(0, 680px); justify-content: end; }
   .solo .copy { max-width: 680px; }
-  .para { font-size: clamp(20px, 1.7vw, 24px); line-height: 1.52; font-weight: 500; letter-spacing: -0.01em; max-width: 48ch; text-wrap: pretty; }
+  .para { font-size: clamp(20px, 1.7vw, 24px); line-height: 1.52; font-weight: 500; letter-spacing: -0.01em; max-width: 44ch; text-wrap: pretty; }
   .links { list-style: none; padding: 0; margin: 32px 0 0; display: flex; gap: 26px; flex-wrap: wrap; align-items: baseline; }
   @media (max-width: 1023px) {
     .about { grid-template-columns: 1fr; justify-content: start; gap: 26px; }
