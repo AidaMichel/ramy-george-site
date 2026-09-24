@@ -69,7 +69,7 @@ const extAttrs = {target: '_blank', rel: 'noopener noreferrer'}
   <footer class="foot wrap">
     {site.settings.showFooterSignature && flogo?.src && <a href="#main" class="sig" aria-label={`${site.settings.siteName}, back to top`}><img src={flogo.src} width={flogo.w} height={flogo.h} alt="" loading="lazy" /></a>}
     <div class="row muted">
-      <span>© {new Date().getFullYear()}{f.copyrightName ? ` ${f.copyrightName}` : ''}{f.locationLine ? ` · ${f.locationLine}` : ''}</span>
+      <span>{new Date().getFullYear()}· {f.creditLine || 'All thumbnails created by me'}{f.locationLine ? ` · ${f.locationLine}` : ''}</span>
       {f.showEmail && c.email && <a href={`mailto:${c.email}`} class="muted">{c.email}</a>}
       <a href="#main" class="muted">{f.backToTopLabel || 'Back to top ↑'}</a>
     </div>

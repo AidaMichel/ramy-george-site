@@ -32,6 +32,7 @@ export const siteSettings = defineType({
       type: 'object',
       fields: [
         defineField({name: 'showEmail', title: 'Show email link', type: 'boolean', initialValue: false}),
+        defineField({name: 'creditLine', title: 'Credit line', type: 'string', initialValue: 'All thumbnails created by me'}),
         defineField({name: 'locationLine', type: 'string', initialValue: 'Dubai, UAE'}),
         defineField({name: 'copyrightName', type: 'string', initialValue: '', description: 'Optional. Leave empty so the name is not repeated under the wordmark. The year is added automatically.'}),
         defineField({name: 'backToTopLabel', type: 'string', initialValue: 'Back to top ↑'}),
