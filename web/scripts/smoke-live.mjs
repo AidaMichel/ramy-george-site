@@ -31,6 +31,7 @@ assert(/Home/.test(homeHtml) && /Work/.test(homeHtml) && /Info/.test(homeHtml), 
 assert(/id="main"/.test(homeHtml), 'Main landmark renders')
 assert(/href="\/work\//.test(homeHtml) || /id="work"/.test(homeHtml), 'Home exposes a valid work path or work anchor')
 assert(!/Ramy George editing at his workstation/.test(homeHtml), 'Broken hero alt-text fallback is not visible in HTML')
+assert(/hero-rg-master\.webp/.test(homeHtml), 'Homepage renders the current high-resolution hero master')
 
 const work = await request('/work/')
 assert(work.status === 200, 'Work returns 200')
@@ -61,9 +62,9 @@ assert(loc.includes('#contact') || loc.endsWith('/'), 'Contact redirect has a us
 const missing = await request('/__ramy_smoke_missing__')
 assert(missing.status === 404, 'Unknown route returns a real 404')
 
-const heroAsset = await request('/hero-rg-approved.webp?v=4')
-assert(heroAsset.status === 200, 'Approved hero asset returns 200')
-assert((heroAsset.headers.get('content-type') || '').includes('image'), 'Approved hero asset has an image content type')
+const heroAsset = await request('/hero-rg-master.webp?v=1')
+assert(heroAsset.status === 200, 'Hero master asset returns 200')
+assert((heroAsset.headers.get('content-type') || '').includes('image'), 'Hero master asset has an image content type')
 
 const cssMatch = homeHtml.match(/<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/) || homeHtml.match(/<link[^>]+href="([^"]+)"[^>]+rel="stylesheet"/)
 if (cssMatch) {
