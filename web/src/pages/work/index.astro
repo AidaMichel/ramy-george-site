@@ -37,7 +37,7 @@ const total = groups.reduce((n, g) => n + g.items.length, 0)
           {g.items.map((p) => (
             <li>
               <a href={`/work/${p.slug}/`} class="card">
-                <span class="thumb media"><Img img={p.cover || p.poster} alt={p.title} class="contain" sizes="(max-width: 719px) 100vw, (max-width: 1199px) 50vw, 33vw" /></span>
+                <span class="thumb media"><Img img={p.cover || p.poster} alt={p.title} class="cover" sizes="(max-width: 719px) 100vw, (max-width: 1199px) 50vw, 33vw" /></span>
                 <span class="ct">{p.title}</span>
                 {p.org && <span class="co muted">{p.org}</span>}
               </a>
@@ -71,7 +71,9 @@ const total = groups.reduce((n, g) => n + g.items.length, 0)
   .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 40px var(--gap); }
   .card { display: block; min-width: 0; }
   .thumb { display: flex; align-items: center; justify-content: center; aspect-ratio: 16 / 10; }
-  .thumb :global(img) { max-height: 100%; max-width: 100%; object-fit: contain; }
+  .thumb { overflow: hidden; }
+  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 320ms var(--ease); }
+  .card:hover .thumb :global(img) { transform: scale(1.025); }
   .ct { display: block; margin-top: 12px; font-size: 18px; font-weight: 600; line-height: 1.25; }
   .co { display: block; font-size: 14px; margin-top: 3px; }
   .card:hover .ct { color: var(--acc); }
