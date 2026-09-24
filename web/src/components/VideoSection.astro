@@ -36,10 +36,11 @@ const pv = (p: Project) => ({
 
 const f = first ? pv(first) : null
 const cue = sec.microcopy || 'BROWSE DIFFERENT FORMATS'
+const sectionHeading = !sec.heading || sec.heading.trim().toLowerCase() === 'video' ? 'Editing' : sec.heading
 ---
 <section id="video" class:list={['sec wrap video', {empty: !hasItems}]} aria-labelledby="video-h" data-video data-ready={String(hasItems)}>
   <div class="sec-head">
-    <div><div class="sec-num">{num}</div><h2 class="h2" id="video-h">{sec.heading || 'Video'}</h2></div>
+    <div><div class="sec-num">{num}</div><h2 class="h2" id="video-h">{sectionHeading}</h2></div>
     {hasItems && cats.length > 1 && (
       <div class="cue" aria-hidden="true">
         <span class="cue-text">{cue}</span>
@@ -54,7 +55,7 @@ const cue = sec.microcopy || 'BROWSE DIFFERENT FORMATS'
       {cats.length > 1 && <div class="mcue" aria-hidden="true">Swipe for more formats <svg width="30" height="16" viewBox="0 0 34 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6 C 10 18, 20 16, 30 10"/><path d="M23 6 L31 10 L25 17"/></svg></div>}
 
       {cats.length > 1 && (
-        <div class="tabs" role="tablist" aria-label="Video formats">
+        <div class="tabs" role="tablist" aria-label="Editing formats">
           {cats.map((c, i) => (
             <button type="button" role="tab" class="tab" id={`vt-${c.slug}`} aria-controls={`vp-${c.slug}`} aria-selected={String(i === activeCat)} tabindex={i === activeCat ? 0 : -1} data-tab={i}>
               <span>{c.title}</span><sup class="num">{String(c.items.length).padStart(2, '0')}</sup>
