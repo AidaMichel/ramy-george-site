@@ -24,15 +24,15 @@ const links = a.links.map((l) => ({...l, href: linkHref(site, l.kind, l.url)})).
   </div>
 </section>
 <style>
-  .about { display: flex; align-items: center; gap: var(--gap); }
+  .about { display: flex; align-items: flex-start; gap: clamp(48px, 8vw, 128px); }
   .portrait { width: min(432px, 32%); aspect-ratio: 3 / 4; flex: none; background: var(--s1); overflow: hidden; }
   .portrait :global(img) { object-position: 55% 40%; }
-  .copy { flex: 1; min-width: 0; margin-left: clamp(0px, 10vw, 180px); max-width: 690px; }
+  .copy { flex: 1; min-width: 0; margin-left: 0; max-width: 690px; }
   .solo .copy { margin-left: auto; margin-right: 8%; }
   .para { font-size: 26px; line-height: 1.5; font-weight: 500; letter-spacing: -0.01em; max-width: 640px; }
   .links { list-style: none; padding: 0; margin: 40px 0 0; display: flex; gap: 28px; flex-wrap: wrap; align-items: baseline; }
   @media (max-width: 1023px) {
-    .about { flex-direction: column; align-items: flex-start; }
+    .about { flex-direction: column; align-items: flex-start; gap: 24px; }
     .portrait { width: min(300px, 100%); }
     .copy { margin-left: 0; margin-top: 16px; }
   }
