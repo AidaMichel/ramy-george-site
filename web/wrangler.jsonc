@@ -1,18 +1,27 @@
-// Cloudflare Workers — Static Assets only (free plan). No server code runs: every page is pre-built HTML.
-// Static asset requests are free and not counted against the Workers request limit.
+// Cloudflare Worker with Astro on-demand rendering.
+// Published Sanity content is read at request time, so dashboard changes do not require a website rebuild.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
+  "main": "dist/_worker.js/index.js",
   "name": "ramy-george",
   "compatibility_date": "2026-09-01",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
   "assets": {
-    "directory": "./dist",
-    "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash"
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
+  "observability": {
+    "enabled": true
   },
   // Custom domain: uncomment after the domain is on Cloudflare (DNS + HTTPS certificate are automatic).
   // "routes": [{ "pattern": "ramygeorge.com", "custom_domain": true }, { "pattern": "www.ramygeorge.com", "custom_domain": true }],
   "env": {
-    // Draft preview site (built with SANITY_PREVIEW=1). Protect it with Cloudflare Access (free for up to 50 users).
-    "preview": { "name": "ramy-george-preview" }
+    // Draft preview can still use its own worker later if needed.
+    "preview": {
+      "name": "ramy-george-preview"
+    }
   }
 }
