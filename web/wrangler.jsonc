@@ -2,7 +2,7 @@
 // Published Sanity content is read at request time, so dashboard changes do not require a website rebuild.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "main": "dist/_worker.js/index.js",
+  "main": "@astrojs/cloudflare/entrypoints/server",
   "name": "ramy-george",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": [
