@@ -7,15 +7,25 @@ const site = await getSite()
 const sec = section(site, 'posts')!
 const all = site.projects.filter((p) => p.kind === 'post' && p.showOnHome && p.slides?.length)
 const chosen = site.home.posts?.length ? site.home.posts.map((s) => all.find((p) => p.slug === s)).filter(Boolean) as typeof all : all
+const postFilters = [
+  {key: 'all', label: 'All', n: chosen.length},
+  {key: 'carousel', label: 'Carousels', n: chosen.filter((p) => (p.slides?.length || 0) > 1).length},
+  {key: 'single', label: 'Single Posts', n: chosen.filter((p) => (p.slides?.length || 0) === 1).length},
+]
 ---
-<section class="posts" aria-labelledby="posts-h">
+<section class="posts" aria-labelledby="posts-h" data-posts>
   <div class="wrap">
     <div class="sec-head">
       <div><div class="sec-num">{Astro.props.num}</div><h2 class="h2" id="posts-h">{sec.heading || 'Posts & Carousels'}</h2></div>
-      {sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
+      <div class="side">
+        <div class="filters" role="group" aria-label="Filter posts and carousels">
+          {postFilters.map((f, i) => <button type="button" class="pill" aria-pressed={String(i === 0)} data-post-filter={f.key}>{f.label}<span class="c">{String(f.n).padStart(2, '0')}</span></button>)}
+        </div>
+        {sec.microcopy && <p class="muted hint">{sec.microcopy}</p>}
+      </div>
     </div>
     {chosen.map((p, i) => (
-      <div class="set" data-carousel>
+      <div class="set" data-carousel data-post-type={(p.slides?.length || 0) > 1 ? 'carousel' : 'single'}>
         <div class="info">
           <div class="lbl">{['Carousel', p.org].filter(Boolean).join(' · ')}</div>
           <h3><a href={`/work/${p.slug}/`}>{p.title}</a></h3>
@@ -37,6 +47,14 @@ const chosen = site.home.posts?.length ? site.home.posts.map((s) => all.find((p)
 <script>
   import {initCarousels} from '../scripts/carousel'
   initCarousels()
+  const postsRoot = document.querySelector<HTMLElement>('[data-posts]')
+  postsRoot?.querySelectorAll<HTMLButtonElement>('[data-post-filter]').forEach((b) => b.addEventListener('click', () => {
+    const key = b.dataset.postFilter
+    postsRoot.querySelectorAll('[data-post-filter]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
+    postsRoot.querySelectorAll<HTMLElement>('[data-post-type]').forEach((item) => {
+      item.hidden = key !== 'all' && item.dataset.postType !== key
+    })
+  }))
   // Click a slide: advance to the next one (last slide returns to the first)
   document.querySelectorAll<HTMLElement>('.posts [data-carousel]').forEach((root) => {
     const track = root.querySelector<HTMLElement>('[data-track]')!
@@ -49,6 +67,8 @@ const chosen = site.home.posts?.length ? site.home.posts.map((s) => all.find((p)
 </script>
 <style>
   .posts { margin-top: clamp(96px, 12vw, 170px); padding-block: clamp(72px, 9vw, 120px); background: var(--s1); }
+  .side { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
   .hint { font-size: 14px; }
   .set { display: grid; grid-template-columns: 318px minmax(0, 1fr); gap: var(--gap); }
   .set + .set { margin-top: 72px; padding-top: 48px; border-top: 1px solid var(--rule); }
@@ -64,5 +84,11 @@ const chosen = site.home.posts?.length ? site.home.posts.map((s) => all.find((p)
   .slide:global([data-active]) { opacity: 1; }
   .sb { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: var(--media); cursor: pointer; }
   .sb :global(img) { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-  @media (max-width: 1023px) { .set { grid-template-columns: 1fr; } .info :global(.cnt) { font-size: 40px; } }
+  @media (max-width: 1023px) {
+    .sec-head { flex-direction: column; align-items: flex-start; }
+    .side { align-items: flex-start; }
+    .filters { justify-content: flex-start; }
+    .set { grid-template-columns: 1fr; }
+    .info :global(.cnt) { font-size: 40px; }
+  }
 </style>
