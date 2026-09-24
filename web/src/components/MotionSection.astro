@@ -9,6 +9,7 @@ const items = site.projects.filter((p) => p.kind === 'motion' && p.showOnHome)
 const TAG: Record<string, string> = {motion: 'Motion', ai: 'AI Gen', logo: 'Logo animation'}
 const filters = site.home.motionFilters
   .map((f) => ({...f, n: f.key === 'all' ? items.length : items.filter((p) => (p.motionType || 'motion') === f.key).length}))
+  .filter((f) => items.length === 0 || f.key === 'all' || f.n > 0)
 ---
 <section class:list={['sec motion', {empty: items.length === 0}]} aria-labelledby="motion-h" data-motion>
   <div class="wrap">
@@ -85,7 +86,6 @@ const filters = site.home.motionFilters
 
   .empty .sec-head { margin-bottom: 30px; }
   .empty-state {
-    min-height: 224px;
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
     display: grid;
