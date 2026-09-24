@@ -1,7 +1,7 @@
 # Ramy George — website
 
-Real website: **Astro** (static, pre-rendered) + **Sanity Studio** (the dashboard) + **Cloudflare Workers Static Assets** (hosting, free plan).
-Full videos stay on Vimeo / YouTube; the site only carries posters and short muted loops.
+Real website: **Astro** + **Sanity Studio** (the dashboard) + **Cloudflare Workers**.
+Pages are rendered on demand at Cloudflare and read published Sanity content at request time, so dashboard changes appear on the live website without a manual rebuild. Full videos stay on Vimeo / YouTube; the site only carries posters and short muted loops.
 
 ```
 web/       the public website (Astro)         → Cloudflare
@@ -62,15 +62,8 @@ If a step turns red, open it — the first line says exactly which setting is mi
 
 **Then clean up:** delete the `SANITY_WRITE_TOKEN` secret in GitHub and the `starter-content` token in Sanity. They were only needed once.
 
-### Step 7 · Make *Publish* update the website
-1. GitHub → profile → **Settings** → **Developer settings** → **Fine-grained tokens** → *Generate new token* → only this repository →
-   permission **Contents: Read and write** → copy it.
-2. sanity.io/manage → project → **API** → **Webhooks** → *Create webhook*:
-   - URL `https://api.github.com/repos/<your-github-name>/ramy-george-site/dispatches` · Dataset `production` · Trigger on *Create, Update, Delete*
-   - HTTP method **POST** · Drafts **off**
-   - Projection `{"event_type": "sanity-publish"}`
-   - HTTP headers: `Authorization` = `Bearer <that GitHub token>` and `Accept` = `application/vnd.github+json`
-3. Test: change a word in the dashboard, press **Publish**, and refresh the site a minute later.
+### Step 7 · Publishing content
+No webhook or GitHub token is needed for normal content publishing. Edit in Sanity Studio and press **Publish**. The live website reads the published dataset on the next request; a tiny ~2-second server cache coalesces repeated reads, so changes normally appear within a couple of seconds after refresh.
 
 ### Step 8 · Your own domain (optional — the only paid part)
 Buy the domain (Cloudflare → *Domain Registration* sells at cost), then in `web/wrangler.jsonc` uncomment `routes` with the domain, and add the
@@ -92,7 +85,7 @@ video uploads to Sanity), check before upgrading. Public or private Sanity datas
 
 ## Editing without code (Studio)
 
-Open `https://<name>.sanity.studio`, edit, press **Publish**. The live site updates about a minute later (after step 4).
+Open `https://<name>.sanity.studio`, edit, press **Publish**. The live site reads the new published content directly; refresh after a couple of seconds.
 Uploading works the same everywhere: drag a file onto an image/file field, or click *Upload*. The Studio shows each image's size and warns
 when a video poster is too small (under 1920×1080, or 720×1280 for vertical).
 
@@ -136,7 +129,7 @@ cd studio && npm install && npm run dev     # dashboard at http://localhost:3333
 
 ## Security, privacy, performance
 
-- Fully static output; no server code, no database connection at runtime, no cookies, no analytics or trackers.
+- On-demand HTML rendering on Cloudflare Workers; published content is read from Sanity at request time. No cookies, analytics or trackers.
 - Strict Content-Security-Policy (`web/public/_headers`): scripts only from this site, no inline scripts, no `eval`; frames only Vimeo / YouTube-nocookie.
 - Vimeo/YouTube players load **only after** the visitor presses *Play here* (no third-party requests on page load).
 - Only a read token is ever used at build time (for the private draft preview). No write credentials exist in the website or its build.
