@@ -67,7 +67,8 @@
   "mode": "none",
   "shortLine": "Based in Dubai. I spend most of my time editing news, documentaries, podcasts, social and branded work, with motion, design and sound often part of the same job.",
   "ctaLabel": "See the work ↓",
-  "ctaTarget": "section"
+  "ctaTarget": "section",
+  "useDashboardImage": false
  },
  "about": {
   "heading": "About",
@@ -184,7 +185,7 @@
    {
     "key": "video",
     "visible": true,
-    "heading": "Video",
+    "heading": "Editing",
     "microcopy": "BROWSE DIFFERENT FORMATS"
    },
    {
