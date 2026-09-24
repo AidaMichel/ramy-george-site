@@ -43,8 +43,8 @@ const editorialSrc = hero.image?.src || heroFallback
 <style>
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, .98fr) minmax(420px, 1.02fr);
-    gap: 0;
+    grid-template-columns: minmax(0, .88fr) minmax(480px, 1.12fr);
+    gap: clamp(12px, 1.6vw, 28px);
     padding-top: clamp(44px, 6vw, 88px);
     align-items: end;
     position: relative;
@@ -68,20 +68,41 @@ const editorialSrc = hero.image?.src || heroFallback
   .cta { display: inline-flex; align-items: center; height: 52px; padding: 0 22px; border: 1px solid var(--text); font-size: 16px; font-weight: 600; }
   .cta:hover { border-color: var(--acc); }
 
-  .visual { min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; position: relative; z-index: 1; }
+  .visual {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 28px 58px rgba(0,0,0,.24));
+  }
   .editorial-portrait {
     align-self: end;
-    width: 116%;
-    margin-left: -16%;
+    width: 124%;
+    margin-left: -17%;
+    margin-right: -7%;
+    transform: translateY(6px);
   }
   .editorial-frame {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1.22 / 1;
     overflow: visible;
     background: transparent;
-    -webkit-mask-image: radial-gradient(ellipse 90% 86% at 62% 46%, #000 0%, #000 58%, rgba(0,0,0,.90) 68%, transparent 100%);
-    mask-image: radial-gradient(ellipse 90% 86% at 62% 46%, #000 0%, #000 58%, rgba(0,0,0,.90) 68%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.44) 8%, #000 25%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.44) 8%, #000 25%, #000 100%);
+  }
+  .editorial-frame::before {
+    content: '';
+    position: absolute;
+    inset: 10% 5% 5% 14%;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 62% 52%, rgba(255,210,28,.10), rgba(255,210,28,.025) 38%, transparent 70%);
+    filter: blur(34px);
+    opacity: .7;
   }
   .editorial-frame::after {
     content: '';
@@ -89,8 +110,9 @@ const editorialSrc = hero.image?.src || heroFallback
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.56) 8%, rgba(22,21,19,.12) 24%, rgba(22,21,19,0) 46%),
-      linear-gradient(180deg, rgba(22,21,19,.16) 0%, rgba(22,21,19,0) 18%, rgba(22,21,19,0) 72%, rgba(22,21,19,.48) 100%);
+      linear-gradient(90deg, var(--bg) 0%, rgba(22,21,19,.70) 7%, rgba(22,21,19,.26) 18%, rgba(22,21,19,0) 36%),
+      linear-gradient(180deg, rgba(22,21,19,.08) 0%, rgba(22,21,19,0) 22%, rgba(22,21,19,0) 78%, rgba(22,21,19,.30) 100%),
+      radial-gradient(ellipse at 68% 48%, rgba(255,210,28,.035), transparent 50%);
   }
   .editorial-frame img {
     width: 100%;
@@ -98,7 +120,7 @@ const editorialSrc = hero.image?.src || heroFallback
     display: block;
     object-fit: cover;
     object-position: center;
-    filter: brightness(1.24) contrast(1.02) saturate(.88);
+    filter: brightness(1.22) contrast(1.04) saturate(.96);
   }
 
   .frame { display: block; aspect-ratio: 4 / 5; background: var(--s1); overflow: hidden; position: relative; }
@@ -108,14 +130,14 @@ const editorialSrc = hero.image?.src || heroFallback
   .reel-toggle { position: absolute; right: 10px; bottom: 10px; background: var(--bg); border: 1px solid var(--rule); padding: 6px 10px; font-size: 12px; cursor: pointer; }
 
   @media (max-width: 1100px) {
-    .hero { grid-template-columns: minmax(0, 1fr) minmax(360px, .9fr); }
-    .editorial-portrait { width: 110%; margin-left: -10%; }
+    .hero { grid-template-columns: minmax(0, .94fr) minmax(380px, 1.06fr); }
+    .editorial-portrait { width: 116%; margin-left: -11%; margin-right: -5%; }
     h1 { font-size: clamp(74px, 10.4vw, 136px); }
   }
   @media (max-width: 899px) {
     .hero { grid-template-columns: 1fr; align-items: start; }
     .visual { width: 100%; max-width: none; margin-top: 2px; }
-    .editorial-portrait { width: 106%; margin-left: -3%; }
+    .editorial-portrait { width: 108%; margin-left: -4%; margin-right: -4%; transform: none; }
     .editorial-frame {
       -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 78%, transparent 100%);
       mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 78%, transparent 100%);
