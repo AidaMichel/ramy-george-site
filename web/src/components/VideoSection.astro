@@ -105,12 +105,12 @@ const cue = sec.microcopy || 'BROWSE DIFFERENT FORMATS'
     </>
   ) : (
     <div class="video-empty" role="status" aria-label="Video work is being updated">
-      <div class="empty-mark" aria-hidden="true"><span>01</span><i></i><span>PLAY</span></div>
-      <div>
+      <div class="empty-copy">
         <p class="empty-kicker">EDIT IN PROGRESS</p>
         <p class="empty-title">Selected video work is being updated.</p>
         <p class="muted empty-desc">Published editing work will appear here automatically.</p>
       </div>
+      <div class="empty-play" aria-hidden="true"><span></span></div>
     </div>
   )}
 </section>
@@ -243,12 +243,13 @@ const cue = sec.microcopy || 'BROWSE DIFFERENT FORMATS'
   .acts { display: flex; gap: 22px; flex-wrap: wrap; justify-content: flex-end; }
 
   .video.empty .sec-head { margin-bottom: 28px; }
-  .video-empty { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: clamp(36px, 5vw, 62px) 0; display: grid; grid-template-columns: minmax(160px, .65fr) minmax(0, 1.35fr); align-items: center; gap: clamp(32px, 6vw, 88px); margin-bottom: clamp(56px, 7vw, 96px); }
-  .empty-mark { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 11px; letter-spacing: .1em; }
-  .empty-mark i { height: 1px; background: var(--rule); flex: 1; max-width: 120px; }
+  .video-empty { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: clamp(36px, 5vw, 62px) 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(40px, 7vw, 112px); margin-bottom: clamp(56px, 7vw, 96px); }
+  .empty-copy { max-width: 680px; }
   .empty-kicker { color: var(--acc); font-size: 11px; font-weight: 700; letter-spacing: .15em; }
   .empty-title { margin-top: 14px; font-size: clamp(32px, 4vw, 52px); line-height: 1.02; font-weight: 600; letter-spacing: -.03em; }
   .empty-desc { margin-top: 12px; max-width: 520px; font-size: 16px; }
+  .empty-play { width: clamp(72px, 8vw, 112px); aspect-ratio: 1; border: 1px solid var(--rule); border-radius: 50%; display: grid; place-items: center; }
+  .empty-play span { width: 0; height: 0; margin-left: 5px; border-left: 18px solid var(--acc); border-top: 11px solid transparent; border-bottom: 11px solid transparent; }
 
   [hidden] { display: none !important; }
 
@@ -269,8 +270,8 @@ const cue = sec.microcopy || 'BROWSE DIFFERENT FORMATS'
 
   @media (max-width: 719px) {
     .stage { min-height: 220px; }
-    .video-empty { grid-template-columns: 1fr; gap: 28px; padding: 30px 0 34px; margin-bottom: 56px; }
-    .empty-mark i { max-width: none; }
+    .video-empty { grid-template-columns: 1fr; gap: 26px; padding: 30px 0 34px; margin-bottom: 56px; }
+    .empty-play { width: 64px; }
     .empty-desc { font-size: 15px; }
   }
 </style>
