@@ -9,7 +9,9 @@ const d = site.settings.seo
 const fallbackTitle = title || d.title || site.settings.siteName
 const requestedTitle = (seo.title || '').trim()
 const pageTitle = requestedTitle.length >= 15 && requestedTitle.length <= 70 ? requestedTitle : fallbackTitle
-const fallbackDesc = (description || d.description || '').trim()
+const generatedDesc = `${site.settings.siteName} is a Dubai-based video editor and video generalist working across editing, motion design, sound design, camera, documentaries, podcasts, events and branded content.`
+const fallbackDescCandidate = (description || d.description || '').trim()
+const fallbackDesc = fallbackDescCandidate.length >= 50 && fallbackDescCandidate.length <= 180 ? fallbackDescCandidate : generatedDesc
 const requestedDesc = (seo.description || '').trim()
 const desc = requestedDesc.length >= 50 && requestedDesc.length <= 180 ? requestedDesc : fallbackDesc
 const og = seo.ogImage || image || d.ogImage
