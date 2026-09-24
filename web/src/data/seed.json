@@ -33,6 +33,12 @@
  },
  "navigation": [
   {
+   "label": "Home",
+   "target": "home",
+   "highlight": false,
+   "visible": true
+  },
+  {
    "label": "Work",
    "target": "work",
    "highlight": false

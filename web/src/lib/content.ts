@@ -19,7 +19,7 @@ export type Logo = {id: string; name: string; group: 'clients' | 'media' | 'even
 export type Site = {
   settings: {siteName: string; professionalTitle: string; supportingSkills: string[]; location: string; logo: Img; footerLogo?: Img; showFooterSignature: boolean; cv: string; siteUrl: string; favicon?: string; seo: Seo
     footer: {showEmail: boolean; creditLine: string; locationLine: string; copyrightName: string; backToTopLabel: string}}
-  navigation: {label: string; target: string; url?: string; highlight: boolean}[]
+  navigation: {label: string; target: string; url?: string; highlight: boolean; visible?: boolean}[]
   contact: {email: string; whatsapp: string; linkedin: string; kicker: string; heading: string; buttonLabel: string; buttonTarget: 'email' | 'whatsapp'; seo?: Seo}
   hero: {mode: 'portrait' | 'still' | 'multiframe' | 'showreel' | 'none'; image?: Img; frames?: {img: Img; projectSlug?: string}[]; showreel?: string; showreelPoster?: Img; stillProjectSlug?: string; shortLine: string; ctaLabel: string; ctaTarget: 'section' | 'work'}
   about: {heading: string; paragraph: string; portrait: Img; links: {label: string; kind: string; url?: string}[]; seo?: Seo}
@@ -44,7 +44,7 @@ function platformOf(url?: string) {
 const IMG = `{"src": asset->url, "w": asset->metadata.dimensions.width, "h": asset->metadata.dimensions.height, alt}`
 const QUERY = `{
   "settings": *[_id=="siteSettings"][0]{siteName, professionalTitle, supportingSkills, location, "logo": logo${IMG}, "footerLogo": footerLogo${IMG}, showFooterSignature, footer, "cv": cv.asset->url, siteUrl, "favicon": favicon.asset->url, "seo": defaultSeo{title, description, noIndex, "ogImage": ogImage.asset->url}},
-  "navigation": *[_id=="navigation"][0].items[visible != false]{label, target, url, highlight},
+  "navigation": *[_id=="navigation"][0].items[]{label, target, url, highlight, visible},
   "contact": *[_id=="contact"][0]{email, whatsapp, linkedin, kicker, heading, buttonLabel, buttonTarget, "seo": seo{title, description, noIndex, "ogImage": ogImage.asset->url}},
   "hero": *[_id=="hero"][0]{mode, shortLine, ctaLabel, ctaTarget,
      "image": select(mode=="portrait" => portrait${IMG}, mode=="still" => still${IMG}),
@@ -112,7 +112,12 @@ function normalise(input: any): Site {
   // Contact & settings: fall back to seed defaults field-by-field so a half-filled CMS never breaks a page
   return {
     settings: {...s.settings, ...(r.settings || {}), seo: {...s.settings.seo, ...(r.settings?.seo || {})}, footer: {...s.settings.footer, ...(r.settings?.footer || {})}},
-    navigation: r.navigation?.length ? r.navigation : s.navigation,
+    navigation: (() => {
+      const nav = r.navigation?.length ? r.navigation : s.navigation
+      return nav.some((n: any) => n.target === 'home')
+        ? nav
+        : [{label: 'Home', target: 'home', highlight: false, visible: true}, ...nav]
+    })(),
     contact: {...s.contact, ...(r.contact || {})},
     hero: {...s.hero, ...(r.hero || {})},
     about: {...s.about, ...(r.about || {}), links: r.about?.links ?? s.about.links},
@@ -133,7 +138,7 @@ export function watchLabel(p: Pick<Project, 'watchLabel' | 'platform'>) {
   return p.watchLabel || (p.platform ? `Watch on ${p.platform} ↗` : 'Watch ↗')
 }
 export function navHref(target: string, url?: string) {
-  return target === 'work' ? '/work/' : target === 'about' || target === 'info' ? '/info/' : target === 'contact' ? '/contact/' : url || '/'
+  return target === 'home' ? '/' : target === 'work' ? '/work/' : target === 'about' || target === 'info' ? '/info/' : target === 'contact' ? '/contact/' : url || '/'
 }
 export function linkHref(site: Site, kind: string, url?: string): string {
   switch (kind) {

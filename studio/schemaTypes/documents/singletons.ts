@@ -65,7 +65,7 @@ export const navigation = defineType({
             defineField({
               name: 'target',
               type: 'string',
-              options: {list: [{title: 'Work', value: 'work'}, {title: 'Info page', value: 'about'}, {title: 'Let’s talk (contact)', value: 'contact'}, {title: 'Custom URL', value: 'custom'}]},
+              options: {list: [{title: 'Home', value: 'home'}, {title: 'Work', value: 'work'}, {title: 'Info page', value: 'about'}, {title: 'Let’s talk (contact)', value: 'contact'}, {title: 'Custom URL', value: 'custom'}]},
               validation: (r) => r.required(),
             }),
             defineField({name: 'url', type: 'url', hidden: ({parent}) => parent?.target !== 'custom'}),
