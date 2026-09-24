@@ -3,12 +3,10 @@ import Base from '../../layouts/Base.astro'
 import Img from '../../components/Img.astro'
 import {getSite, watchLabel, embedUrl, ratio, type Project} from '../../lib/content'
 
-export async function getStaticPaths() {
-  const site = await getSite()
-  return site.projects.map((p) => ({params: {slug: p.slug}, props: {slug: p.slug}}))
-}
 const site = await getSite()
-const p = site.projects.find((x) => x.slug === Astro.props.slug) as Project
+const slug = Astro.params.slug
+const p = site.projects.find((x) => x.slug === slug) as Project | undefined
+if (!p) return Astro.redirect('/404', 302)
 const cat = site.categories.find((c) => c.slug === p.category)
 const kindLabel = p.kind === 'video' ? `Video${cat ? ' · ' + cat.title : ''}` : p.kind === 'motion' ? 'Motion & AI' : 'Posts & Carousels'
 const embed = p.watchUrl ? embedUrl(p.watchUrl) : ''
