@@ -20,18 +20,18 @@ const assert = (ok, msg) => {
   console.log('✓', msg)
 }
 const attrs = (tag) => Object.fromEntries(
-  [...tag.matchAll(/([:\\w.-]+)=["']([^"']*)["']/g)].map((m) => [m[1].toLowerCase(), m[2]])
+  [...tag.matchAll(/([:\w.-]+)=["']([^"']*)["']/g)].map((m) => [m[1].toLowerCase(), m[2]])
 )
 const meta = (html, name, property = false) => {
   const key = property ? 'property' : 'name'
-  for (const m of html.matchAll(/<meta\\b[^>]*>/gi)) {
+  for (const m of html.matchAll(/<meta\b[^>]*>/gi)) {
     const a = attrs(m[0])
     if ((a[key] || '').toLowerCase() === name.toLowerCase()) return a.content || ''
   }
   return ''
 }
 const link = (html, rel) => {
-  for (const m of html.matchAll(/<link\\b[^>]*>/gi)) {
+  for (const m of html.matchAll(/<link\b[^>]*>/gi)) {
     const a = attrs(m[0])
     if ((a.rel || '').toLowerCase() === rel.toLowerCase()) return a.href || ''
   }
