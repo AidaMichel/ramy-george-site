@@ -6,11 +6,11 @@ interface Props { num: string }
 const site = await getSite()
 const sec = section(site, 'motion')!
 const items = site.projects.filter((p) => p.kind === 'motion' && p.showOnHome)
-const TAG: Record<string, string> = {motion: 'Motion', ai: 'AI-assisted', logo: 'Logo animation'}
+const TAG: Record<string, string> = {motion: 'Motion', ai: 'AI Gen', logo: 'Logo animation'}
 const filters = site.home.motionFilters
   .map((f) => ({...f, n: f.key === 'all' ? items.length : items.filter((p) => (p.motionType || 'motion') === f.key).length}))
 ---
-<section class="sec motion" aria-labelledby="motion-h" data-motion>
+<section class:list={['sec motion', {empty: items.length === 0}]} aria-labelledby="motion-h" data-motion>
   <div class="wrap">
     <div class="sec-head">
       <div><div class="sec-num">{Astro.props.num}</div><h2 class="h2" id="motion-h">{sec.heading || 'Motion & AI'}</h2></div>
@@ -24,7 +24,8 @@ const filters = site.home.motionFilters
       </div>
     </div>
   </div>
-  {items.length > 0 && (
+
+  {items.length > 0 ? (
     <div class="wrap" data-carousel>
       <ul class="track" data-track tabindex="0" role="region" aria-roledescription="carousel" aria-label="Motion and AI work">
         {items.map((p) => (
@@ -42,6 +43,16 @@ const filters = site.home.motionFilters
         ))}
       </ul>
       <CarouselControls label="motion piece" />
+    </div>
+  ) : (
+    <div class="wrap">
+      <div class="empty-state" role="status" aria-label="Motion and AI work is coming soon">
+        <div class="empty-status"><span aria-hidden="true"></span>WORK IN PROGRESS</div>
+        <div class="empty-copy">
+          <p class="empty-title">Coming soon</p>
+          <p class="muted empty-desc">Motion loops, AI Gen work, and logo animations will appear here.</p>
+        </div>
+      </div>
     </div>
   )}
 </section>
@@ -71,5 +82,31 @@ const filters = site.home.motionFilters
   .tag { position: absolute; left: 10px; top: 10px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: var(--bg); padding: 4px 7px; }
   .cap { display: block; margin-top: 12px; font-size: 15px; }
   .tile:hover b { color: var(--acc); }
-  @media (max-width: 1023px) { .sec-head { flex-direction: column; align-items: flex-start; } .side { align-items: flex-start; } .filters { justify-content: flex-start; } }
+
+  .empty .sec-head { margin-bottom: 30px; }
+  .empty-state {
+    min-height: 224px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: minmax(180px, .7fr) minmax(0, 1.3fr);
+    align-items: center;
+    gap: clamp(32px, 6vw, 88px);
+    padding: 34px 0;
+    margin-bottom: clamp(56px, 7vw, 96px);
+  }
+  .empty-status { font-size: 11px; letter-spacing: .14em; font-weight: 700; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+  .empty-status span { width: 30px; height: 2px; background: var(--acc); display: inline-block; }
+  .empty-title { font-size: clamp(34px, 4vw, 54px); line-height: 1; letter-spacing: -.03em; font-weight: 600; }
+  .empty-desc { max-width: 520px; font-size: 16px; line-height: 1.55; margin-top: 12px; }
+
+  @media (max-width: 1023px) {
+    .sec-head { flex-direction: column; align-items: flex-start; }
+    .side { align-items: flex-start; }
+    .filters { justify-content: flex-start; }
+  }
+  @media (max-width: 719px) {
+    .empty-state { min-height: 0; grid-template-columns: 1fr; gap: 28px; padding: 30px 0 34px; margin-bottom: 56px; }
+    .empty-desc { font-size: 15px; }
+  }
 </style>
