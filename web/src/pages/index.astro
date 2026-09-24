@@ -14,7 +14,9 @@ const site = await getSite()
 const shown = site.home.sections.filter((s) => s.visible !== false)
 let n = 0
 const numbered = shown.map((s) => ({...s, num: ['video', 'motion', 'posts', 'clients', 'about'].includes(s.key) ? String(++n).padStart(2, '0') : ''}))
-const workAnchorAt = numbered.findIndex((s) => s.key !== 'hero')
+const workKeys = new Set(['video', 'motion', 'posts'])
+const firstWork = numbered.findIndex((s) => workKeys.has(s.key))
+const workAnchorAt = firstWork >= 0 ? firstWork : numbered.findIndex((s) => s.key !== 'hero')
 ---
 <Base seo={site.home.seo}>
   {numbered.map((s, i) => (
